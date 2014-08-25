@@ -1,0 +1,28 @@
+{
+  "name": "timer.js",
+  "version": "0.1.0",
+  "description": "Timer/Chronometer/Countdown compatible with AMD and Node",
+  "main": "src/timer.js",
+  "directories": {
+    "test": "test",
+    "src": "src"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "javascript",
+    "nodejs",
+    "amd",
+    "requirejs",
+    "timer",
+    "chronometer",
+    "countdown".
+    "mocha"
+  ],
+  "author": "Albert Gonzalez",
+  "license": "MIT",
+  "devDependencies": {
+    "sinon": "~1.10.3"
+  }
+}
