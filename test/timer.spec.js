@@ -1,5 +1,5 @@
 var assert = require('assert');
-var Timer = require('../src/timer.js')
+var Timer = require('../src/easytimer.js')
 var sinon = require('sinon');
 
 describe('timer.js', function(){
@@ -10,13 +10,17 @@ describe('timer.js', function(){
         var times = timer.getTimeValues();
         var totalTimes = timer.getTotalTimeValues();
 
-        assert.deepEqual(times.seconds, timesValues[0]);
-        assert.deepEqual(times.minutes, timesValues[1]);
-        assert.deepEqual(times.hours, timesValues[2]);
+        assert.deepEqual(times.secondTenths, timesValues[0]);
+        assert.deepEqual(times.seconds, timesValues[1]);
+        assert.deepEqual(times.minutes, timesValues[2]);
+        assert.deepEqual(times.hours, timesValues[3]);
+        assert.deepEqual(times.days, timesValues[4]);
 
-        assert.deepEqual(totalTimes.seconds, totalTimesValues[0]);
-        assert.deepEqual(totalTimes.minutes, totalTimesValues[1]);
-        assert.deepEqual(totalTimes.hours, totalTimesValues[2]);
+        assert.deepEqual(totalTimes.secondTenths, totalTimesValues[0]);
+        assert.deepEqual(totalTimes.seconds, totalTimesValues[1]);
+        assert.deepEqual(totalTimes.minutes, totalTimesValues[2]);
+        assert.deepEqual(totalTimes.hours, totalTimesValues[3]);
+        assert.deepEqual(totalTimes.days, timesValues[4]);
     }
 
     function assertEventTriggered(timer, event, millisecons, timesTriggered) {
@@ -44,7 +48,7 @@ describe('timer.js', function(){
     describe('Timer instance', function () {
         describe('default values', function () {
             it('should have counters with 0 values', function () {
-                assertTimes(timer, [0, 0, 0], [0, 0, 0]);
+                assertTimes(timer, [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]);
             });
         });
 
@@ -87,6 +91,44 @@ describe('timer.js', function(){
 
         describe('started', function () {
             describe('regular timer', function () {
+                describe('with tenth of seconds precision', function () {
+                    var params;
+                    beforeEach(function () {
+                        params = {precision: 'secondTenths', callback: sinon.spy()};
+                        clock = sinon.useFakeTimers();
+                        timer.start(params);
+                    });
+
+                    afterEach(function () {
+                        clock.restore();
+                    });
+
+                    it('should update tenth of seconds every 1 tenth of second', function () {
+                        assertEventTriggered(timer, 'secondTenthsUpdated', 100, 1);
+                        assertTimes(timer, [1, 0, 0, 0, 0], [1, 0, 0, 0, 0]);
+                    });
+
+                    it('should update seconds every 1 second', function () {
+                        assertEventTriggered(timer, 'secondsUpdated', 1000, 1);
+                        assertTimes(timer, [0, 1, 0, 0, 0], [10, 1, 0, 0, 0]);
+                    });
+
+                    it('should update minutes every 60 seconds', function () {
+                        assertEventTriggered(timer, 'minutesUpdated', 60000, 1);
+                        assertTimes(timer, [0, 0, 1, 0, 0], [600, 60, 1, 0, 0]);
+                    });
+
+                    it('should update hours every 3600 seconds', function () {
+                        assertEventTriggered(timer, 'hoursUpdated', 3600000, 1);
+                        assertTimes(timer, [0, 0, 0, 1, 0], [36000, 3600, 60, 1, 0]);
+                    });
+
+                    it('should execute callback every tenth of second', function () {
+                        clock.tick(100);
+                        assert(params.callback.called);
+                    });
+                });
+
                 describe('with seconds precision', function () {
                     var params;
                     beforeEach(function () {
@@ -101,17 +143,17 @@ describe('timer.js', function(){
 
                     it('should update seconds every 1 second', function () {
                         assertEventTriggered(timer, 'secondsUpdated', 1000, 1);
-                        assertTimes(timer, [1, 0, 0], [1, 0, 0]);
+                        assertTimes(timer, [0, 1, 0, 0, 0], [10, 1, 0, 0, 0]);
                     });
 
                     it('should update minutes every 60 seconds', function () {
                         assertEventTriggered(timer, 'minutesUpdated', 60000, 1);
-                        assertTimes(timer, [0, 1, 0], [60, 1, 0]);
+                        assertTimes(timer, [0, 0, 1, 0, 0], [600, 60, 1, 0, 0]);
                     });
 
                     it('should update hours every 3600 seconds', function () {
                         assertEventTriggered(timer, 'hoursUpdated', 3600000, 1);
-                        assertTimes(timer, [0, 0, 1], [3600, 60, 1]);
+                        assertTimes(timer, [0, 0, 0, 1, 0], [36000, 3600, 60, 1, 0]);
                     });
 
                     it('should execute callback every second', function () {
@@ -134,12 +176,17 @@ describe('timer.js', function(){
 
                     it('should update minute every 60 seconds', function () {
                         assertEventTriggered(timer, 'minutesUpdated', 60000, 1);
-                        assertTimes(timer, [0, 1, 0], [60, 1, 0]);
+                        assertTimes(timer, [0, 0, 1, 0, 0], [600, 60, 1, 0, 0]);
                     });
 
                     it('should update hours every 3600 seconds', function () {
                         assertEventTriggered(timer, 'hoursUpdated', 3600000, 1);
-                        assertTimes(timer, [0, 0, 1], [3600, 60, 1]);
+                        assertTimes(timer, [0, 0, 0, 1, 0], [36000, 3600, 60, 1, 0]);
+                    });
+
+                    it('should update days every 86400 seconds', function () {
+                        assertEventTriggered(timer, 'daysUpdated', 86400000, 1);
+                        assertTimes(timer, [0, 0, 0, 0, 1], [864000, 86400, 1440, 24, 1]);
                     });
 
                     it('should execute callback every 60 seconds', function () {
@@ -162,7 +209,12 @@ describe('timer.js', function(){
 
                     it('should update hours every 3600 seconds', function () {
                         assertEventTriggered(timer, 'hoursUpdated', 3600000, 1);
-                        assertTimes(timer, [0, 0, 1], [3600, 60, 1]);
+                        assertTimes(timer, [0, 0, 0, 1, 0], [36000, 3600, 60, 1, 0]);
+                    });
+
+                    it('should update days every 86400 seconds', function () {
+                        assertEventTriggered(timer, 'daysUpdated', 86400000, 1);
+                        assertTimes(timer, [0, 0, 0, 0, 1], [864000, 86400, 1440, 24, 1]);
                     });
 
                     it('should execute callback every 3600 seconds', function () {
@@ -173,6 +225,44 @@ describe('timer.js', function(){
             });
 
             describe('countdown timer', function () {
+                describe('with tenth of seconds precision', function () {
+                    var params;
+                    beforeEach(function () {
+                        params = {precision: 'secondTenths', callback: sinon.spy(), startValues: {seconds: 7199 }, countdown: true};
+                        clock = sinon.useFakeTimers();
+                        timer.start(params);
+                    });
+
+                    afterEach(function () {
+                        clock.restore();
+                    });
+
+                    it('should update seconds every 10 tenth of seconds', function () {
+                        assertEventTriggered(timer, 'secondsUpdated', 100, 1);
+                        assertTimes(timer, [9, 58, 59, 1, 0], [71989, 7198, 119, 1, 0]);
+                    });
+
+                    it('should update seconds every 1 second', function () {
+                        assertEventTriggered(timer, 'secondsUpdated', 1000, 1);
+                        assertTimes(timer, [0, 58, 59, 1, 0], [71980, 7198, 119, 1, 0]);
+                    });
+
+                    it('should update minutes every 60 seconds', function () {
+                        assertEventTriggered(timer, 'minutesUpdated', 60000, 1);
+                        assertTimes(timer, [0, 59, 58, 1, 0], [71390, 7139, 118, 1, 0]);
+                    });
+
+                    it('should update hours every 3600 seconds', function () {
+                        assertEventTriggered(timer, 'hoursUpdated', 3600000, 1);
+                        assertTimes(timer, [0, 59, 59, 0, 0], [35990, 3599, 59, 0, 0]);
+                    });
+
+                    it('should execute callback every second', function () {
+                        clock.tick(1000);
+                        assert(params.callback.called);
+                    });
+                });
+
                 describe('with seconds precision', function () {
                     var params;
                     beforeEach(function () {
@@ -187,17 +277,17 @@ describe('timer.js', function(){
 
                     it('should update seconds every 1 second', function () {
                         assertEventTriggered(timer, 'secondsUpdated', 1000, 1);
-                        assertTimes(timer, [58, 59, 1], [7198, 119, 1]);
+                        assertTimes(timer, [0, 58, 59, 1, 0], [71980, 7198, 119, 1, 0]);
                     });
 
                     it('should update minutes every 60 seconds', function () {
                         assertEventTriggered(timer, 'minutesUpdated', 60000, 1);
-                        assertTimes(timer, [59, 58, 1], [7139, 118, 1]);
+                        assertTimes(timer, [0, 59, 58, 1, 0], [71390, 7139, 118, 1, 0]);
                     });
 
                     it('should update hours every 3600 seconds', function () {
                         assertEventTriggered(timer, 'hoursUpdated', 3600000, 1);
-                        assertTimes(timer, [59, 59, 0], [3599, 59, 0]);
+                        assertTimes(timer, [0, 59, 59, 0, 0], [35990, 3599, 59, 0, 0]);
                     });
 
                     it('should execute callback every second', function () {
@@ -209,7 +299,7 @@ describe('timer.js', function(){
                 describe('with minutes precision', function () {
                     var params;
                     beforeEach(function () {
-                        params = {precision: 'minutes', callback: sinon.spy(), startValues: {seconds: 7199 }, countdown: true};
+                        params = {precision: 'minutes', callback: sinon.spy(), startValues: {seconds: 172799 }, countdown: true};
                         clock = sinon.useFakeTimers();
                         timer.start(params);
                      });
@@ -220,12 +310,17 @@ describe('timer.js', function(){
 
                     it('should update minutes every 60 seconds', function () {
                         assertEventTriggered(timer, 'minutesUpdated', 60000, 1);
-                        assertTimes(timer, [59, 58, 1], [7139, 118, 1]);
+                        assertTimes(timer, [0, 59, 58, 23, 1], [1727390, 172739, 2878, 47, 1]);
                     });
 
                     it('should update hours every 3600 seconds', function () {
                         assertEventTriggered(timer, 'hoursUpdated', 3600000, 1);
-                        assertTimes(timer, [59, 59, 0], [3599, 59, 0]);
+                        assertTimes(timer, [0, 59, 59, 22, 1], [1691990, 169199, 2819, 46, 1]);
+                    });
+
+                    it('should update days every 86400 seconds', function () {
+                        assertEventTriggered(timer, 'daysUpdated', 86400000, 1);
+                        assertTimes(timer, [0, 59, 59, 23, 0], [863990, 86399, 1439, 23, 0]);
                     });
 
                     it('should execute callback every 60 seconds', function () {
@@ -237,7 +332,7 @@ describe('timer.js', function(){
                 describe('with hours precision', function () {
                     var params;
                     beforeEach(function () {
-                        params = {precision: 'hours', callback: sinon.spy(), startValues: {seconds: 7199 }, countdown: true};
+                        params = {precision: 'hours', callback: sinon.spy(), startValues: {seconds: 172799 }, countdown: true};
                         clock = sinon.useFakeTimers();
                         timer.start(params);
                      });
@@ -248,7 +343,12 @@ describe('timer.js', function(){
 
                     it('should update hours every 3600 seconds', function () {
                         assertEventTriggered(timer, 'hoursUpdated', 3600000, 1);
-                        assertTimes(timer, [59, 59, 0], [3599, 59, 0]);
+                        assertTimes(timer, [0, 59, 59, 22, 1], [1691990, 169199, 2819, 46, 1]);
+                    });
+
+                    it('should update days every 86400 seconds', function () {
+                        assertEventTriggered(timer, 'daysUpdated', 86400000, 1);
+                        assertTimes(timer, [0, 59, 59, 23, 0], [863990, 86399, 1439, 23, 0]);
                     });
 
                     it('should execute callback every 3600 seconds', function () {
@@ -266,7 +366,7 @@ describe('timer.js', function(){
                 describe('with object input', function () {
                     var emptyObjectTarget;
                     beforeEach(function() {
-                        target = {seconds: 10, minutes: 50, hours: 15};
+                        target = {secondTenths: 5, seconds: 10, minutes: 50, hours: 15, days: 2};
                         emptyObjectTarget = {};
 
                     });
@@ -274,7 +374,7 @@ describe('timer.js', function(){
                     it('should transform object into array', function () {
                         timer.start({target: target});
                         configTarget = timer.getConfig().target;
-                        assert(configTarget instanceof Array && configTarget.length === 3);
+                        assert(configTarget instanceof Array && configTarget.length === 5);
                     });
 
                     it('should transform into 0 values array if the object is empty', function () {
@@ -283,14 +383,18 @@ describe('timer.js', function(){
                         assert.equal(configTarget[0], 0);
                         assert.equal(configTarget[1], 0);
                         assert.equal(configTarget[2], 0);
+                        assert.equal(configTarget[3], 0);
+                        assert.equal(configTarget[4], 0);
                     });
 
-                    it('should set seconds in first position, minutes in second position and hours in third position', function () {
+                    it('should set array in this order [ts, s, m, h, d]', function () {
                         timer.start({target: target});
                         configTarget = timer.getConfig().target;
-                        assert.equal(configTarget[0], target.seconds);
-                        assert.equal(configTarget[1], target.minutes);
-                        assert.equal(configTarget[2], target.hours);
+                        assert.equal(configTarget[0], target.secondTenths);
+                        assert.equal(configTarget[1], target.seconds);
+                        assert.equal(configTarget[2], target.minutes);
+                        assert.equal(configTarget[3], target.hours);
+                        assert.equal(configTarget[4], target.days);
                     });
                 });
 
@@ -304,26 +408,34 @@ describe('timer.js', function(){
                 });
 
                 it('should add minutes every 60 seconds', function () {
-                    target = [90, 0, 0];
+                    target = [0, 90, 0, 0, 0];
                     timer.start({target: target});
                     configTarget = timer.getConfig().target;
 
-                    assert.deepEqual(timer.getConfig().target, [30, 1, 0]);
+                    assert.deepEqual(timer.getConfig().target, [0, 30, 1, 0, 0]);
                 });
 
                 it('should add hours every 60 minutes', function () {
-                    target = [0, 95, 0];
+                    target = [0, 0, 95, 0, 0];
                     timer.start({target: target});
                     configTarget = timer.getConfig().target;
 
-                    assert.deepEqual(timer.getConfig().target, [0, 35, 1]);
+                    assert.deepEqual(timer.getConfig().target, [0, 0, 35, 1, 0]);
                 });
 
                 it('should not start if start values and target are equal', function () {
-                    target = [0, 95, 0];
-                    startValues = [0, 95, 0];
+                    target = [0, 0, 95, 0, 0];
+                    startValues = [0, 0, 95, 0, 0];
                     timer.start({target: target, startValues: startValues});
                     assert(!timer.isRunning());
+                });
+
+                it('should not allow negative values and set 0', function () {
+                    target = [0, -1, 95, -1, 0];
+                    timer.start({target: target});
+                    configStartValues = timer.getConfig().target;
+
+                    assert.deepEqual(timer.getConfig().target, [0, 0, 35, 1, 0]);
                 });
 
                 describe('with regular timer', function () {
@@ -336,21 +448,21 @@ describe('timer.js', function(){
                     });
 
                     it('should stop when hours counter > hour target', function () {
-                        target = [1, 0, 0];
+                        target = [0, 1, 0, 0, 0];
                         timer.start({target: target, precision: 'hours'});
                         assertEventTriggered(timer, 'targetAchieved', 3600000, 1);
                         assert(!timer.isRunning());
                     });
 
                     it('should stop when hours counter == hours target and minutes counter > minutes target', function () {
-                        target = [5, 5, 0];
+                        target = [0, 5, 5, 0, 0];
                         timer.start({target: target, precision: 'minutes'});
                         assertEventTriggered(timer, 'targetAchieved', 360000, 1);
                         assert(!timer.isRunning());
                     });
 
                     it('should stop when hours counter == hours target and minutes counter == minutes target and seconds counter >= seconds target', function () {
-                        target = [5, 5, 0];
+                        target = [0, 5, 5, 0, 0];
                         timer.start({target: target, precision: 'seconds'});
                         assertEventTriggered(timer, 'targetAchieved', 305000, 1);
                         assert(!timer.isRunning());
@@ -369,24 +481,24 @@ describe('timer.js', function(){
                     });
 
                     it('should stop when hours counter < hour target', function () {
-                        startValues = [0, 30, 1]
-                        target = [0, 0, 1];
+                        startValues = [0, 0, 30, 1, 0]
+                        target = [0, 0, 0, 1, 0];
                         timer.start({target: target, startValues: startValues, precision: 'hours', countdown: true});
                         assertEventTriggered(timer, 'targetAchieved', 3600000, 1);
                         assert(!timer.isRunning());
                     });
 
                     it('should stop when hours counter == hours target and minutes counter < minutes target', function () {
-                        startValues = [0, 30, 0];
-                        target = [0, 29, 0];
+                        startValues = [0, 0, 30, 0, 0];
+                        target = [0, 0, 29, 0, 0];
                         timer.start({target: target, startValues: startValues, precision: 'minutes', countdown: true});
                         assertEventTriggered(timer, 'targetAchieved', 60000, 1);
                         assert(!timer.isRunning());
                     });
 
                     it('should stop when hours counter == hours target and minutes counter == minutes target and seconds counter <= seconds target', function () {
-                        startValues = [30, 0, 0];
-                        target = [29, 0, 0];
+                        startValues = [0, 30, 0, 0, 0];
+                        target = [0, 29, 0, 0, 0];
                         timer.start({target: target, startValues: startValues, precision: 'seconds', countdown: true});
                         assertEventTriggered(timer, 'targetAchieved', 1000, 1);
                         assert(!timer.isRunning());
@@ -395,11 +507,184 @@ describe('timer.js', function(){
             });
         });
 
+        describe('with start values', function () {
+            describe('setting start values params', function () {
+                var startValues,
+                    configStartValues;
+                describe('with object input', function () {
+                    var emptyObjectStartValues;
+                    beforeEach(function() {
+                        startValues = {secondTenths: 5, seconds: 10, minutes: 50, hours: 15, days: 1};
+                        emptyObjectStartValues = {};
+
+                    });
+
+                    it('should transform object into array', function () {
+                        timer.start({startValues: startValues});
+                        configStartValues = timer.getConfig().startValues;
+                        assert(configStartValues instanceof Array && configStartValues.length === 5);
+                    });
+
+                    it('should transform into 0 values array if the object is empty', function () {
+                        timer.start({startValues: emptyObjectStartValues});
+                        configStartValues = timer.getConfig().startValues;
+                        assert.equal(configStartValues[0], 0);
+                        assert.equal(configStartValues[1], 0);
+                        assert.equal(configStartValues[2], 0);
+                        assert.equal(configStartValues[3], 0);
+                        assert.equal(configStartValues[4], 0);
+                    });
+
+                    it('should set seconds in first position, minutes in second position and hours in third position', function () {
+                        timer.start({startValues: startValues});
+                        configStartValues = timer.getConfig().startValues;
+                        assert.equal(configStartValues[0], startValues.secondTenths);
+                        assert.equal(configStartValues[1], startValues.seconds);
+                        assert.equal(configStartValues[2], startValues.minutes);
+                        assert.equal(configStartValues[3], startValues.hours);
+                        assert.equal(configStartValues[4], startValues.days);
+                    });
+                });
+
+                describe('with array input', function () {
+                    it('should throw exception if the size is incorrect', function () {
+                        var startValues = [];
+                        assert.throws(function () {
+                            timer.start({startValues: startValues});
+                        }, /Array size not valid/);
+                    });
+                });
+
+                it('should add seconds every 10 tenth of seconds', function () {
+                    startValues = [15, 0, 0, 0, 0];
+                    timer.start({startValues: startValues});
+                    configStartValues = timer.getConfig().startValues;
+
+                    assert.deepEqual(timer.getConfig().startValues, [5, 1, 0, 0, 0]);
+                });
+
+                it('should add minutes every 60 seconds', function () {
+                    startValues = [0, 90, 0, 0, 0];
+                    timer.start({startValues: startValues});
+                    configStartValues = timer.getConfig().startValues;
+
+                    assert.deepEqual(timer.getConfig().startValues, [0, 30, 1, 0, 0]);
+                });
+
+                it('should add hours every 60 minutes', function () {
+                    startValues = [0, 0, 95, 0, 0];
+                    timer.start({startValues: startValues});
+                    configStartValues = timer.getConfig().startValues;
+
+                    assert.deepEqual(timer.getConfig().startValues, [0, 0, 35, 1, 0]);
+                });
+
+                it('should add days every 24 hours', function () {
+                    startValues = [0, 0, 0, 30, 0];
+                    timer.start({startValues: startValues});
+                    configStartValues = timer.getConfig().startValues;
+
+                    assert.deepEqual(timer.getConfig().startValues, [0, 0, 0, 6, 1]);
+                });
+
+                it('should not allow negative values and set 0', function () {
+                    startValues = [0, -1, 95, -1, 0];
+                    timer.start({startValues: startValues});
+                    configStartValues = timer.getConfig().startValues;
+
+                    assert.deepEqual(timer.getConfig().startValues, [0, 0, 35, 1, 0]);
+                });
+
+                it('should have counters with same values that the start values', function () {
+                    startValues = [5, 15, 95, 0, 2];
+                    timer.start({startValues: startValues});
+                    configStartValues = timer.getConfig().startValues;
+
+                    assert.deepEqual(timer.getTimeValues().secondTenths, 5);
+                    assert.deepEqual(timer.getTimeValues().seconds, 15);
+                    assert.deepEqual(timer.getTimeValues().minutes, 35);
+                    assert.deepEqual(timer.getTimeValues().hours, 1);
+                    assert.deepEqual(timer.getTimeValues().days, 2);
+                });
+            });
+
+            describe('Time Values Counters', function () {
+                it('should have toString function', function () {
+                    assert(timer.getTimeValues().hasOwnProperty('toString'));
+                    assert(timer.getTotalTimeValues().hasOwnProperty('toString'));
+                });
+
+                describe('toString function', function () {
+                    beforeEach(function () {
+                        clock = sinon.useFakeTimers();
+                        timer.start();
+                        clock.tick(3735000);
+                     });
+
+                    afterEach(function () {
+                        clock.restore();
+                    });
+
+                    it('should work without params (default format hh:mm:ss)', function () {
+                        assert.equal(timer.getTimeValues().toString(), '01:02:15');
+                    });
+
+                    it('should change the values returned with the units param', function () {
+                        assert.equal(
+                            timer.getTimeValues().toString(['days', 'hours', 'minutes', 'seconds', 'secondTenths']),
+                            '00:01:02:15:00'
+                        );
+                    });
+                    it('should change the separator with the separator param', function () {
+                        assert.equal(
+                            timer.getTimeValues().toString(null, ','),
+                            '01,02,15'
+                        );
+                    });
+
+                    it('should change the left zero padding with leftZeroPadding param', function () {
+                        assert.equal(
+                            timer.getTimeValues().toString(null, null, 4),
+                            '0001:0002:0015'
+                        );
+                    });
+                });
+            });
+        });
+
         describe('stop function', function () {
-            it('should stop the timer', function () {
+            beforeEach(function () {
+                clock = sinon.useFakeTimers();
+             });
+
+            afterEach(function () {
+                clock.restore();
+            });
+
+            it('should stop the timer and reset values', function () {
                 timer.start();
+                clock.tick(60000);
                 timer.stop();
                 assert.equal(timer.isRunning(), false);
+                assertTimes(timer, [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]);
+            });
+        });
+
+        describe('pause function', function () {
+            beforeEach(function () {
+                clock = sinon.useFakeTimers();
+             });
+
+            afterEach(function () {
+                clock.restore();
+            });
+
+            it('should stop the timer', function () {
+                timer.start();
+                clock.tick(60000);
+                timer.pause();
+                assert.equal(timer.isRunning(), false);
+                assertTimes(timer, [0, 0, 1, 0, 0], [600, 60, 1, 0, 0]);
             });
         });
     });
