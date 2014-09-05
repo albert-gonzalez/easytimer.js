@@ -1,5 +1,5 @@
 {
-  "name": "timer.js",
+  "name": "easytimer.js",
   "version": "0.1.0",
   "description": "Timer/Chronometer/Countdown compatible with AMD and NodeJS",
   "main": "src/timer.js",
@@ -17,12 +17,14 @@
     "requirejs",
     "timer",
     "chronometer",
-    "countdown".
+    "countdown",
     "mocha"
   ],
   "author": "Albert Gonzalez",
   "license": "MIT",
   "devDependencies": {
-    "sinon": "~1.10.3"
+    "sinon": "~1.10.3",
+    "grunt": "~0.4.5",
+    "grunt-contrib-uglify": "~0.5.1"
   }
 }

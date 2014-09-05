@@ -12,6 +12,7 @@ var Timer = (
 
     function (module) {
         'use strict';
+
         /*
          * General functions, variables and constants
          */
@@ -375,7 +376,7 @@ var Timer = (
              */
 
             /**
-             * [stop stop the timer and reset the counters. Dispatch stopped event]
+             * [stop stops the timer and resets the counters. Dispatch stopped event]
              */
             function stop() {
                 stopTimer();
@@ -384,7 +385,7 @@ var Timer = (
             }
 
             /**
-             * [start start the timer configured by the params object. Dispatch started event]
+             * [start starts the timer configured by the params object. Dispatch started event]
              * @param  {[object]} params [Configuration parameters]
              */
             function start(params) {
@@ -402,7 +403,7 @@ var Timer = (
             }
 
             /**
-             * [pause stop the timer without reset the counters. The timer it can be restarted with start function.
+             * [pause stops the timer without resetting the counters. The timer it can be restarted with start function.
              * Dispatch paused event]
              * @return {[type]} [description]
              */
@@ -413,7 +414,7 @@ var Timer = (
             }
 
             /**
-             * [addEventListener Add event listener to the timer]
+             * [addEventListener Adds event listener to the timer]
              * @param {[string]} event      [event to listen]
              * @param {[function]} listener   [the event listener function]
              */
@@ -426,7 +427,7 @@ var Timer = (
             }
 
             /**
-             * [removeEventListener Remove event listener to the timer]
+             * [removeEventListener Removes event listener to the timer]
              * @param  {[string]} event    [event to remove listener]
              * @param  {[function]} listener [listener to remove]
              */
@@ -439,7 +440,7 @@ var Timer = (
             }
 
             /**
-             * [dispatchEvent dispatch an event]
+             * [dispatchEvent dispatchs an event]
              * @param  {[string]} event [event to dispatch]
              */
             function dispatchEvent(event) {
@@ -459,7 +460,7 @@ var Timer = (
             }
 
             /**
-             * [isPaused return true if the timer is paused]
+             * [isPaused returns true if the timer is paused]
              * @return {Boolean}
              */
             function isPaused() {
@@ -467,7 +468,7 @@ var Timer = (
             }
 
             /**
-             * [getTimeValues return the counter with the current timer values]
+             * [getTimeValues returns the counter with the current timer values]
              * @return {[TimeCounter]}
              */
             function getTimeValues() {
@@ -475,7 +476,7 @@ var Timer = (
             };
 
             /**
-             * [getTotalTimeValues return the counter with the current timer total values]
+             * [getTotalTimeValues returns the counter with the current timer total values]
              * @return {[TimeCounter]}
              */
             function getTotalTimeValues() {
@@ -483,7 +484,7 @@ var Timer = (
             };
 
             /**
-             * [getConfig return the configuration paramameters]
+             * [getConfig returns the configuration paramameters]
              * @return {[type]}
              */
             function getConfig () {
@@ -491,6 +492,7 @@ var Timer = (
             };
 
             /**
+             * Public API
              * Definition of Timer instance public functions
              */
             if (typeof this !== 'undefined') {

@@ -1,8 +1,11 @@
-var assert = require('assert');
-var Timer = require('../src/easytimer.js')
-var sinon = require('sinon');
+if (typeof require !== 'undefined') {
+    var assert = require('assert');
+    var Timer = require('../build/easytimer.min.js')
+    var sinon = require('sinon');
+}
 
 describe('timer.js', function(){
+    this.timeout(4000);
     var timer,
         clock;
 
@@ -425,7 +428,7 @@ describe('timer.js', function(){
 
                 it('should not start if start values and target are equal', function () {
                     target = [0, 0, 95, 0, 0];
-                    startValues = [0, 0, 95, 0, 0];
+                    var startValues = [0, 0, 95, 0, 0];
                     timer.start({target: target, startValues: startValues});
                     assert(!timer.isRunning());
                 });
@@ -433,7 +436,7 @@ describe('timer.js', function(){
                 it('should not allow negative values and set 0', function () {
                     target = [0, -1, 95, -1, 0];
                     timer.start({target: target});
-                    configStartValues = timer.getConfig().target;
+                    var configStartValues = timer.getConfig().target;
 
                     assert.deepEqual(timer.getConfig().target, [0, 0, 35, 1, 0]);
                 });
