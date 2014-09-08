@@ -225,6 +225,7 @@ var Timer = (
                 clearInterval(intervalId);
                 intervalId = undefined;
                 running = false;
+                paused = false;
             }
 
             function startTimer() {
@@ -283,13 +284,13 @@ var Timer = (
 
             function resetCounters() {
                 for (var counter in counters) {
-                    if(counters.hasOwnProperty(counter)){
+                    if(counters.hasOwnProperty(counter) && typeof counters[counter] === 'number'){
                         counters[counter] = 0;
                     }
                 }
 
                 for (var counter in totalCounters) {
-                    if(totalCounters.hasOwnProperty(counter)){
+                    if(totalCounters.hasOwnProperty(counter) && typeof totalCounters[counter] === 'number'){
                         totalCounters[counter] = 0;
                     }
                 }
