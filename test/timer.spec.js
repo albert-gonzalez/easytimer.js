@@ -1,6 +1,6 @@
 if (typeof require !== 'undefined') {
     var assert = require('assert');
-    var Timer = require('../build/easytimer.min.js')
+    var Timer = require('../dist/easytimer.min.js')
     var sinon = require('sinon');
 }
 
