@@ -523,7 +523,7 @@ var Timer = (
         if (module && module.exports) {
             module.exports = Timer;
         } else if (typeof define === 'function' && define.amd) {
-            define('timer', [], function() {
+            define([], function() {
                 return Timer;
             });
         }
