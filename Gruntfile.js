@@ -4,7 +4,8 @@ module.exports = function(grunt) {
         uglify: {
             build: {
                 files: {
-                    'dist/easytimer.min.js': ['src/easytimer.js']
+                    'dist/easytimer.min.js': ['src/easytimer.js'],
+                    'dist/examples.min.js': ['src/examples.js']
                 }
             }
         },
