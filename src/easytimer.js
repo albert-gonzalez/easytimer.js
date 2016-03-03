@@ -14,6 +14,24 @@ var Timer = (
         'use strict';
 
         /*
+         * Polyfill por IE9, IE10 and IE11
+         */
+
+        function CustomEvent ( event, params ) {
+            params = params || { bubbles: false, cancelable: false, detail: undefined };
+            var evt = document.createEvent( 'CustomEvent' );
+            evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+            return evt;
+        }
+        
+        if (typeof window.CustomEvent !== "function" ) {
+
+            CustomEvent.prototype = window.Event.prototype;
+
+            window.CustomEvent = CustomEvent;
+        }
+
+        /*
          * General functions, variables and constants
          */
         var SECOND_TENTHS_PER_SECOND = 10,
@@ -442,11 +460,11 @@ var Timer = (
 
             /**
              * [dispatchEvent dispatchs an event]
-             * @param  {[string]} event [event to dispatch]
+             * @param  {string} event [event to dispatch]
              */
             function dispatchEvent(event) {
                 if (hasDOM()) {
-                    eventEmitter.dispatchEvent(new Event(event));
+                    eventEmitter.dispatchEvent(new CustomEvent(event));
                 } else if (hasEventEmitter()) {
                     eventEmitter.emit(event)
                 }
