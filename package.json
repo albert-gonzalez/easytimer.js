@@ -1,6 +1,6 @@
 {
   "name": "easytimer.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Timer/Chronometer/Countdown compatible with AMD and NodeJS",
   "main": "src/timer.js",
   "directories": {
@@ -10,7 +10,8 @@
   "scripts": {
     "postinstall": "bower install && grunt build",
     "prestart": "npm install",
-    "start": "http-server -a 0.0.0.0 -p 8000"
+    "start": "http-server -a 0.0.0.0 -p 8000",
+    "test": "mocha"
   },
   "keywords": [
     "javascript",

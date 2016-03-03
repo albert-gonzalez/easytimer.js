@@ -31,9 +31,7 @@
   "devDependencies": {
     "assert": "~0.1.0",
     "mocha": "~1.21.4",
-    "sinon": "~1.10.3"
-  },
-  "dependencies": {
+    "sinon": "~1.10.3",
     "bootstrap": "~3.2.0",
     "jquery": "~2.1.1"
   }
