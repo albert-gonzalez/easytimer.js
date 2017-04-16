@@ -24,7 +24,7 @@ declare module "easytimer" {
 
     export class Timer {
         stop(): void;
-        start(params: ITimerParams): void;
+        start(params?: ITimerParams): void;
         pause(): void;
         addEventListener(event: Event, listener: () => void): void;
         removeEventListener(event: Event, listener: () => void): void;
