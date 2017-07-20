@@ -284,15 +284,19 @@ var Timer = (
             }
 
             function isRegularTimerTargetAchieved() {
-                return counters.hours > target[HOURS_POSITION]
+                return counters.days > target[DAYS_POSITION]
+                    || (counters.days === target[DAYS_POSITION] && (counters.hours > target[HOURS_POSITION]
                     || (counters.hours === target[HOURS_POSITION] && (counters.minutes > target[MINUTES_POSITION]
-                        || (counters.minutes === target[MINUTES_POSITION]) && counters.seconds >= target[SECONDS_POSITION]));
+                    || (counters.minutes === target[MINUTES_POSITION] && (counters.seconds >= target[SECONDS_POSITION]
+                    || (counters.seconds === target[SECONDS] && counters.secondTenths >= target[SECOND_TENTHS_POSITION])))))));
             }
 
             function isCountdownTimerTargetAchieved() {
-                return counters.hours < target[HOURS_POSITION]
+                return counters.days < target[DAYS_POSITION]
+                    || (counters.days === target[DAYS_POSITION] && (counters.hours < target[HOURS_POSITION]
                     || (counters.hours === target[HOURS_POSITION] && (counters.minutes < target[MINUTES_POSITION]
-                        || (counters.minutes === target[MINUTES_POSITION]) && counters.seconds <= target[SECONDS_POSITION]));
+                    || (counters.minutes === target[MINUTES_POSITION] && (counters.seconds < target[SECONDS_POSITION]
+                    || (counters.seconds === target[SECONDS_POSITION] && (counters.secondTenths <= target[SECOND_TENTHS_POSITION]))))))));
             }
 
             function isTargetAchieved() {

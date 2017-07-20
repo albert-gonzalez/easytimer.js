@@ -5,7 +5,7 @@ if (typeof require !== 'undefined') {
 }
 
 describe('timer.js', function(){
-    this.timeout(4000);
+    this.timeout(10000);
     var timer,
         clock;
 
