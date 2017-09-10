@@ -31,6 +31,7 @@ describe('timer.js', function(){
         timer.addEventListener(event, callback);
         clock.tick(millisecons);
         sinon.assert.callCount(callback, timesTriggered);
+        assert.equal(timer, callback.args[0][0].detail.timer);
     }
 
     beforeEach(function () {
@@ -674,20 +675,63 @@ describe('timer.js', function(){
         });
 
         describe('pause function', function () {
-            beforeEach(function () {
-                clock = sinon.useFakeTimers();
-             });
-
-            afterEach(function () {
-                clock.restore();
+            describe('with regular timer', function () {
+                beforeEach(function () {
+                    clock = sinon.useFakeTimers();
+                 });
+    
+                afterEach(function () {
+                    clock.restore();
+                });
+    
+                it('should stop the timer', function () {
+                    timer.start();
+                    clock.tick(60000);
+                    timer.pause();
+                    assert.equal(timer.isRunning(), false);
+                    assertTimes(timer, [0, 0, 1, 0, 0], [600, 60, 1, 0, 0]);
+                });
+    
+                it('should resume the timer when paused', function () {
+                    timer.start();
+                    clock.tick(60000);
+                    timer.pause();
+                    clock.tick(60000);
+                    timer.start();
+                    clock.tick(60000);
+                    assert.equal(timer.isRunning(), true);
+                    assertTimes(timer, [0, 0, 2, 0, 0], [1200, 120, 2, 0, 0]);
+                });
             });
 
-            it('should stop the timer', function () {
-                timer.start();
-                clock.tick(60000);
-                timer.pause();
-                assert.equal(timer.isRunning(), false);
-                assertTimes(timer, [0, 0, 1, 0, 0], [600, 60, 1, 0, 0]);
+            describe('with countdown timer', function () {
+                beforeEach(function () {
+                    clock = sinon.useFakeTimers();
+                    params = {countdown: true, startValues: {seconds: 120}}
+                 });
+    
+                afterEach(function () {
+                    clock.restore();
+                });
+    
+                it('should stop the timer', function () {
+                    timer.start(params);
+                    clock.tick(60000);
+                    timer.pause();
+                    assert.equal(timer.isRunning(), false);
+                    assertTimes(timer, [0, 0, 1, 0, 0], [600, 60, 1, 0, 0]);
+                });
+    
+                it('should resume the timer when paused', function () {
+                    timer.start(params);
+                    clock.tick(60000);
+                    timer.pause();
+                    clock.tick(60000);
+                    timer.start();
+                    clock.tick(30000);
+                    assert.equal(timer.isRunning(), true);
+                    assertTimes(timer, [0, 30, 0, 0, 0], [300, 30, 0, 0, 0]);
+                });
             });
         });
     });
