@@ -178,24 +178,24 @@ var Timer = (
                 var roundedValue = Math.floor(value);
 
                 totalCounters[precision] = roundedValue;
-                counters[precision] = precision !== DAYS ? 
+                counters[precision] = precision !== DAYS ?
                     mod(roundedValue, groupedUnits[precision]) : roundedValue;
             }
 
             function updateDays(value) {
-                return updateUnitByPrecision(value, DAYS);                
+                return updateUnitByPrecision(value, DAYS);
             }
 
             function updateHours(value) {
-                return updateUnitByPrecision(value, HOURS);                
+                return updateUnitByPrecision(value, HOURS);
             }
 
             function updateMinutes(value) {
-                return updateUnitByPrecision(value, MINUTES);                
+                return updateUnitByPrecision(value, MINUTES);
             }
 
             function updateSeconds(value) {
-                return updateUnitByPrecision(value, SECONDS);                
+                return updateUnitByPrecision(value, SECONDS);
             }
 
             function updateSecondTenths(value) {
@@ -222,7 +222,7 @@ var Timer = (
                 startingDate = Date.now() - totalCounters.secondTenths
                     * unitsInMilliseconds[SECOND_TENTHS]
                     * timerTypeFactor;
-                
+
                 intervalId = setInterval(
                     updateTimerAndDispatchEvents,
                     interval
@@ -261,10 +261,10 @@ var Timer = (
                     dispatchEvent('minutesUpdated', eventData);
                 }
                 if (valuesUpdated[HOURS]) {
-                    dispatchEvent('hoursUpdated', eventData);               
+                    dispatchEvent('hoursUpdated', eventData);
                 }
                 if (valuesUpdated[DAYS]) {
-                    dispatchEvent('daysUpdated', eventData);                
+                    dispatchEvent('daysUpdated', eventData);
                 }
             }
 
