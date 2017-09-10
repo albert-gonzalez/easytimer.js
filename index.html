@@ -427,12 +427,6 @@ timer.start({callback: function (values) {
               The precision of the timer can be changed with the precision parameter. The accepted values of the precision parameters are seconds (default value), tenth of seconds, minutes and hours.
               In this example is passed precision with the value secondTenths. The timer will update the counters 10 times per second.
           </p>
-          <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-warning-sign"></span>
-            The minimum interval for inactive tabs in modern browers (like Chrome and Firefox) is 1000ms.
-            This limit causes that the timer to stop when the tab is inactive (or the browser is minimized).
-            If you want to use the timer for background tasks, don't use tenth of seconds precision.
-          </div>
           <h4>Source code</h4>
           <ul class="nav nav-tabs" role="tablist">
               <li class="active"><a href="#tsJs">Javascript</a></li>
