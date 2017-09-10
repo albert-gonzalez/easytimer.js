@@ -1,5 +1,5 @@
 /**
- * @license easytimer.js v1.0
+ * @license easytimer.js v1.2
  * Created by Albert González
  * Licensed under The MIT License.
  *
@@ -60,6 +60,13 @@ var Timer = (
                 minutes: 60000,
                 hours: 3600000,
                 days: 86400000
+            },
+
+            groupedUnits = {
+                secondTenths: SECOND_TENTHS_PER_SECOND,
+                seconds: SECONDS_PER_MINUTE,
+                minutes: MINUTES_PER_HOUR,
+                hours: HOURS_PER_DAY
             },
 
             events = module && module.exports? require('events') : undefined,
@@ -150,93 +157,56 @@ var Timer = (
                 running = false,
                 paused = false,
                 precision,
-                valueToAdd,
+                timerTypeFactor,
                 customCallback,
                 timerConfig = {},
                 target,
                 startValues,
-                countdown;
+                countdown,
+                startingDate,
+                eventData = {
+                    detail: {
+                        timer: this
+                    }
+                };
 
             function isCountdownTimer() {
                 return timerConfig.countdown;
             }
 
-            function updateCounters(counter, value) {
-                counters[counter] += value;
-                totalCounters[counter] += value;
+            function updateCounters(precision, value) {
+                var roundedValue = Math.floor(value);
+
+                totalCounters[precision] = roundedValue;
+                counters[precision] = precision !== DAYS ?
+                    mod(roundedValue, groupedUnits[precision]) : roundedValue;
             }
 
             function updateDays(value) {
-                updateCounters(DAYS, value);
-
-                dispatchEvent('daysUpdated');
+                return updateUnitByPrecision(value, DAYS);
             }
 
             function updateHours(value) {
-                updateCounters(HOURS, value);
-
-                counters.hours = mod(counters.hours, HOURS_PER_DAY);
-
-                if ((isCountdownTimer() && counters.hours === HOURS_PER_DAY - 1) ||
-                        (!isCountdownTimer() && counters.hours === 0)) {
-                    updateDays(value);
-                }
-
-                if (precision === HOURS) {
-                    totalCounters[MINUTES] += isCountdownTimer() ? -MINUTES_PER_HOUR : MINUTES_PER_HOUR;
-                    totalCounters[SECONDS] += isCountdownTimer() ? -SECONDS_PER_HOUR : SECONDS_PER_HOUR;
-                    totalCounters[SECOND_TENTHS] += isCountdownTimer() ? -SECOND_TENTHS_PER_HOUR : SECOND_TENTHS_PER_HOUR;
-                }
-
-                dispatchEvent('hoursUpdated');
+                return updateUnitByPrecision(value, HOURS);
             }
 
             function updateMinutes(value) {
-                updateCounters(MINUTES, value);
-
-                counters.minutes = mod(counters.minutes, MINUTES_PER_HOUR);
-
-                if ((isCountdownTimer() && counters.minutes === MINUTES_PER_HOUR - 1) ||
-                    (!isCountdownTimer() && counters.minutes === 0)) {
-                    updateHours(value);
-                }
-
-                if (precision === MINUTES) {
-                    totalCounters[SECONDS] += isCountdownTimer() ? -SECONDS_PER_MINUTE : SECONDS_PER_MINUTE;
-                    totalCounters[SECOND_TENTHS] += isCountdownTimer() ? -SECOND_TENTHS_PER_MINUTE : SECOND_TENTHS_PER_MINUTE;
-                }
-
-                dispatchEvent('minutesUpdated');
+                return updateUnitByPrecision(value, MINUTES);
             }
 
             function updateSeconds(value) {
-                updateCounters(SECONDS, value);
-
-                counters.seconds = mod(counters.seconds, SECONDS_PER_MINUTE);
-
-                if ((isCountdownTimer() && counters.seconds === SECONDS_PER_MINUTE - 1) ||
-                    (!isCountdownTimer() && counters.seconds === 0)) {
-                    updateMinutes(value);
-                }
-
-                if (precision === SECONDS) {
-                    totalCounters[SECOND_TENTHS] += isCountdownTimer() ? -SECOND_TENTHS_PER_SECOND : SECOND_TENTHS_PER_SECOND;
-                }
-
-                dispatchEvent('secondsUpdated');
+                return updateUnitByPrecision(value, SECONDS);
             }
 
             function updateSecondTenths(value) {
-                updateCounters(SECOND_TENTHS, value);
+                return updateUnitByPrecision(value, SECOND_TENTHS);
+            }
 
-                counters.secondTenths = mod(counters.secondTenths, SECOND_TENTHS_PER_SECOND);
+            function updateUnitByPrecision(value, precision) {
+                var previousValue = totalCounters[precision];
+                updateCounters(precision, value / unitsInMilliseconds[precision]);
 
-                if ((isCountdownTimer() && counters.secondTenths === SECOND_TENTHS_PER_SECOND - 1) ||
-                    (!isCountdownTimer() && counters.secondTenths === 0)) {
-                    updateSeconds(value);
-                }
-
-                dispatchEvent('secondTenthsUpdated');
+                return totalCounters[precision] !== previousValue;
             }
 
             function stopTimer() {
@@ -247,40 +217,55 @@ var Timer = (
             }
 
             function startTimer() {
-                var callback,
-                    interval = unitsInMilliseconds[precision];
+                var interval = unitsInMilliseconds[precision];
 
-                switch (precision) {
-                case DAYS:
-                    callback = updateDays;
-                    break;
-                case HOURS:
-                    callback = updateHours;
-                    break;
-                case MINUTES:
-                    callback =  updateMinutes;
-                    break;
-                case SECOND_TENTHS:
-                    callback =  updateSecondTenths;
-                    break;
-                default:
-                    callback = updateSeconds;
-                }
+                startingDate = Date.now() - totalCounters.secondTenths
+                    * unitsInMilliseconds[SECOND_TENTHS]
+                    * timerTypeFactor;
 
                 intervalId = setInterval(
-                    function () {
-                        callback(valueToAdd);
-                        customCallback(counters);
-                        if (isTargetAchieved()) {
-                            dispatchEvent('targetAchieved');
-                            stop();
-                        }
-                    },
+                    updateTimerAndDispatchEvents,
                     interval
                 );
 
                 running = true;
                 paused = false;
+            }
+
+            function updateTimerAndDispatchEvents() {
+                var ellapsedTime = timerTypeFactor > 0 ? (Date.now() - startingDate) : (startingDate - Date.now()),
+                    valuesUpdated = {};
+
+                valuesUpdated[SECOND_TENTHS] = updateSecondTenths(ellapsedTime);
+                valuesUpdated[SECONDS] = updateSeconds(ellapsedTime);
+                valuesUpdated[MINUTES] = updateMinutes(ellapsedTime);
+                valuesUpdated[HOURS] = updateHours(ellapsedTime);
+                valuesUpdated[DAYS] = updateDays(ellapsedTime);
+                dispatchEvents(valuesUpdated);
+
+                customCallback(counters);
+                if (isTargetAchieved()) {
+                    dispatchEvent('targetAchieved', eventData);
+                    stop();
+                }
+            }
+
+            function dispatchEvents(valuesUpdated) {
+                if (valuesUpdated[SECOND_TENTHS]) {
+                    dispatchEvent('secondTenthsUpdated', eventData);
+                }
+                if (valuesUpdated[SECONDS]) {
+                    dispatchEvent('secondsUpdated', eventData);
+                }
+                if (valuesUpdated[MINUTES]) {
+                    dispatchEvent('minutesUpdated', eventData);
+                }
+                if (valuesUpdated[HOURS]) {
+                    dispatchEvent('hoursUpdated', eventData);
+                }
+                if (valuesUpdated[DAYS]) {
+                    dispatchEvent('daysUpdated', eventData);
+                }
             }
 
             function isRegularTimerTargetAchieved() {
@@ -321,7 +306,7 @@ var Timer = (
             function setParams(params) {
                 precision = params && typeof params.precision === 'string' ? params.precision : SECONDS;
                 customCallback = params && typeof params.callback === 'function'? params.callback : function () {};
-                valueToAdd = params && params.countdown === true? -1 : 1;
+                timerTypeFactor = params && params.countdown === true? -1 : 1;
                 countdown = params && params.countdown == true;
                 if (params && (typeof params.target === 'object')) { setTarget(params.target)};
                 if (params && (typeof params.startValues === 'object')) { setStartValues(params.startValues)};
@@ -404,7 +389,7 @@ var Timer = (
             function stop() {
                 stopTimer();
                 resetCounters();
-                dispatchEvent('stopped');
+                dispatchEvent('stopped', eventData);
             }
 
             /**
@@ -421,7 +406,7 @@ var Timer = (
                 }
                 if (!isTargetAchieved()) {
                     startTimer();
-                    dispatchEvent('started');
+                    dispatchEvent('started', eventData);
                 }
             }
 
@@ -433,7 +418,7 @@ var Timer = (
             function pause() {
                 stopTimer();
                 paused = true;
-                dispatchEvent('paused');
+                dispatchEvent('paused', eventData);
             }
 
             /**
@@ -466,11 +451,11 @@ var Timer = (
              * [dispatchEvent dispatchs an event]
              * @param  {string} event [event to dispatch]
              */
-            function dispatchEvent(event) {
+            function dispatchEvent(event, data) {
                 if (hasDOM()) {
-                    eventEmitter.dispatchEvent(new CustomEvent(event));
+                    eventEmitter.dispatchEvent(new CustomEvent(event, data));
                 } else if (hasEventEmitter()) {
-                    eventEmitter.emit(event)
+                    eventEmitter.emit(event, data)
                 }
             }
 
