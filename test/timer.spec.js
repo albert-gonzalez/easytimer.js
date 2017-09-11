@@ -672,18 +672,38 @@ describe('timer.js', function(){
                 assert.equal(timer.isRunning(), false);
                 assertTimes(timer, [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]);
             });
+
+            it('should trigger stopped event', function () {
+                var callback = sinon.spy();
+                timer.addEventListener('stopped', callback);
+                timer.start();
+                timer.stop();
+                sinon.assert.callCount(callback, 1);
+                assert.equal(timer, callback.args[0][0].detail.timer);
+            });
         });
 
         describe('pause function', function () {
+            var params;
+            beforeEach(function () {
+                params = {startValues: {seconds: 120 }, countdown: true};
+                clock = sinon.useFakeTimers();
+             });
+
+            afterEach(function () {
+                clock.restore();
+            });
+
+            it('should trigger paused event', function () {
+                var callback = sinon.spy();
+                timer.addEventListener('paused', callback);
+                timer.start();
+                timer.pause();
+                sinon.assert.callCount(callback, 1);
+                assert.equal(timer, callback.args[0][0].detail.timer);
+            });
+
             describe('with regular timer', function () {
-                beforeEach(function () {
-                    clock = sinon.useFakeTimers();
-                 });
-    
-                afterEach(function () {
-                    clock.restore();
-                });
-    
                 it('should stop the timer', function () {
                     timer.start();
                     clock.tick(60000);
@@ -691,7 +711,7 @@ describe('timer.js', function(){
                     assert.equal(timer.isRunning(), false);
                     assertTimes(timer, [0, 0, 1, 0, 0], [600, 60, 1, 0, 0]);
                 });
-    
+
                 it('should resume the timer when paused', function () {
                     timer.start();
                     clock.tick(60000);
@@ -705,15 +725,6 @@ describe('timer.js', function(){
             });
 
             describe('with countdown timer', function () {
-                beforeEach(function () {
-                    clock = sinon.useFakeTimers();
-                    params = {countdown: true, startValues: {seconds: 120}}
-                 });
-    
-                afterEach(function () {
-                    clock.restore();
-                });
-    
                 it('should stop the timer', function () {
                     timer.start(params);
                     clock.tick(60000);
@@ -721,7 +732,7 @@ describe('timer.js', function(){
                     assert.equal(timer.isRunning(), false);
                     assertTimes(timer, [0, 0, 1, 0, 0], [600, 60, 1, 0, 0]);
                 });
-    
+
                 it('should resume the timer when paused', function () {
                     timer.start(params);
                     clock.tick(60000);
@@ -732,6 +743,43 @@ describe('timer.js', function(){
                     assert.equal(timer.isRunning(), true);
                     assertTimes(timer, [0, 30, 0, 0, 0], [300, 30, 0, 0, 0]);
                 });
+            });
+        });
+
+        describe('reset function', function () {
+            beforeEach(function () {
+                clock = sinon.useFakeTimers();
+             });
+
+            afterEach(function () {
+                clock.restore();
+            });
+
+            it('should trigger reset event', function () {
+                var callback = sinon.spy();
+                timer.addEventListener('reset', callback);
+                timer.start();
+                timer.reset();
+                sinon.assert.callCount(callback, 1);
+                assert.equal(timer, callback.args[0][0].detail.timer);
+            });
+
+            it('should reset the timer', function () {
+                timer.start();
+                clock.tick(60000);
+                timer.reset();
+                clock.tick(10000);
+                assert.equal(timer.isRunning(), true);
+                assertTimes(timer, [0, 10, 0, 0, 0], [100, 10, 0, 0, 0]);
+            });
+
+            it('should reset the timer with startValues', function () {
+                timer.start({startValues: {seconds: 60}});
+                clock.tick(60000);
+                timer.reset();
+                clock.tick(10000);
+                assert.equal(timer.isRunning(), true);
+                assertTimes(timer, [0, 10, 1, 0, 0], [700, 70, 1, 0, 0]);
             });
         });
     });
