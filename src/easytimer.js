@@ -160,6 +160,7 @@ var Timer = (
                 timerTypeFactor,
                 customCallback,
                 timerConfig = {},
+                currentParams,
                 target,
                 startValues,
                 countdown,
@@ -209,6 +210,11 @@ var Timer = (
                 return totalCounters[precision] !== previousValue;
             }
 
+            function stopTimerAndResetCounters() {
+                stopTimer();
+                resetCounters();
+            }
+
             function stopTimer() {
                 clearInterval(intervalId);
                 intervalId = undefined;
@@ -216,7 +222,23 @@ var Timer = (
                 paused = false;
             }
 
+            function setParamsAndStartTimer(params) {
+                if (!isPaused()) {
+                    setParams(params);
+                }
+
+                startTimer();
+            }
+
             function startTimer() {
+                if (isRunning()) {
+                    throw new Error('Timer already running');
+                }
+
+                if (isTargetAchieved()) {
+                    return;
+                }
+
                 var interval = unitsInMilliseconds[precision];
 
                 startingDate = Date.now() - totalCounters.secondTenths
@@ -319,6 +341,8 @@ var Timer = (
                     target: target,
                     startValues: startValues
                 }
+
+                currentParams = params;
             }
 
             function configInputValues(inputValues) {
@@ -387,9 +411,17 @@ var Timer = (
              * [stop stops the timer and resets the counters. Dispatch stopped event]
              */
             function stop() {
-                stopTimer();
-                resetCounters();
+                stopTimerAndResetCounters()
                 dispatchEvent('stopped', eventData);
+            }
+
+            /**
+             * [stop stops and starts the timer. Dispatch stopped event]
+             */
+            function reset() {
+                stopTimerAndResetCounters();
+                setParamsAndStartTimer(currentParams);
+                dispatchEvent('reset', eventData);
             }
 
             /**
@@ -397,17 +429,8 @@ var Timer = (
              * @param  {[object]} params [Configuration parameters]
              */
             function start(params) {
-                if (this.isRunning()) {
-                    throw new Error('Timer already running');
-                }
-
-                if (!this.isPaused()) {
-                    setParams(params);
-                }
-                if (!isTargetAchieved()) {
-                    startTimer();
-                    dispatchEvent('started', eventData);
-                }
+                setParamsAndStartTimer(params);
+                dispatchEvent('started', eventData);
             }
 
             /**
@@ -509,6 +532,8 @@ var Timer = (
                 this.pause = pause;
 
                 this.stop = stop;
+
+                this.reset = reset;
 
                 this.isRunning = isRunning;
 
