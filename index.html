@@ -235,9 +235,9 @@ timer.addEventListener('secondsUpdated', function (e) {
             </div>
           </div>
 
-          <h3 id="chronometerExample">Start, Pause and Stop (Chronometer)</h3>
+          <h3 id="chronometerExample">Start, Pause, Stop and Reset (Chronometer)</h3>
           <p>
-            You can start, pause and stop the timer using the methods of same name. After each action, the timer will dispatch started, paused and stopped events, respectively.
+            You can start, pause, stop and reset the timer using the methods of same name. After each action, the timer will dispatch started, paused, stopped and reset events, respectively.
           </p>
           <h4>Source code</h4>
             <ul class="nav nav-tabs" role="tablist">
@@ -258,10 +258,16 @@ $('#chronoExample .pauseButton').click(function () {
 $('#chronoExample .stopButton').click(function () {
     timer.stop();
 });
+$('#chronoExample .resetButton').click(function () {
+    timer.reset();
+});
 timer.addEventListener('secondsUpdated', function (e) {
     $('#chronoExample .values').html(timer.getTimeValues().toString());
 });
 timer.addEventListener('started', function (e) {
+    $('#chronoExample .values').html(timer.getTimeValues().toString());
+});
+timer.addEventListener('reset', function (e) {
     $('#chronoExample .values').html(timer.getTimeValues().toString());
 });
                 </pre>
@@ -276,6 +282,7 @@ timer.addEventListener('started', function (e) {
         &lt;button class="startButton"&gt;Start&lt;/button&gt;
         &lt;button class="pauseButton" &gt;Pause&lt;/button&gt;
         &lt;button class="stopButton"&gt;Stop&lt;/button&gt;
+        &lt;button class="resetButton"&gt;Reset&lt;/button&gt;
     &lt;/div&gt;
 &lt;/div&gt;
                 </pre>
@@ -290,6 +297,7 @@ timer.addEventListener('started', function (e) {
                     <button class="startButton btn btn-success btn-lg">Start</button>
                     <button class="pauseButton btn btn-primary btn-lg" >Pause</button>
                     <button class="stopButton btn btn-danger btn-lg">Stop</button>
+                    <button class="resetButton btn btn-warning btn-lg">Reset</button>
                 </div>
             </div>
           </div>

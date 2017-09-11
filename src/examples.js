@@ -45,10 +45,20 @@ $(function () {
     $('#chronoExample .stopButton').click(function () {
         timer.stop();
     });
+
+    $('#chronoExample .resetButton').click(function () {
+        timer.reset();
+    });
+
     timer.addEventListener('secondsUpdated', function (e) {
         $('#chronoExample .values').html(timer.getTimeValues().toString());
     });
+
     timer.addEventListener('started', function (e) {
+        $('#chronoExample .values').html(timer.getTimeValues().toString());
+    });
+
+    timer.addEventListener('reset', function (e) {
         $('#chronoExample .values').html(timer.getTimeValues().toString());
     });
 });
