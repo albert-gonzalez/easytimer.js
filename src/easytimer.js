@@ -69,7 +69,7 @@ var Timer = (
                 hours: HOURS_PER_DAY
             },
 
-            events = module && module.exports? require('events') : undefined,
+            events = module && module.exports && typeof require === 'function' ? require('events') : undefined,
 
             prototype;
 
