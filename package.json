@@ -11,7 +11,8 @@
     "prestart": "npm install",
     "start": "http-server -a 0.0.0.0 -p 8001",
     "test": "mocha",
-    "build": "rollup -c && rollup -c --environment optimize"
+    "build": "rollup -c && rollup -c --environment optimize",
+    "build-examples": "rollup -c rollup.config.examples.js"
   },
   "keywords": [
     "javascript",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.0",
+    "bootstrap": "^3.3.7",
     "chai": "^4.1.2",
     "eslint": "^4.7.2",
     "eslint-config-standard": "^10.2.1",
@@ -36,9 +38,13 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "http-server": "~0.10.0",
+    "jquery": "^3.2.1",
     "mocha": "^3.5.3",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-commonjs": "^8.2.1",
+    "rollup-plugin-css-only": "^0.2.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^2.0.1",
     "sinon": "~3.3.0"
   },

@@ -4,7 +4,7 @@ import babel from 'rollup-plugin-babel';
 let optimize = process.env.optimize || false;
 
 export default {
-  input: 'src/easytimer.js',
+  input: 'src/easytimer/easytimer.js',
   output: {
     format: 'umd',
     name: 'Timer',
