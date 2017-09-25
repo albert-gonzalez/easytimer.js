@@ -1,5 +1,5 @@
 /**
- * @license easytimer.js v1.2
+ * @license easytimer.js v1.3.2
  * Created by Albert González
  * Licensed under The MIT License.
  *
