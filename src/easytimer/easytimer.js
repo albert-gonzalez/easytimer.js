@@ -156,7 +156,7 @@ function Timer () {
 
     let interval = unitsInMilliseconds[precision];
 
-    startingDate = Date.now() - totalCounters.secondTenths *
+    startingDate = roundTimestamp(Date.now()) - totalCounters.secondTenths *
             unitsInMilliseconds[SECOND_TENTHS] *
             timerTypeFactor;
 
@@ -170,7 +170,8 @@ function Timer () {
   }
 
   function updateTimerAndDispatchEvents () {
-    let ellapsedTime = timerTypeFactor > 0 ? (Date.now() - startingDate) : (startingDate - Date.now());
+    let currentTime = roundTimestamp(Date.now());
+    let ellapsedTime = timerTypeFactor > 0 ? (currentTime - startingDate) : (startingDate - currentTime);
     let valuesUpdated = {};
 
     valuesUpdated[SECOND_TENTHS] = updateSecondTenths(ellapsedTime);
@@ -185,6 +186,10 @@ function Timer () {
       dispatchEvent('targetAchieved', eventData);
       stop();
     }
+  }
+
+  function roundTimestamp (timestamp) {
+    return Math.floor(timestamp / unitsInMilliseconds[precision]) * unitsInMilliseconds[precision];
   }
 
   function dispatchEvents (valuesUpdated) {
