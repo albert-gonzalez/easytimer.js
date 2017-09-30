@@ -2,7 +2,7 @@
   "name": "easytimer.js",
   "version": "2.0.0",
   "description": "Timer/Chronometer/Countdown compatible with AMD and NodeJS",
-  "main": "src/timer.js",
+  "main": "src/easytimer/easytimer.js",
   "directories": {
     "test": "test",
     "src": "src"

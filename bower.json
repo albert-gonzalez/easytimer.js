@@ -5,7 +5,7 @@
     "Albert Gonzalez (albert.glez.mld@gmail.com)"
   ],
   "description": "Timer/Chronometer/Countdown compatible with AMD and NodeJS",
-  "main": "src/easytimer.js",
+  "main": "src/easytimer/easytimer.js",
   "moduleType": [
     "amd",
     "node"
