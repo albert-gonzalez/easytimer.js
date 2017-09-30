@@ -150,10 +150,6 @@ function Timer () {
   }
 
   function startTimer () {
-    if (isRunning()) {
-      throw new Error('Timer already running');
-    }
-
     let interval = unitsInMilliseconds[precision];
 
     if (isTargetAchieved(roundTimestamp(Date.now()))) {
@@ -370,6 +366,10 @@ function Timer () {
    * @param  {[object]} params [Configuration parameters]
    */
   function start (params) {
+    if (isRunning()) {
+      return;
+    }
+
     setParamsAndStartTimer(params);
     dispatchEvent('started', eventData);
   }
