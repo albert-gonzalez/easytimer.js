@@ -18,7 +18,7 @@ npm install easytimer.js --save
 bower install easytimer.js
 ```
 
-## Library Load
+## Library Load
 
 ### Script
 
