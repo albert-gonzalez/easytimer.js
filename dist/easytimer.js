@@ -70,12 +70,12 @@ if (typeof window !== 'undefined' && typeof CustomEvent$1 !== 'function') {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /**
- * @license easytimer.js v2.0
+ * @license easytimer.js v2.0.0
  * Created by Albert González
  * Licensed under The MIT License.
  *
  * @class Timer
-*/
+ */
 
 /*
  * General functions, variables and constants
@@ -147,10 +147,11 @@ function Timer() {
   var customCallback = void 0;
   var timerConfig = {};
   var currentParams = void 0;
-  var target = void 0;
+  var targetValues = void 0;
   var startValues = void 0;
   var countdown = void 0;
   var startingDate = void 0;
+  var targetDate = void 0;
   var eventData = {
     detail: {
       timer: this
@@ -206,6 +207,9 @@ function Timer() {
   function setParamsAndStartTimer(params) {
     if (!isPaused()) {
       setParams(params);
+    } else {
+      startingDate = calculateStartingDate();
+      targetValues = setTarget(currentParams.target);
     }
 
     startTimer();
@@ -216,13 +220,11 @@ function Timer() {
       throw new Error('Timer already running');
     }
 
-    if (isTargetAchieved()) {
-      return;
-    }
-
     var interval = unitsInMilliseconds[precision];
 
-    startingDate = Date.now() - totalCounters.secondTenths * unitsInMilliseconds[SECOND_TENTHS] * timerTypeFactor;
+    if (isTargetAchieved(roundTimestamp(Date.now()))) {
+      return;
+    }
 
     intervalId = setInterval(updateTimerAndDispatchEvents, interval);
 
@@ -230,8 +232,13 @@ function Timer() {
     paused = false;
   }
 
+  function calculateStartingDate() {
+    return roundTimestamp(Date.now()) - totalCounters.secondTenths * unitsInMilliseconds[SECOND_TENTHS] * timerTypeFactor;
+  }
+
   function updateTimerAndDispatchEvents() {
-    var ellapsedTime = timerTypeFactor > 0 ? Date.now() - startingDate : startingDate - Date.now();
+    var currentTime = roundTimestamp(Date.now());
+    var ellapsedTime = timerTypeFactor > 0 ? currentTime - startingDate : startingDate - currentTime;
     var valuesUpdated = {};
 
     valuesUpdated[SECOND_TENTHS] = updateSecondTenths(ellapsedTime);
@@ -242,10 +249,14 @@ function Timer() {
     dispatchEvents(valuesUpdated);
 
     customCallback(counters);
-    if (isTargetAchieved()) {
+    if (isTargetAchieved(currentTime)) {
       dispatchEvent('targetAchieved', eventData);
       stop();
     }
+  }
+
+  function roundTimestamp(timestamp) {
+    return Math.floor(timestamp / unitsInMilliseconds[precision]) * unitsInMilliseconds[precision];
   }
 
   function dispatchEvents(valuesUpdated) {
@@ -266,16 +277,8 @@ function Timer() {
     }
   }
 
-  function isRegularTimerTargetAchieved() {
-    return counters.days > target[DAYS_POSITION] || counters.days === target[DAYS_POSITION] && (counters.hours > target[HOURS_POSITION] || counters.hours === target[HOURS_POSITION] && (counters.minutes > target[MINUTES_POSITION] || counters.minutes === target[MINUTES_POSITION] && (counters.seconds >= target[SECONDS_POSITION] || counters.seconds === target[SECONDS] && counters.secondTenths >= target[SECOND_TENTHS_POSITION])));
-  }
-
-  function isCountdownTimerTargetAchieved() {
-    return counters.days < target[DAYS_POSITION] || counters.days === target[DAYS_POSITION] && (counters.hours < target[HOURS_POSITION] || counters.hours === target[HOURS_POSITION] && (counters.minutes < target[MINUTES_POSITION] || counters.minutes === target[MINUTES_POSITION] && (counters.seconds < target[SECONDS_POSITION] || counters.seconds === target[SECONDS_POSITION] && counters.secondTenths <= target[SECOND_TENTHS_POSITION])));
-  }
-
-  function isTargetAchieved() {
-    return target instanceof Array && (timerConfig.countdown && isCountdownTimerTargetAchieved() || !timerConfig.countdown && isRegularTimerTargetAchieved());
+  function isTargetAchieved(currentDate) {
+    return targetValues instanceof Array && currentDate >= targetDate;
   }
 
   function resetCounters() {
@@ -293,23 +296,34 @@ function Timer() {
   }
 
   function setParams(params) {
-    precision = params && typeof params.precision === 'string' ? params.precision : SECONDS;
-    customCallback = params && typeof params.callback === 'function' ? params.callback : function () {};
-    timerTypeFactor = params && params.countdown === true ? -1 : 1;
-    countdown = params && params.countdown === true;
-    if (params && _typeof(params.target) === 'object') {
-      setTarget(params.target);
-    }
-    if (params && _typeof(params.startValues) === 'object') {
+    params = params || {};
+
+    precision = typeof params.precision === 'string' ? params.precision : SECONDS;
+
+    customCallback = typeof params.callback === 'function' ? params.callback : function () {};
+
+    countdown = params.countdown === true;
+
+    timerTypeFactor = countdown === true ? -1 : 1;
+
+    if (_typeof(params.startValues) === 'object') {
       setStartValues(params.startValues);
     }
-    target = target || !countdown ? target : [0, 0, 0, 0, 0];
+
+    startingDate = calculateStartingDate();
+
+    if (_typeof(params.target) === 'object') {
+      targetValues = setTarget(params.target);
+    } else if (countdown) {
+      params.target = { seconds: 0 };
+      targetValues = setTarget(params.target);
+    }
 
     timerConfig = {
       precision: precision,
       callback: customCallback,
       countdown: (typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object' && params.countdown === true,
-      target: target,
+      target: targetValues,
       startValues: startValues
     };
 
@@ -356,7 +370,15 @@ function Timer() {
   }
 
   function setTarget(inputTarget) {
-    target = configInputValues(inputTarget);
+    if (!inputTarget) {
+      return;
+    }
+
+    targetValues = configInputValues(inputTarget);
+    var targetCounter = calculateTotalCounterFromFalues(targetValues);
+    targetDate = startingDate + targetCounter.secondTenths * unitsInMilliseconds[SECOND_TENTHS] * timerTypeFactor;
+
+    return targetValues;
   }
 
   function setStartValues(inputStartValues) {
@@ -367,11 +389,19 @@ function Timer() {
     counters.hours = startValues[HOURS_POSITION];
     counters.days = startValues[DAYS_POSITION];
 
-    totalCounters.days = counters.days;
-    totalCounters.hours = totalCounters.days * HOURS_PER_DAY + counters.hours;
-    totalCounters.minutes = totalCounters.hours * MINUTES_PER_HOUR + counters.minutes;
-    totalCounters.seconds = totalCounters.minutes * SECONDS_PER_MINUTE + counters.seconds;
-    totalCounters.secondTenths = totalCounters.seconds * SECOND_TENTHS_PER_SECOND + counters.secondTenths;
+    totalCounters = calculateTotalCounterFromFalues(startValues, totalCounters);
+  }
+
+  function calculateTotalCounterFromFalues(values, outputCounter) {
+    var total = outputCounter || {};
+
+    total.days = values[DAYS_POSITION];
+    total.hours = total.days * HOURS_PER_DAY + values[HOURS_POSITION];
+    total.minutes = total.hours * MINUTES_PER_HOUR + values[MINUTES_POSITION];
+    total.seconds = total.minutes * SECONDS_PER_MINUTE + values[SECONDS_POSITION];
+    total.secondTenths = total.seconds * SECOND_TENTHS_PER_SECOND + values[[SECOND_TENTHS_POSITION]];
+
+    return total;
   }
 
   /*
@@ -462,17 +492,17 @@ function Timer() {
   }
 
   /**
-     * [isPaused returns true if the timer is paused]
-     * @return {Boolean}
-     */
+   * [isPaused returns true if the timer is paused]
+   * @return {Boolean}
+   */
   function isPaused() {
     return paused;
   }
 
   /**
-     * [getTimeValues returns the counter with the current timer values]
-     * @return {[TimeCounter]}
-     */
+   * [getTimeValues returns the counter with the current timer values]
+   * @return {[TimeCounter]}
+   */
   function getTimeValues() {
     return counters;
   }
