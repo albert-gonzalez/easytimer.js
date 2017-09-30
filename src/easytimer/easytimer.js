@@ -183,7 +183,7 @@ function Timer () {
     valuesUpdated[DAYS] = updateDays(ellapsedTime);
     dispatchEvents(valuesUpdated);
 
-    customCallback(counters);
+    customCallback(eventData.detail.timer);
     if (isTargetAchieved(currentTime)) {
       dispatchEvent('targetAchieved', eventData);
       stop();

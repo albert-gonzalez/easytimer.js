@@ -97,20 +97,17 @@ $(function () {
 
 $(function () {
   var timer = new Timer();
-  timer.start({callback: function (values) {
+  timer.start({callback: function (timer) {
     $('#callbackExample .values').html(
-      'Hello, I am a callback and I am counting time: ' + values.toString(['hours', 'minutes', 'seconds', 'secondTenths'])
+      'Hello, I am a callback and I am counting time: ' + timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths'])
     );
   }});
 });
 
 $(function () {
   var timer = new Timer();
-  timer.start({precision: 'secondTenths',
-    callback: function (values) {
-      $('#secondTenthsExample').html(values.toString(['hours', 'minutes', 'seconds', 'secondTenths']));
-    }});
-  timer.addEventListener('secondsUpdated', function (e) {
+  timer.start({precision: 'secondTenths'});
+  timer.addEventListener('secondTenthsUpdated', function (e) {
     $('#secondTenthsExample .values').html(timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
   });
 });
