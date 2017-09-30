@@ -74,12 +74,6 @@ describe('timer.js', function () {
         sinon.assert.callCount(startedListener, 1);
       });
 
-      it('should raise and Exception if is already running', function () {
-        assert.throws(function () {
-          timer.start();
-        }, /Timer already running/);
-      });
-
       describe('with default params', function () {
         it('should have seconds precision', function () {
           assert.equal(timer.getConfig().precision, 'seconds');
