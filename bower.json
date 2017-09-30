@@ -1,11 +1,11 @@
 {
   "name": "easytimer.js",
-  "version": "1.3.2",
+  "version": "2.0.0",
   "authors": [
     "Albert Gonzalez (albert.glez.mld@gmail.com)"
   ],
   "description": "Timer/Chronometer/Countdown compatible with AMD and NodeJS",
-  "main": "src/easytimer.js",
+  "main": "src/easytimer/easytimer.js",
   "moduleType": [
     "amd",
     "node"
@@ -27,12 +27,5 @@
     "bower_components",
     "test",
     "tests"
-  ],
-  "devDependencies": {
-    "assert": "~0.1.0",
-    "mocha": "~1.21.4",
-    "sinon": "~1.10.3",
-    "bootstrap": "~3.2.0",
-    "jquery": "~2.1.1"
-  }
+  ]
 }

@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Easy to use Timer/Chronometer/Countdown library compatible with AMD and NodeJS">
+    <meta name="author" content="Albert González">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>EasyTimer.js</title>
+
+    <link href="dist/examples.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">EasyTimer.js</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#intro">Intro</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#libraryLoadExample">Library Load</a></li>
+                  <li><a href="#basicUsageExample">Basic Usage</a></li>
+                  <li><a href="#gettingTimeValuesExample">Getting Time Values</a></li>
+                  <li><a href="#chronometerExample">Start, Pause and Stop (Chronometer)</a></li>
+                  <li><a href="#startAndTargetValuesExample">Start and Target Values</a></li>
+                  <li><a href="#countdownTimerExample">Countdown Timer</a></li>
+                  <li><a href="#callbackExample">Callback</a></li>
+                  <li><a href="#tenthOfSecondsExample">Interval of Tenth of Seconds</a></li>
+                </ul>
+            </li>
+            <li><a href="https://github.com/albert-gonzalez/easytimer.js">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="jumbotron">
+      <div class="container">
+        <h1>EasyTimer.js</h1>
+        <p>Easy to use Timer/Chronometer/Countdown library compatible with AMD and NodeJS</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <h2 id="intro">Introduction</h2>
+            <p>EasyTimer.js is a simple library for counting time in five different units: tenth of seconds, seconds, minutes, hours and days. It has interesting features:</p>
+            <ul>
+                <li>
+                    The refresh interval can be configured in tenth of seconds, seconds, minutes and hours.
+                </li>
+                <li>
+                    Dispatches events when timer starts, stops, pauses and when every type of unit changes.
+                </li>
+                <li>
+                    A custom callback can be defined and it will be executed every timer refresh.
+                </li>
+                <li>
+                    Two timer modes: Regular and Countdown.
+                </li>
+                <li>
+                    Configurable start and target values.
+                </li>
+            </ul>
+            <p>EasyTimer.js released under the MIT license</p>
+          <h2 id="examples">Examples</h2>
+          <h3 id="libraryLoadExample">Library Load</h3>
+          <p>The library can be loaded using NodeJS, RequireJS or classic script</p>
+          <h4>Source code</h4>
+          <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="#amd">AMD</a></li>
+              <li><a href="#node">Node</a></li>
+              <li><a href="#script">Script</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane active in" id="amd">
+                <p>
+                    <pre>
+require(['lib/easytimer/dist/easytimer.min.js'], function (Timer) {
+    var timer = new Timer();
+});
+                    </pre>
+                </p>
+              </div>
+              <div class="tab-pane" id="node">
+              <p>
+                    <pre>
+var Timer = require('lib/easytimer/dist/easytimer.min.js')
+                    </pre>
+                </p>
+              </div>
+              <div class="tab-pane" id="script">
+                <p>
+                    <pre>
+&lt;script src="lib/easytimer/dist/easytimer.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    var timerInstance = new Timer();
+&lt;/script&gt;
+                    </pre>
+                </p>
+              </div>
+          </div>
+          <h3 id="basicUsageExample">Basic Usage</h3>
+          <p>
+            Starting a timer is very simple. You only have to get a new instance of Timer and invoke the start method. The timer will update the values every second
+            and it will dispatch a secondsUpdated event that you can listen using the addEventListener method. You can get the time values using getTimeValues method.
+          </p>
+          <h4>Source code</h4>
+          <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="#buJs">Javascript</a></li>
+              <li><a href="#buHtml">HTML</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane active in" id="buJs">
+            <p>
+                <pre>
+var timer = new Timer();
+timer.start();
+timer.addEventListener('secondsUpdated', function (e) {
+    $('#basicUsage').html(timer.getTimeValues().toString());
+});
+                </pre>
+            </p>
+            </div>
+            <div class="tab-pane" id="buHtml">
+            <p>
+                <pre>
+&lt;div id="basicUsage"&gt;00:00:00&lt;/div&gt;
+                </pre>
+            </p>
+            </div>
+          </div>
+          <h4>Result</h4>
+          <div class="panel panel-default lead">
+            <div class="text-center panel-body" id="basicUsage">00:00:00</div>
+          </div>
+
+          <h3 id="gettingTimeValuesExample">Getting Time Values</h3>
+          <p>
+            In this example you can see how to get the time counters of the timer instance. The getTimeValues method returns the time values in "clock" format. For example, every 60 seconds the
+            seconds counter will be set to 0 and 1 minute will be added to the minutes counter. The getTotalTimeValues method returns the total of the counters. For example, if the counter has
+            counted 2 minutes, there will be 120 seconds in the seconds counter. These methods return a object of type TimeCounter, and has five properties (days, hours, minutes, seconds
+            and tenth of seconds) and a toString method, that return the counters in string format.
+          </p>
+          <h4>Source code</h4>
+          <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="#gvJs">Javascript</a></li>
+              <li><a href="#gvHtml">HTML</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane active in" id="gvJs">
+            <p>
+                <pre>
+var timer = new Timer();
+timer.start({precision: 'seconds'});
+timer.addEventListener('secondsUpdated', function (e) {
+    $('#gettingValuesExample .days').html(timer.getTimeValues().days);
+    $('#gettingValuesExample .hours').html(timer.getTimeValues().hours);
+    $('#gettingValuesExample .minutes').html(timer.getTimeValues().minutes);
+    $('#gettingValuesExample .seconds').html(timer.getTimeValues().seconds);
+    $('#gettingValuesExample .secondTenths').html(timer.getTimeValues().secondTenths);
+
+    $('#gettingTotalValuesExample .days').html(timer.getTotalTimeValues().days);
+    $('#gettingTotalValuesExample .hours').html(timer.getTotalTimeValues().hours);
+    $('#gettingTotalValuesExample .minutes').html(timer.getTotalTimeValues().minutes);
+    $('#gettingTotalValuesExample .seconds').html(timer.getTotalTimeValues().seconds);
+    $('#gettingTotalValuesExample .secondTenths').html(timer.getTotalTimeValues().secondTenths);
+});
+                </pre>
+            </p>
+            </div>
+            <div class="tab-pane" id="gvHtml">
+            <p>
+                <pre>
+&lt;div&gt;&lt;strong&gt;Values:&lt;/strong&gt;&lt;/div&gt;
+&lt;div id="gettingValuesExample"&gt;
+    &lt;span class="days"&gt;0&lt;/span&gt;&lt;span&gt; days&lt;/span&gt;
+    &lt;span class="hours"&gt;0&lt;/span&gt;&lt;span&gt; hours&lt;/span&gt;
+    &lt;span class="minutes"&gt;0&lt;/span&gt;&lt;span&gt; minutes&lt;/span&gt;
+    &lt;span class="seconds"&gt;0&lt;/span&gt;&lt;span&gt; seconds&lt;/span&gt;
+    &lt;span class="secondTenths"&gt;0&lt;/span&gt;&lt;span&gt; tenth of seconds&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;Total Values:&lt;/strong&gt;&lt;/div&gt;
+&lt;div id="gettingTotalValuesExample"&gt;
+    &lt;span class="days"&gt;0&lt;/span&gt;&lt;span&gt; days&lt;/span&gt;
+    &lt;span class="hours"&gt;0&lt;/span&gt;&lt;span&gt; hours&lt;/span&gt;
+    &lt;span class="minutes"&gt;0&lt;/span&gt;&lt;span&gt; minutes&lt;/span&gt;
+    &lt;span class="seconds"&gt;0&lt;/span&gt;&lt;span&gt; seconds&lt;/span&gt;
+    &lt;span class="secondTenths"&gt;0&lt;/span&gt;&lt;span&gt; tenth of seconds&lt;/span&gt;
+&lt;/div&gt;
+                </pre>
+            </p>
+            </div>
+          </div>
+          <h4>Result</h4>
+          <div class="panel panel-default lead">
+            <div class="col-md-offset-1"><strong>Values:</strong></div>
+            <div class="text-center panel-body" id="gettingValuesExample">
+                <span class="days">0</span><span> days</span>
+                <span class="hours">0</span><span> hours</span>
+                <span class="minutes">0</span><span> minutes</span>
+                <span class="seconds">0</span><span> seconds</span>
+                <span class="secondTenths">0</span><span> tenth of seconds</span>
+            </div>
+            <div class="col-md-offset-1"><strong>Total Values:</strong></div>
+            <div class="text-center panel-body" id="gettingTotalValuesExample">
+                <span class="days">0</span><span> days</span>
+                <span class="hours">0</span><span> hours</span>
+                <span class="minutes">0</span><span> minutes</span>
+                <span class="seconds">0</span><span> seconds</span>
+                <span class="secondTenths">0</span><span> tenth of seconds</span>
+            </div>
+          </div>
+
+          <h3 id="chronometerExample">Start, Pause, Stop and Reset (Chronometer)</h3>
+          <p>
+            You can start, pause, stop and reset the timer using the methods of same name. After each action, the timer will dispatch started, paused, stopped and reset events, respectively.
+          </p>
+          <h4>Source code</h4>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="#chronoJs">Javascript</a></li>
+              <li><a href="#chronoHtml">HTML</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane active in" id="chronoJs">
+            <p>
+                <pre>
+var timer = new Timer();
+$('#chronoExample .startButton').click(function () {
+    timer.start();
+});
+$('#chronoExample .pauseButton').click(function () {
+    timer.pause();
+});
+$('#chronoExample .stopButton').click(function () {
+    timer.stop();
+});
+$('#chronoExample .resetButton').click(function () {
+    timer.reset();
+});
+timer.addEventListener('secondsUpdated', function (e) {
+    $('#chronoExample .values').html(timer.getTimeValues().toString());
+});
+timer.addEventListener('started', function (e) {
+    $('#chronoExample .values').html(timer.getTimeValues().toString());
+});
+timer.addEventListener('reset', function (e) {
+    $('#chronoExample .values').html(timer.getTimeValues().toString());
+});
+                </pre>
+            </p>
+            </div>
+            <div class="tab-pane" id="chronoHtml">
+            <p>
+                <pre>
+&lt;div id="chronoExample"&gt;
+    &lt;div class="values"&gt;00:00:00&lt;/div&gt;
+    &lt;div&gt;
+        &lt;button class="startButton"&gt;Start&lt;/button&gt;
+        &lt;button class="pauseButton" &gt;Pause&lt;/button&gt;
+        &lt;button class="stopButton"&gt;Stop&lt;/button&gt;
+        &lt;button class="resetButton"&gt;Reset&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+                </pre>
+            </p>
+            </div>
+          </div>
+          <h4>Result</h4>
+          <div class="panel panel-default lead">
+            <div class="text-center panel-body" id="chronoExample">
+                <div class="values">00:00:00</div>
+                <div>
+                    <button class="startButton btn btn-success btn-lg">Start</button>
+                    <button class="pauseButton btn btn-primary btn-lg" >Pause</button>
+                    <button class="stopButton btn btn-danger btn-lg">Stop</button>
+                    <button class="resetButton btn btn-warning btn-lg">Reset</button>
+                </div>
+            </div>
+          </div>
+
+          <h3 id="startAndTargetValuesExample">Start and Target Values</h3>
+          <p>
+              When you start the timer, you can pass a javascript object with configuration values. In this examples, you pass the start value (90 seconds) and the target values (120 seconds).
+              As you can see, the timer starts with 1 minute and 30 seconds and stops at 2 minutes. You can pass the units you like in these two parameters
+              (days, hours, minutes, seconds and secondTenths)and the Timer will convert these units into the correct ones for each counter. When the counter achieves the target, it will dispatch targetAchieved event.
+          </p>
+          <h4>Source code</h4>
+          <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="#svJs">Javascript</a></li>
+              <li><a href="#svHtml">HTML</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane active in" id="svJs">
+            <p>
+                <pre>
+var timer = new Timer();
+timer.start({precision: 'seconds', startValues: {seconds: 90}, target: {seconds: 120}});
+$('#startValuesAndTargetExample .values').html(timer.getTimeValues().toString());
+timer.addEventListener('secondsUpdated', function (e) {
+    $('#startValuesAndTargetExample .values').html(timer.getTimeValues().toString());
+    $('#startValuesAndTargetExample .progress_bar').html($('#startValuesAndTargetExample .progress_bar').html() + '.');
+});
+timer.addEventListener('targetAchieved', function (e) {
+    $('#startValuesAndTargetExample .progress_bar').html('COMPLETE!!');
+});
+                </pre>
+            </p>
+            </div>
+            <div class="tab-pane" id="svHtml">
+            <p>
+                <pre>
+&lt;div id="startValuesAndTargetExample"&gt;
+    &lt;div class="values"&gt;&lt;/div&gt;
+    &lt;div class="progress_bar"&gt;.&lt;/div&gt;
+&lt;/div&gt;
+                </pre>
+            </p>
+            </div>
+          </div>
+          <h4>Result</h4>
+          <div class="panel panel-default lead">
+            <div class="text-center panel-body" id="startValuesAndTargetExample">
+                <div class="values"></div>
+                <div class="progress_bar">.</div>
+            </div>
+          </div>
+
+          <h3 id="countdownTimerExample">Countdown Timer</h3>
+            <p>
+                The timer can act as countdown timer if the countdown parameters is passed with a truly value to the start method. The minimum target value of the countdown timer
+                is 0.
+            </p>
+          <h4>Source code</h4>
+          <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="#cdJs">Javascript</a></li>
+              <li><a href="#cdHtml">HTML</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane active in" id="cdJs">
+            <p>
+                <pre>
+var timer = new Timer();
+timer.start({countdown: true, startValues: {seconds: 30}});
+$('#countdownExample .values').html(timer.getTimeValues().toString());
+timer.addEventListener('secondsUpdated', function (e) {
+    $('#countdownExample .values').html(timer.getTimeValues().toString());
+});
+timer.addEventListener('targetAchieved', function (e) {
+    $('#countdownExample .values').html('KABOOM!!');
+});
+                </pre>
+            </p>
+            </div>
+            <div class="tab-pane" id="cdHtml">
+            <p>
+                <pre>
+&lt;div id="countdownExample"&gt;
+    &lt;div class="values"&gt;&lt;/div&gt;
+&lt;/div&gt;
+                </pre>
+            </p>
+            </div>
+          </div>
+          <h4>Result</h4>
+          <div class="panel panel-default lead">
+            <div class="text-center panel-body" id="countdownExample">
+                <div class="values"></div>
+            </div>
+          </div>
+
+          <h3 id="callbackExample">Callback</h3>
+          <p>
+              If you prefer a callback instead of event listeners, you can pass a function with the callback parameter, and this callback will be executed every timer refresh.
+          </p>
+          <h4>Source code</h4>
+          <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="#cbJs">Javascript</a></li>
+              <li><a href="#cbHtml">HTML</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane active in" id="cbJs">
+            <p>
+                <pre>
+var timer = new Timer();
+timer.start({callback: function (timer) {
+    $('#callbackExample .values').html(
+        'Hello, I am a callback and I am counting time: ' + timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths'])
+    );
+}});            </pre>
+            </p>
+            </div>
+            <div class="tab-pane" id="cbHtml">
+            <p>
+                <pre>
+&lt;div id="callbackExample"&gt;
+    &lt;div class="values"&gt;&lt;/div&gt;
+&lt;/div&gt;
+                </pre>
+            </p>
+            </div>
+          </div>
+          <h4>Result</h4>
+          <div class="panel panel-default lead">
+            <div class="text-center panel-body" id="callbackExample">
+                <div class="values"></div>
+            </div>
+          </div>
+
+          <h3 id="tenthOfSecondsExample">Interval of Tenth of Seconds</h3>
+          <p>
+              The precision of the timer can be changed with the precision parameter. The accepted values of the precision parameters are seconds (default value), tenth of seconds, minutes and hours.
+              In this example is passed precision with the value secondTenths. The timer will update the counters 10 times per second.
+          </p>
+          <h4>Source code</h4>
+          <ul class="nav nav-tabs" role="tablist">
+              <li class="active"><a href="#tsJs">Javascript</a></li>
+              <li><a href="#tsHtml">HTML</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane active in" id="tsJs">
+            <p>
+                <pre>
+var timer = new Timer();
+timer.start({precision: 'secondTenths'});
+timer.addEventListener('secondsUpdated', function (e) {
+    $('#secondTenthsExample .values').html(timer.callbackTimer().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
+});            </pre>
+            </p>
+            </div>
+            <div class="tab-pane" id="tsHtml">
+            <p>
+                <pre>
+&lt;div id="secondTenthsExample"&gt;
+    &lt;div class="values"&gt;&lt;/div&gt;
+&lt;/div&gt;
+                </pre>
+            </p>
+            </div>
+          </div>
+          <h4>Result</h4>
+          <div class="panel panel-default lead">
+            <div class="text-center panel-body" id="secondTenthsExample">
+                <div class="values">00:00:00:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>Created by Albert González. Thank you for visiting me! :-)</p>
+      </footer>
+    </div> <!-- /container -->
+
+    <script src="dist/examples.min.js"> </script>
+  </body>
+</html>
