@@ -11,14 +11,13 @@
 
     <title>EasyTimer.js</title>
 
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="dist/examples.min.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="dist/easytimer.min.js"></script>
   </head>
 
   <body>
@@ -406,9 +405,9 @@ timer.addEventListener('targetAchieved', function (e) {
             <p>
                 <pre>
 var timer = new Timer();
-timer.start({callback: function (values) {
+timer.start({callback: function (timer) {
     $('#callbackExample .values').html(
-        'Hello, I am a callback and I am counting time: ' + values.toString(['hours', 'minutes', 'seconds', 'secondTenths'])
+        'Hello, I am a callback and I am counting time: ' + timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths'])
     );
 }});            </pre>
             </p>
@@ -445,11 +444,9 @@ timer.start({callback: function (values) {
             <p>
                 <pre>
 var timer = new Timer();
-timer.start({precision: 'secondTenths', callback: function (values) {
-    $('#secondTenthsExample').html(values.toString(['hours', 'minutes', 'seconds', 'secondTenths']));
-}});
+timer.start({precision: 'secondTenths'});
 timer.addEventListener('secondsUpdated', function (e) {
-    $('#secondTenthsExample .values').html(timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
+    $('#secondTenthsExample .values').html(timer.callbackTimer().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
 });            </pre>
             </p>
             </div>
@@ -479,12 +476,6 @@ timer.addEventListener('secondsUpdated', function (e) {
       </footer>
     </div> <!-- /container -->
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="dist/examples.min.js"> </script>
   </body>
 </html>

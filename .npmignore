@@ -1,0 +1,8 @@
+test/*
+.eslintrc.json
+.gitignore
+bower.json
+rollup.config.js
+dist/examples*
+src/examples/*
+index.html
