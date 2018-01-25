@@ -1,3 +1,9 @@
+/**
+ * easytimer.js
+ * Generated: 2018-01-25
+ * Version: 2.0.1
+ */
+
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
@@ -246,8 +252,8 @@ function Timer() {
 
     customCallback(eventData.detail.timer);
     if (isTargetAchieved(currentTime)) {
-      dispatchEvent('targetAchieved', eventData);
       stop();
+      dispatchEvent('targetAchieved', eventData);
     }
   }
 
