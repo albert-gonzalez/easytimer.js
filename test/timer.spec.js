@@ -1,6 +1,6 @@
 if (typeof require !== 'undefined') {
   var assert = require('chai').assert;
-  var Timer = require('../dist/easytimer.min.js');
+  var Timer = require('../dist/easytimer.js');
   var sinon = require('sinon');
 } else {
   window.assert = window.chai.assert;
@@ -773,6 +773,21 @@ describe('timer.js', function () {
         clock.tick(10000);
         assert.equal(timer.isRunning(), true);
         assertTimes(timer, [0, 10, 1, 0, 0], [700, 70, 1, 0, 0]);
+      });
+
+      it('should reset the timer when the target is achieved', function (done) {
+        timer.start({target: {seconds: 59}});
+        timer.addEventListener('targetAchieved', () => {
+          timer.reset();
+
+          clock.tick(10000);
+          assert.equal(timer.isRunning(), true);
+          assertTimes(timer, [0, 10, 0, 0, 0], [100, 10, 0, 0, 0]);
+
+          done();
+        });
+
+        clock.tick(60000);
       });
     });
   });
