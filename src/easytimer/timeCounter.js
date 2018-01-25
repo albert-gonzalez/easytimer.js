@@ -25,7 +25,11 @@ function TimeCounter () {
 
     for (i = 0; i < units.length; i = i + 1) {
       if (this[units[i]] !== undefined) {
-        arrayTime.push(leftPadding(this[units[i]], leftZeroPadding, '0'));
+        if (units[i] === 'secondTenths') {
+          arrayTime.push(this[units[i]]);
+        } else {
+          arrayTime.push(leftPadding(this[units[i]], leftZeroPadding, '0'));
+        }
       }
     }
     stringTime = arrayTime.join(separator);
