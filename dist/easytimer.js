@@ -1,7 +1,7 @@
 /**
  * easytimer.js
  * Generated: 2018-01-25
- * Version: 2.0.1
+ * Version: 2.0.2
  */
 
 (function (global, factory) {
@@ -13,6 +13,10 @@
 function leftPadding(string, padLength, character) {
   var i = void 0;
   var characters = '';
+
+  if (string >= padLength) {
+    return string;
+  }
 
   for (i = 0; i < padLength; i = i + 1) {
     characters += String(character);
@@ -46,7 +50,11 @@ function TimeCounter() {
 
     for (i = 0; i < units.length; i = i + 1) {
       if (this[units[i]] !== undefined) {
-        arrayTime.push(leftPadding(this[units[i]], leftZeroPadding, '0'));
+        if (units[i] === 'secondTenths') {
+          arrayTime.push(this[units[i]]);
+        } else {
+          arrayTime.push(leftPadding(this[units[i]], leftZeroPadding, '0'));
+        }
       }
     }
     stringTime = arrayTime.join(separator);

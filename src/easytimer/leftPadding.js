@@ -2,6 +2,10 @@ function leftPadding (string, padLength, character) {
   let i;
   let characters = '';
 
+  if (string >= padLength) {
+    return string;
+  }
+
   for (i = 0; i < padLength; i = i + 1) {
     characters += String(character);
   }
