@@ -2,7 +2,7 @@ function leftPadding (string, padLength, character) {
   let i;
   let characters = '';
 
-  if (string >= padLength) {
+  if (string.length > padLength) {
     return string;
   }
 
