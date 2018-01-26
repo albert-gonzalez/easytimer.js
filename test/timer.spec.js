@@ -629,7 +629,7 @@ describe('timer.js', function () {
           it('should change the values returned with the units param', function () {
             assert.equal(
               timer.getTimeValues().toString(['days', 'hours', 'minutes', 'seconds', 'secondTenths']),
-              '00:01:02:15:00'
+              '00:01:02:15:0'
             );
           });
           it('should change the separator with the separator param', function () {

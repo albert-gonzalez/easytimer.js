@@ -1,7 +1,7 @@
 /**
  * easytimer.js
- * Generated: 2018-01-25
- * Version: 2.0.2
+ * Generated: 2018-01-26
+ * Version: 2.0.3
  */
 
 (function (global, factory) {
@@ -14,7 +14,7 @@ function leftPadding(string, padLength, character) {
   var i = void 0;
   var characters = '';
 
-  if (string >= padLength) {
+  if (string.length > padLength) {
     return string;
   }
 
