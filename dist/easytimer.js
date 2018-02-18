@@ -1,7 +1,7 @@
 /**
  * easytimer.js
- * Generated: 2018-01-26
- * Version: 2.0.3
+ * Generated: 2018-02-18
+ * Version: 2.1.0
  */
 
 (function (global, factory) {
@@ -172,11 +172,16 @@ function Timer() {
     }
   };
 
-  function updateCounters(precision, value) {
-    var roundedValue = Math.floor(value);
-
+  function updateCounters(precision, roundedValue) {
     totalCounters[precision] = roundedValue;
-    counters[precision] = precision !== DAYS ? mod(roundedValue, groupedUnits[precision]) : roundedValue;
+
+    if (precision === DAYS) {
+      counters[precision] = roundedValue;
+    } else if (roundedValue >= 0) {
+      counters[precision] = mod(roundedValue, groupedUnits[precision]);
+    } else {
+      counters[precision] = groupedUnits[precision] - mod(roundedValue, groupedUnits[precision]);
+    }
   }
 
   function updateDays(value) {
@@ -201,7 +206,7 @@ function Timer() {
 
   function updateUnitByPrecision(value, precision) {
     var previousValue = totalCounters[precision];
-    updateCounters(precision, value / unitsInMilliseconds[precision]);
+    updateCounters(precision, calculateIntegerUnitQuotient(value, unitsInMilliseconds[precision]));
 
     return totalCounters[precision] !== previousValue;
   }
@@ -248,6 +253,20 @@ function Timer() {
 
   function updateTimerAndDispatchEvents() {
     var currentTime = roundTimestamp(Date.now());
+    var valuesUpdated = updateTimer();
+
+    dispatchEvents(valuesUpdated);
+
+    customCallback(eventData.detail.timer);
+    if (isTargetAchieved(currentTime)) {
+      stop();
+      dispatchEvent('targetAchieved', eventData);
+    }
+  }
+
+  function updateTimer() {
+    var currentTime = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : roundTimestamp(Date.now());
+
     var ellapsedTime = timerTypeFactor > 0 ? currentTime - startingDate : startingDate - currentTime;
     var valuesUpdated = {};
 
@@ -256,13 +275,8 @@ function Timer() {
     valuesUpdated[MINUTES] = updateMinutes(ellapsedTime);
     valuesUpdated[HOURS] = updateHours(ellapsedTime);
     valuesUpdated[DAYS] = updateDays(ellapsedTime);
-    dispatchEvents(valuesUpdated);
 
-    customCallback(eventData.detail.timer);
-    if (isTargetAchieved(currentTime)) {
-      stop();
-      dispatchEvent('targetAchieved', eventData);
-    }
+    return valuesUpdated;
   }
 
   function roundTimestamp(timestamp) {
@@ -322,6 +336,8 @@ function Timer() {
 
     startingDate = calculateStartingDate();
 
+    updateTimer();
+
     if (_typeof(params.target) === 'object') {
       targetValues = setTarget(params.target);
     } else if (countdown) {
@@ -358,17 +374,11 @@ function Timer() {
       }
     }
 
-    for (var i = 0; i < inputValues.length; i = i + 1) {
-      if (inputValues[i] < 0) {
-        inputValues[i] = 0;
-      }
-    }
-
     secondTenths = values[SECOND_TENTHS_POSITION];
-    seconds = values[SECONDS_POSITION] + Math.floor(secondTenths / SECOND_TENTHS_PER_SECOND);
-    minutes = values[MINUTES_POSITION] + Math.floor(seconds / SECONDS_PER_MINUTE);
-    hours = values[HOURS_POSITION] + Math.floor(minutes / MINUTES_PER_HOUR);
-    days = values[DAYS_POSITION] + Math.floor(hours / HOURS_PER_DAY);
+    seconds = values[SECONDS_POSITION] + calculateIntegerUnitQuotient(secondTenths, SECOND_TENTHS_PER_SECOND);
+    minutes = values[MINUTES_POSITION] + calculateIntegerUnitQuotient(seconds, SECONDS_PER_MINUTE);
+    hours = values[HOURS_POSITION] + calculateIntegerUnitQuotient(minutes, MINUTES_PER_HOUR);
+    days = values[DAYS_POSITION] + calculateIntegerUnitQuotient(hours, HOURS_PER_DAY);
 
     values[SECOND_TENTHS_POSITION] = secondTenths % SECOND_TENTHS_PER_SECOND;
     values[SECONDS_POSITION] = seconds % SECONDS_PER_MINUTE;
@@ -377,6 +387,12 @@ function Timer() {
     values[DAYS_POSITION] = days;
 
     return values;
+  }
+
+  function calculateIntegerUnitQuotient(unit, divisor) {
+    var quotient = unit / divisor;
+
+    return quotient < 0 ? Math.ceil(quotient) : Math.floor(quotient);
   }
 
   function setTarget(inputTarget) {

@@ -429,11 +429,11 @@ describe('timer.js', function () {
           assert(!timer.isRunning());
         });
 
-        it('should not allow negative values and set 0', function () {
+        it('should allow negative values', function () {
           target = [0, -1, 95, -1, 0];
           timer.start({target: target});
 
-          assert.deepEqual(timer.getConfig().target, [0, 0, 35, 1, 0]);
+          assert.deepEqual(timer.getConfig().target, [0, -1, 35, 0, 0]);
         });
 
         describe('with regular timer', function () {
@@ -463,6 +463,14 @@ describe('timer.js', function () {
             target = [0, 5, 5, 0, 0];
             timer.start({target: target, precision: 'seconds'});
             assertEventTriggered(timer, 'targetAchieved', 305000, 1);
+            assert(!timer.isRunning());
+          });
+
+          it('should stop when target is negative and hours counter == hours target and minutes counter == minutes target and seconds counter >= seconds target', function () {
+            target = [0, -1, -5, 0, 0];
+            var start = [0, -2, -6, 0, 0];
+            timer.start({target: target, startValues: start, precision: 'seconds'});
+            assertEventTriggered(timer, 'targetAchieved', 61000, 1);
             assert(!timer.isRunning());
           });
         });
@@ -584,12 +592,12 @@ describe('timer.js', function () {
           assert.deepEqual(timer.getConfig().startValues, [0, 0, 0, 6, 1]);
         });
 
-        it('should not allow negative values and set 0', function () {
+        it('should allow negative values', function () {
           startValues = [0, -1, 95, -1, 0];
           timer.start({startValues: startValues});
           configStartValues = timer.getConfig().startValues;
 
-          assert.deepEqual(timer.getConfig().startValues, [0, 0, 35, 1, 0]);
+          assert.deepEqual(timer.getConfig().startValues, [0, -1, 35, 0, 0]);
         });
 
         it('should have counters with same values that the start values', function () {
