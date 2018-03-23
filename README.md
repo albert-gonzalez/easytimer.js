@@ -77,6 +77,7 @@ timer.addEventListener('secondsUpdated', function (e) {
 * stop(): Stop the timer
 * pause(): Pause the timer
 * reset(): Reset the timer values
+* isRunning(): Return if the timer is currently running.
 * addEventListener(eventType, callback): Add a lister to an event. Timer triggers events when is updated
     * Events triggered:
         * secondTenthsUpdated
