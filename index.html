@@ -445,8 +445,8 @@ timer.start({callback: function (timer) {
                 <pre>
 var timer = new Timer();
 timer.start({precision: 'secondTenths'});
-timer.addEventListener('secondsUpdated', function (e) {
-    $('#secondTenthsExample .values').html(timer.callbackTimer().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
+timer.addEventListener('secondTenthsUpdated', function (e) {
+    $('#secondTenthsExample .values').html(timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
 });            </pre>
             </p>
             </div>
