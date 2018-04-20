@@ -801,23 +801,45 @@ describe('timer.js', function () {
 
     describe('removeEventListener function', function () {
       var secondsUpdatedListener;
+      var secondTimer;
       beforeEach(function () {
         clock = sinon.useFakeTimers();
         secondsUpdatedListener = sinon.spy();
-        timer.addEventListener('secondsUpdated', secondsUpdatedListener);
         timer.start();
+        secondTimer = new Timer();
+        secondTimer.start();
       });
 
       afterEach(function () {
         clock.restore();
+        timer.stop();
+        secondTimer.stop();
       });
 
       it('should remove the listener from the event', function () {
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener);
         clock.tick(2000);
         sinon.assert.callCount(secondsUpdatedListener, 2);
+
         timer.removeEventListener('secondsUpdated', secondsUpdatedListener);
         clock.tick(2000);
         sinon.assert.callCount(secondsUpdatedListener, 2);
+
+        secondTimer.addEventListener('secondsUpdated', secondsUpdatedListener);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener, 3);
+
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener, 5);
+
+        secondTimer.removeEventListener('secondsUpdated', secondsUpdatedListener);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener, 6);
+
+        timer.removeEventListener('secondsUpdated', secondsUpdatedListener);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener, 6);
       });
     });
   });
