@@ -798,5 +798,27 @@ describe('timer.js', function () {
         clock.tick(60000);
       });
     });
+
+    describe('removeEventListener function', function () {
+      var secondsUpdatedListener;
+      beforeEach(function () {
+        clock = sinon.useFakeTimers();
+        secondsUpdatedListener = sinon.spy();
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener);
+        timer.start();
+      });
+
+      afterEach(function () {
+        clock.restore();
+      });
+
+      it('should remove the listener from the event', function () {
+        clock.tick(2000);
+        sinon.assert.callCount(secondsUpdatedListener, 2);
+        timer.removeEventListener('secondsUpdated', secondsUpdatedListener);
+        clock.tick(2000);
+        sinon.assert.callCount(secondsUpdatedListener, 2);
+      });
+    });
   });
 });
