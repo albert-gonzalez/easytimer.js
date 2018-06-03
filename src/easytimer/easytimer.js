@@ -321,7 +321,7 @@ function Timer () {
     }
 
     targetValues = configInputValues(inputTarget);
-    let targetCounter = calculateTotalCounterFromFalues(targetValues);
+    let targetCounter = calculateTotalCounterFromValues(targetValues);
     targetDate = startingDate +
       targetCounter.secondTenths *
       unitsInMilliseconds[SECOND_TENTHS] *
@@ -338,10 +338,10 @@ function Timer () {
     counters.hours = startValues[HOURS_POSITION];
     counters.days = startValues[DAYS_POSITION];
 
-    totalCounters = calculateTotalCounterFromFalues(startValues, totalCounters);
+    totalCounters = calculateTotalCounterFromValues(startValues, totalCounters);
   }
 
-  function calculateTotalCounterFromFalues (values, outputCounter) {
+  function calculateTotalCounterFromValues (values, outputCounter) {
     let total = outputCounter || {};
 
     total.days = values[DAYS_POSITION];
