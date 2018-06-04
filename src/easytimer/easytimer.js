@@ -253,7 +253,11 @@ function Timer () {
 
     timerTypeFactor = countdown === true ? -1 : 1;
 
-    if (typeof params.startValues === 'object') { setStartValues(params.startValues); };
+    if (typeof params.startValues === 'object') {
+      setStartValues(params.startValues);
+    } else {
+      startValues = null;
+    }
 
     startingDate = calculateStartingDate();
 
@@ -264,6 +268,8 @@ function Timer () {
     } else if (countdown) {
       params.target = {seconds: 0};
       targetValues = setTarget(params.target);
+    } else {
+      targetValues = null;
     }
 
     timerConfig = {
