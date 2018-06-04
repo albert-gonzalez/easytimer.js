@@ -1,4 +1,4 @@
-import uglify from 'rollup-plugin-uglify';
+import { uglify } from 'rollup-plugin-uglify';
 import babel from 'rollup-plugin-babel';
 import license from 'rollup-plugin-license';
 

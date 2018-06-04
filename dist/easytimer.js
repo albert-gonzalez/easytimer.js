@@ -1,7 +1,7 @@
 /**
  * easytimer.js
- * Generated: 2018-03-26
- * Version: 2.2.1
+ * Generated: 2018-06-04
+ * Version: 2.2.2
  */
 
 (function (global, factory) {
@@ -324,7 +324,10 @@
 
       if (_typeof(params.startValues) === 'object') {
         setStartValues(params.startValues);
+      } else {
+        startValues = null;
       }
+
       startingDate = calculateStartingDate();
 
       updateTimer();
@@ -334,6 +337,8 @@
       } else if (countdown) {
         params.target = { seconds: 0 };
         targetValues = setTarget(params.target);
+      } else {
+        targetValues = null;
       }
 
       timerConfig = {
@@ -392,7 +397,7 @@
       }
 
       targetValues = configInputValues(inputTarget);
-      var targetCounter = calculateTotalCounterFromFalues(targetValues);
+      var targetCounter = calculateTotalCounterFromValues(targetValues);
       targetDate = startingDate + targetCounter.secondTenths * unitsInMilliseconds[SECOND_TENTHS] * timerTypeFactor;
 
       return targetValues;
@@ -406,10 +411,10 @@
       counters.hours = startValues[HOURS_POSITION];
       counters.days = startValues[DAYS_POSITION];
 
-      totalCounters = calculateTotalCounterFromFalues(startValues, totalCounters);
+      totalCounters = calculateTotalCounterFromValues(startValues, totalCounters);
     }
 
-    function calculateTotalCounterFromFalues(values, outputCounter) {
+    function calculateTotalCounterFromValues(values, outputCounter) {
       var total = outputCounter || {};
 
       total.days = values[DAYS_POSITION];

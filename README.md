@@ -1,7 +1,7 @@
 easytimer.js
 ============
 
-[![npm version](https://badge.fury.io/js/easytimer.js.svg)](https://www.npmjs.com/package/easytimer.js)
+[![NPM](https://nodei.co/npm/easytimer.js.png?downloads=true&downloadRank=true)](https://nodei.co/npm/easytimer.js/)
 
 Easy to use Timer/Chronometer/Countdown library compatible with AMD and NodeJS
 

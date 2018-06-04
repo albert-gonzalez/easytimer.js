@@ -1,6 +1,6 @@
 {
   "name": "easytimer.js",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Timer/Chronometer/Countdown compatible with AMD and NodeJS",
   "main": "dist/easytimer.js",
   "repository": {
@@ -31,27 +31,27 @@
   "author": "Albert Gonzalez",
   "license": "MIT",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
     "bootstrap": "^3.3.7",
     "chai": "^4.1.2",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
     "http-server": "~0.11.1",
     "jquery": "^3.3.1",
-    "mocha": "^5.0.5",
-    "rollup": "^0.57.1",
-    "rollup-plugin-babel": "^3.0.3",
-    "rollup-plugin-commonjs": "^9.1.0",
+    "mocha": "^5.2.0",
+    "rollup": "^0.59.4",
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-commonjs": "^9.1.3",
     "rollup-plugin-css-only": "^0.4.0",
     "rollup-plugin-license": "^0.6.0",
     "rollup-plugin-node-resolve": "^3.3.0",
-    "rollup-plugin-uglify": "^3.0.0",
-    "sinon": "~4.4.8"
+    "rollup-plugin-uglify": "^4.0.0",
+    "sinon": "~5.0.10"
   },
   "babel": {
     "presets": [

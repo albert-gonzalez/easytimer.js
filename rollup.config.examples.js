@@ -1,4 +1,4 @@
-import uglify from 'rollup-plugin-uglify';
+import { uglify } from 'rollup-plugin-uglify';
 import babel from 'rollup-plugin-babel';
 import css from 'rollup-plugin-css-only';
 import resolve from 'rollup-plugin-node-resolve';
