@@ -75,7 +75,7 @@ timer.addEventListener('secondsUpdated', function (e) {
             * callback (function): A callback function executed every time the timer is updated. The callback receives the timer as a parameter.
             * countdown (bool): If true, the timer is a countdown.
 * stop(): Stop the timer
-* pause(): Pause the timer
+* pause(): Pause the timer. After pause, you can call the start method without parameters to resume the timer.
 * reset(): Reset the timer values
 * isRunning(): Returns true if the timer is currently running.
 * addEventListener(eventType, callback): Add a listener to an event. Timer triggers events when is updated
@@ -85,6 +85,11 @@ timer.addEventListener('secondsUpdated', function (e) {
         * minutesUpdated
         * hoursUpdated
         * daysUpdated
+        * targetAchieved
+        * stopped
+        * reset
+        * started
+        * paused
     * Parameters:
         * eventType (string): The type of the event that you want to listen.
         * callback (function): Function that will be executed when the timer triggers the specified event. The callback receives an object with the timer as a parameter.
