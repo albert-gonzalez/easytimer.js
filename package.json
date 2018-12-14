@@ -1,8 +1,9 @@
 {
   "name": "easytimer.js",
-  "version": "2.4.0",
+  "version": "3.0.0",
   "description": "Timer/Chronometer/Countdown compatible with AMD and NodeJS",
   "main": "dist/easytimer.js",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/albert-gonzalez/easytimer.js"

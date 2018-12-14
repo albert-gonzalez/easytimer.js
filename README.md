@@ -25,21 +25,45 @@ bower install easytimer.js
 ```html
 <script src="lib/easytimer/dist/easytimer.min.js"></script>
 <script>
-    var timerInstance = new Timer();
+    var timerInstance = new easytimer.Timer();
 </script>
 ```
 
 ### Node
 
 ```js
-var Timer = require('easytimer.js');
+var Timer = require('easytimer.js').Timer;
 var timerInstance = new Timer();
+
+// or 
+
+var { Timer } = require('easytimer.js');
+var timerInstance = new Timer();
+
+```
+
+### ES6 / Typescript Imports
+
+```js
+import Timer from 'easytimer.js';
+const timer = new Timer();
+
+// or 
+
+import { Timer } from 'easytimer.js';
+const timer = new Timer();
 ```
 
 ### AMD
 
 ```js
-require(['node_modules/easytimer.js/dist/easytimer.min.js'], function (Timer) {
+require(['node_modules/easytimer.js/dist/easytimer.min.js'], function (easytimer) {
+    var timer = new easytimer.Timer();
+});
+
+// or
+
+require(['node_modules/easytimer.js/dist/easytimer.min.js'], function ({ Timer }) {
     var timer = new Timer();
 });
 ```
