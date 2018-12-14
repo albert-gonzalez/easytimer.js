@@ -1,7 +1,7 @@
 /**
  * easytimer.js
- * Generated: 2018-09-30
- * Version: 2.3.0
+ * Generated: 2018-12-14
+ * Version: 2.4.0
  */
 
 (function (global, factory) {
@@ -568,7 +568,9 @@
       this.getTotalTimeValues = getTotalTimeValues;
       this.getConfig = getConfig;
       this.addEventListener = addEventListener;
+      this.on = addEventListener;
       this.removeEventListener = removeEventListener;
+      this.off = removeEventListener;
     }
   }
 
