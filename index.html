@@ -98,8 +98,8 @@
               <div class="tab-pane active in" id="amd">
                 <p>
                     <pre>
-require(['lib/easytimer/dist/easytimer.min.js'], function (Timer) {
-    var timer = new Timer();
+require(['lib/easytimer/dist/easytimer.min.js'], function (easytimer) {
+    var timer = new easytimer.Timer();
 });
                     </pre>
                 </p>
@@ -107,7 +107,7 @@ require(['lib/easytimer/dist/easytimer.min.js'], function (Timer) {
               <div class="tab-pane" id="node">
               <p>
                     <pre>
-var Timer = require('lib/easytimer/dist/easytimer.min.js')
+var { Timer } = require('lib/easytimer/dist/easytimer.min.js');
                     </pre>
                 </p>
               </div>
@@ -116,7 +116,7 @@ var Timer = require('lib/easytimer/dist/easytimer.min.js')
                     <pre>
 &lt;script src="lib/easytimer/dist/easytimer.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
-    var timerInstance = new Timer();
+    var timerInstance = new easytimer.Timer();
 &lt;/script&gt;
                     </pre>
                 </p>

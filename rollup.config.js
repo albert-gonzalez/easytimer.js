@@ -8,8 +8,9 @@ export default {
   input: 'src/easytimer/easytimer.js',
   output: {
     format: 'umd',
-    name: 'Timer',
-    file: `dist/easytimer${optimize ? '.min' : ''}.js`
+    name: 'easytimer',
+    file: `dist/easytimer${optimize ? '.min' : ''}.js`,
+    exports: 'named'
   },
   plugins: [
     babel({

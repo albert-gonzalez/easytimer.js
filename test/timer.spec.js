@@ -1,6 +1,6 @@
 if (typeof require !== 'undefined') {
   var assert = require('chai').assert;
-  var Timer = require('../dist/easytimer.js');
+  var { Timer } = require('../dist/easytimer.js');
   var sinon = require('sinon');
 } else {
   window.assert = window.chai.assert;
