@@ -842,5 +842,17 @@ describe('timer.js', function () {
         sinon.assert.callCount(secondsUpdatedListener, 6);
       });
     });
+
+    describe('on function', () => {
+      it('should be an alias of addEventListener', () => {
+        assert.equal(timer.addEventListener, timer.on);
+      });
+    });
+
+    describe('off function', () => {
+      it('should be an alias of removeEventListener', () => {
+        assert.equal(timer.removeEventListener, timer.off);
+      });
+    });
   });
 });
