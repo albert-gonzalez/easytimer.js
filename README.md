@@ -93,7 +93,9 @@ timer.addEventListener('secondsUpdated', function (e) {
     * Parameters:
         * eventType (string): The type of the event that you want to listen.
         * callback (function): Function that will be executed when the timer triggers the specified event. The callback receives an object with the timer as a parameter.
+* on(eventType, callback): addEventListener alias.
 * removeEventListener(eventType, callback): Remove an event listener from the timer. Same usage as addEventListener.
+* off(eventType, callback): removeEventListener alias.
 * getTimeValues(): Returns an object with the current values. The keys of the returned object are 'secondTenths', 'seconds', 'minutes', 'hours' and 'days'.
 * getTotalTimeValues(): Returns an object with the current absolute values. The keys of the returned object are 'secondTenths', 'seconds', 'minutes', 'hours' and 'days'.
 

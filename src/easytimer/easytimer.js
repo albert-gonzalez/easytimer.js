@@ -1,8 +1,4 @@
 /**
- * @license easytimer.js v2.0.0
- * Created by Albert González
- * Licensed under The MIT License.
- *
  * @class Timer
  */
 
@@ -507,7 +503,11 @@ function Timer () {
 
     this.addEventListener = addEventListener;
 
+    this.on = addEventListener;
+
     this.removeEventListener = removeEventListener;
+
+    this.off = removeEventListener;
   }
 };
 

@@ -28,7 +28,9 @@ declare module "easytimer" {
         reset(): void;
         pause(): void;
         addEventListener(event: Event, listener: () => void): void;
+        on(event: Event, listener: () => void): void;
         removeEventListener(event: Event, listener: () => void): void;
+        off(event: Event, listener: () => void): void;
         dispatchEvent(event: string): void;
         isRunning(): boolean;
         isPaused(): boolean;
