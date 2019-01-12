@@ -10,7 +10,7 @@ export class TimeCounter {
 }
 
 export type Precision = 'secondTenths' | 'seconds' | 'minutes' | 'hours' | 'days';
-export type Event = 'daysUpdated' | 'hoursUpdated' | 'minutesUpdated' | 'secondsUpdated' | 'secondTenthsUpdated';
+export type Event = 'daysUpdated' | 'hoursUpdated' | 'minutesUpdated' | 'secondsUpdated' | 'secondTenthsUpdated' | 'targetAchieved' | 'stopped' | 'reset' | 'started' | 'paused';
 
 export interface ITimerParams {
     precision?: Precision;
