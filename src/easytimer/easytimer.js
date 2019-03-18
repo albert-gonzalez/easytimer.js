@@ -25,6 +25,14 @@ let MINUTES = 'minutes';
 let HOURS = 'hours';
 let DAYS = 'days';
 
+let VALID_INPUT_VALUES = [
+  SECOND_TENTHS,
+  SECONDS,
+  MINUTES,
+  HOURS,
+  DAYS
+];
+
 let unitsInMilliseconds = {
   secondTenths: 100,
   seconds: 1000,
@@ -185,14 +193,14 @@ function Timer () {
   }
 
   function updateTimer (currentTime = roundTimestamp(Date.now())) {
-    let ellapsedTime = timerTypeFactor > 0 ? (currentTime - startingDate) : (startingDate - currentTime);
+    let elapsedTime = timerTypeFactor > 0 ? (currentTime - startingDate) : (startingDate - currentTime);
     let valuesUpdated = {};
 
-    valuesUpdated[SECOND_TENTHS] = updateSecondTenths(ellapsedTime);
-    valuesUpdated[SECONDS] = updateSeconds(ellapsedTime);
-    valuesUpdated[MINUTES] = updateMinutes(ellapsedTime);
-    valuesUpdated[HOURS] = updateHours(ellapsedTime);
-    valuesUpdated[DAYS] = updateDays(ellapsedTime);
+    valuesUpdated[SECOND_TENTHS] = updateSecondTenths(elapsedTime);
+    valuesUpdated[SECONDS] = updateSeconds(elapsedTime);
+    valuesUpdated[MINUTES] = updateMinutes(elapsedTime);
+    valuesUpdated[HOURS] = updateHours(elapsedTime);
+    valuesUpdated[DAYS] = updateDays(elapsedTime);
 
     return valuesUpdated;
   }
@@ -241,7 +249,7 @@ function Timer () {
   function setParams (params) {
     params = params || {};
 
-    precision = typeof params.precision === 'string' ? params.precision : SECONDS;
+    precision = checkPrecision(params.precision);
 
     customCallback = typeof params.callback === 'function' ? params.callback : function () {};
 
@@ -262,7 +270,7 @@ function Timer () {
     if (typeof params.target === 'object') {
       targetValues = setTarget(params.target);
     } else if (countdown) {
-      params.target = {seconds: 0};
+      params.target = { seconds: 0 };
       targetValues = setTarget(params.target);
     } else {
       targetValues = null;
@@ -279,6 +287,19 @@ function Timer () {
     currentParams = params;
   }
 
+  function checkPrecision (precision) {
+    precision = typeof precision === 'string' ? precision : SECONDS;
+    if (!isValidInputValue(precision)) {
+      throw new Error(`Error in precision parameter: ${precision} is not a valid value`);
+    }
+
+    return precision;
+  }
+
+  function isValidInputValue (value) {
+    return VALID_INPUT_VALUES.indexOf(value) >= 0;
+  }
+
   function configInputValues (inputValues) {
     let secondTenths, seconds, minutes, hours, days, values;
     if (typeof inputValues === 'object') {
@@ -288,6 +309,11 @@ function Timer () {
         }
         values = inputValues;
       } else {
+        for (let value in inputValues) {
+          if (VALID_INPUT_VALUES.indexOf(value) < 0) {
+            throw new Error(`Error in startValues or target parameter: ${value} is not a valid input value`);
+          }
+        }
         values = [
           inputValues.secondTenths || 0, inputValues.seconds || 0,
           inputValues.minutes || 0, inputValues.hours || 0,
@@ -378,9 +404,9 @@ function Timer () {
 
   /**
    * [start starts the timer configured by the params object. Dispatch started event]
-   * @param  {[object]} params [Configuration parameters]
+   * @param  {object} params [Configuration parameters]
    */
-  function start (params) {
+  function start (params = {}) {
     if (isRunning()) {
       return;
     }
@@ -392,7 +418,7 @@ function Timer () {
   /**
    * [pause stops the timer without resetting the counters. The timer it can be restarted with start function.
    * Dispatch paused event]
-   * @return {[type]} [description]
+   * @return {type} [description]
    */
   function pause () {
     stopTimer();
@@ -402,8 +428,8 @@ function Timer () {
 
   /**
    * [addEventListener Adds event listener to the timer]
-   * @param {[string]} event      [event to listen]
-   * @param {[function]} listener   [the event listener function]
+   * @param {string} event      [event to listen]
+   * @param {function} listener   [the event listener function]
    */
   function addEventListener (event, listener) {
     if (hasDOM()) {
@@ -415,8 +441,8 @@ function Timer () {
 
   /**
    * [removeEventListener Removes event listener to the timer]
-   * @param  {[string]} event    [event to remove listener]
-   * @param  {[function]} listener [listener to remove]
+   * @param  {string} event    [event to remove listener]
+   * @param  {function} listener [listener to remove]
    */
   function removeEventListener (event, listener) {
     if (hasDOM()) {
@@ -427,7 +453,7 @@ function Timer () {
   }
 
   /**
-   * [dispatchEvent dispatchs an event]
+   * [dispatchEvent dispatches an event]
    * @param  {string} event [event to dispatch]
    */
   function dispatchEvent (event, data) {
@@ -456,27 +482,27 @@ function Timer () {
 
   /**
    * [getTimeValues returns the counter with the current timer values]
-   * @return {[TimeCounter]}
+   * @return {TimeCounter}
    */
   function getTimeValues () {
     return counters;
-  };
+  }
 
   /**
    * [getTotalTimeValues returns the counter with the current timer total values]
-   * @return {[TimeCounter]}
+   * @return {TimeCounter}
    */
   function getTotalTimeValues () {
     return totalCounters;
-  };
+  }
 
   /**
-   * [getConfig returns the configuration paramameters]
-   * @return {[type]}
+   * [getConfig returns the configuration parameters]
+   * @return {type}
    */
   function getConfig () {
     return timerConfig;
-  };
+  }
 
   /**
    * Public API
@@ -509,7 +535,7 @@ function Timer () {
 
     this.off = removeEventListener;
   }
-};
+}
 
 export default Timer;
 

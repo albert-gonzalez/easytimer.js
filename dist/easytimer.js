@@ -1,14 +1,14 @@
 /**
  * easytimer.js
- * Generated: 2019-01-13
- * Version: 3.0.1
+ * Generated: 2019-03-18
+ * Version: 3.1.0
  */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.easytimer = {})));
-}(this, (function (exports) { 'use strict';
+  (global = global || self, factory(global.easytimer = {}));
+}(this, function (exports) { 'use strict';
 
   function _typeof(obj) {
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
@@ -47,13 +47,16 @@
     this.days = 0;
     /**
      * [toString convert the counted values on a string]
-     * @param  {[array]} units           [array with the units to display]
-     * @param  {[string]} separator       [separator of the units]
-     * @param  {[integer]} leftZeroPadding [number of zero padding]
-     * @return {[string]}                 [result string]
+     * @param  {array} units           [array with the units to display]
+     * @param  {string} separator       [separator of the units]
+     * @param  {number} leftZeroPadding [number of zero padding]
+     * @return {string}                 [result string]
      */
 
-    this.toString = function (units, separator, leftZeroPadding) {
+    this.toString = function () {
+      var units = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['hours', 'minutes', 'seconds'];
+      var separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ':';
+      var leftZeroPadding = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
       units = units || ['hours', 'minutes', 'seconds'];
       separator = separator || ':';
       leftZeroPadding = leftZeroPadding || 2;
@@ -115,6 +118,7 @@
   var MINUTES = 'minutes';
   var HOURS = 'hours';
   var DAYS = 'days';
+  var VALID_INPUT_VALUES = [SECOND_TENTHS, SECONDS, MINUTES, HOURS, DAYS];
   var unitsInMilliseconds = {
     secondTenths: 100,
     seconds: 1000,
@@ -265,13 +269,13 @@
 
     function updateTimer() {
       var currentTime = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : roundTimestamp(Date.now());
-      var ellapsedTime = timerTypeFactor > 0 ? currentTime - startingDate : startingDate - currentTime;
+      var elapsedTime = timerTypeFactor > 0 ? currentTime - startingDate : startingDate - currentTime;
       var valuesUpdated = {};
-      valuesUpdated[SECOND_TENTHS] = updateSecondTenths(ellapsedTime);
-      valuesUpdated[SECONDS] = updateSeconds(ellapsedTime);
-      valuesUpdated[MINUTES] = updateMinutes(ellapsedTime);
-      valuesUpdated[HOURS] = updateHours(ellapsedTime);
-      valuesUpdated[DAYS] = updateDays(ellapsedTime);
+      valuesUpdated[SECOND_TENTHS] = updateSecondTenths(elapsedTime);
+      valuesUpdated[SECONDS] = updateSeconds(elapsedTime);
+      valuesUpdated[MINUTES] = updateMinutes(elapsedTime);
+      valuesUpdated[HOURS] = updateHours(elapsedTime);
+      valuesUpdated[DAYS] = updateDays(elapsedTime);
       return valuesUpdated;
     }
 
@@ -321,7 +325,7 @@
 
     function setParams(params) {
       params = params || {};
-      precision = typeof params.precision === 'string' ? params.precision : SECONDS;
+      precision = checkPrecision(params.precision);
       customCallback = typeof params.callback === 'function' ? params.callback : function () {};
       countdown = params.countdown === true;
       timerTypeFactor = countdown === true ? -1 : 1;
@@ -356,6 +360,20 @@
       currentParams = params;
     }
 
+    function checkPrecision(precision) {
+      precision = typeof precision === 'string' ? precision : SECONDS;
+
+      if (!isValidInputValue(precision)) {
+        throw new Error("Error in precision parameter: ".concat(precision, " is not a valid value"));
+      }
+
+      return precision;
+    }
+
+    function isValidInputValue(value) {
+      return VALID_INPUT_VALUES.indexOf(value) >= 0;
+    }
+
     function configInputValues(inputValues) {
       var secondTenths, seconds, minutes, hours, days, values;
 
@@ -367,6 +385,12 @@
 
           values = inputValues;
         } else {
+          for (var value in inputValues) {
+            if (VALID_INPUT_VALUES.indexOf(value) < 0) {
+              throw new Error("Error in startValues or target parameter: ".concat(value, " is not a valid input value"));
+            }
+          }
+
           values = [inputValues.secondTenths || 0, inputValues.seconds || 0, inputValues.minutes || 0, inputValues.hours || 0, inputValues.days || 0];
         }
       }
@@ -444,11 +468,13 @@
     }
     /**
      * [start starts the timer configured by the params object. Dispatch started event]
-     * @param  {[object]} params [Configuration parameters]
+     * @param  {object} params [Configuration parameters]
      */
 
 
-    function start(params) {
+    function start() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
       if (isRunning()) {
         return;
       }
@@ -459,7 +485,7 @@
     /**
      * [pause stops the timer without resetting the counters. The timer it can be restarted with start function.
      * Dispatch paused event]
-     * @return {[type]} [description]
+     * @return {type} [description]
      */
 
 
@@ -470,8 +496,8 @@
     }
     /**
      * [addEventListener Adds event listener to the timer]
-     * @param {[string]} event      [event to listen]
-     * @param {[function]} listener   [the event listener function]
+     * @param {string} event      [event to listen]
+     * @param {function} listener   [the event listener function]
      */
 
 
@@ -484,8 +510,8 @@
     }
     /**
      * [removeEventListener Removes event listener to the timer]
-     * @param  {[string]} event    [event to remove listener]
-     * @param  {[function]} listener [listener to remove]
+     * @param  {string} event    [event to remove listener]
+     * @param  {function} listener [listener to remove]
      */
 
 
@@ -497,7 +523,7 @@
       }
     }
     /**
-     * [dispatchEvent dispatchs an event]
+     * [dispatchEvent dispatches an event]
      * @param  {string} event [event to dispatch]
      */
 
@@ -529,7 +555,7 @@
     }
     /**
      * [getTimeValues returns the counter with the current timer values]
-     * @return {[TimeCounter]}
+     * @return {TimeCounter}
      */
 
 
@@ -538,16 +564,18 @@
     }
     /**
      * [getTotalTimeValues returns the counter with the current timer total values]
-     * @return {[TimeCounter]}
+     * @return {TimeCounter}
      */
+
 
     function getTotalTimeValues() {
       return totalCounters;
     }
     /**
-     * [getConfig returns the configuration paramameters]
-     * @return {[type]}
+     * [getConfig returns the configuration parameters]
+     * @return {type}
      */
+
 
     function getConfig() {
       return timerConfig;
@@ -556,6 +584,7 @@
      * Public API
      * Definition of Timer instance public functions
      */
+
 
     if (typeof this !== 'undefined') {
       this.start = start;
@@ -579,4 +608,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
