@@ -22,34 +22,29 @@
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="navbar navbar-dark navbar-expand-md bg-dark navbar-static-top" role="navigation">
       <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="">EasyTimer.js</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#intro">Intro</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#libraryLoadExample">Library Load</a></li>
-                  <li><a href="#basicUsageExample">Basic Usage</a></li>
-                  <li><a href="#gettingTimeValuesExample">Getting Time Values</a></li>
-                  <li><a href="#chronometerExample">Start, Pause and Stop (Chronometer)</a></li>
-                  <li><a href="#startAndTargetValuesExample">Start and Target Values</a></li>
-                  <li><a href="#countdownTimerExample">Countdown Timer</a></li>
-                  <li><a href="#callbackExample">Callback</a></li>
-                  <li><a href="#tenthOfSecondsExample">Interval of Tenth of Seconds</a></li>
+      <a class="navbar-brand" href="">EasyTimer.js</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#titleBar" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="titleBar">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"><a class="nav-link" href="#intro">Intro</a></li>
+            <li class="nav-item  dropdown">
+              <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" id="navbarDropdown" role="button">Examples <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#libraryLoadExample">Library Load</a></li>
+                  <li><a class="dropdown-item" href="#basicUsageExample">Basic Usage</a></li>
+                  <li><a class="dropdown-item" href="#gettingTimeValuesExample">Getting Time Values</a></li>
+                  <li><a class="dropdown-item" href="#chronometerExample">Start, Pause and Stop (Chronometer)</a></li>
+                  <li><a class="dropdown-item" href="#startAndTargetValuesExample">Start and Target Values</a></li>
+                  <li><a class="dropdown-item" href="#countdownTimerExample">Countdown Timer</a></li>
+                  <li><a class="dropdown-item" href="#callbackTitleExample">Callback</a></li>
+                  <li><a class="dropdown-item" href="#tenthOfSecondsExample">Interval of Tenth of Seconds</a></li>
                 </ul>
             </li>
-            <li><a href="https://github.com/albert-gonzalez/easytimer.js">GitHub</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://github.com/albert-gonzalez/easytimer.js">GitHub</a></li>
           </ul>
         </div>
       </div>
@@ -64,7 +59,7 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md-offset-2 col-md-8">
+        <div class="col-sm-12">
           <h2 id="intro">Introduction</h2>
             <p>EasyTimer.js is a simple library for counting time in five different units: tenth of seconds, seconds, minutes, hours and days. It has interesting features:</p>
             <ul>
@@ -86,15 +81,15 @@
             </ul>
             <p>EasyTimer.js released under the MIT license</p>
           <h2 id="examples">Examples</h2>
-          <h3 id="libraryLoadExample">Library Load</h3>
+          <h4 id="libraryLoadExample">Library Load</h4>
           <p>The library can be loaded using NodeJS, RequireJS or classic script</p>
-          <h4>Source code</h4>
+          <h5>Source code</h5>
           <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#amd">AMD</a></li>
-              <li><a href="#node">Node</a></li>
-              <li><a href="#script">Script</a></li>
+              <li class="nav-item"><a class="nav-link active" href="#amd">AMD</a></li>
+              <li class="nav-item"><a class="nav-link" href="#node">Node</a></li>
+              <li class="nav-item"><a class="nav-link" href="#script">Script</a></li>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="amd">
                 <p>
                     <pre>
@@ -122,17 +117,17 @@ var { Timer } = require('lib/easytimer/dist/easytimer.min.js');
                 </p>
               </div>
           </div>
-          <h3 id="basicUsageExample">Basic Usage</h3>
+          <h4 id="basicUsageExample">Basic Usage</h4>
           <p>
             Starting a timer is very simple. You only have to get a new instance of Timer and invoke the start method. The timer will update the values every second
             and it will dispatch a secondsUpdated event that you can listen using the addEventListener method. You can get the time values using getTimeValues method.
           </p>
-          <h4>Source code</h4>
+          <h5>Source code</h5>
           <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#buJs">Javascript</a></li>
-              <li><a href="#buHtml">HTML</a></li>
+              <li class="nav-item"><a class="nav-link active" href="#buJs">Javascript</a></li>
+              <li class="nav-item"><a class="nav-link" href="#buHtml">HTML</a></li>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="buJs">
             <p>
                 <pre>
@@ -152,24 +147,24 @@ timer.addEventListener('secondsUpdated', function (e) {
             </p>
             </div>
           </div>
-          <h4>Result</h4>
-          <div class="panel panel-default lead">
-            <div class="text-center panel-body" id="basicUsage">00:00:00</div>
+          <h5>Result</h5>
+          <div class="card mb-5">
+            <div class="text-center card-body" id="basicUsage">00:00:00</div>
           </div>
 
-          <h3 id="gettingTimeValuesExample">Getting Time Values</h3>
+          <h4 id="gettingTimeValuesExample">Getting Time Values</h4>
           <p>
             In this example you can see how to get the time counters of the timer instance. The getTimeValues method returns the time values in "clock" format. For example, every 60 seconds the
             seconds counter will be set to 0 and 1 minute will be added to the minutes counter. The getTotalTimeValues method returns the total of the counters. For example, if the counter has
             counted 2 minutes, there will be 120 seconds in the seconds counter. These methods return a object of type TimeCounter, and has five properties (days, hours, minutes, seconds
             and tenth of seconds) and a toString method, that return the counters in string format.
           </p>
-          <h4>Source code</h4>
+          <h5>Source code</h5>
           <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#gvJs">Javascript</a></li>
-              <li><a href="#gvHtml">HTML</a></li>
+              <li class="nav-item"><a class="nav-link active" href="#gvJs">Javascript</a></li>
+              <li class="nav-item"><a class="nav-link" href="#gvHtml">HTML</a></li>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="gvJs">
             <p>
                 <pre>
@@ -214,36 +209,38 @@ timer.addEventListener('secondsUpdated', function (e) {
             </p>
             </div>
           </div>
-          <h4>Result</h4>
-          <div class="panel panel-default lead">
-            <div class="col-md-offset-1"><strong>Values:</strong></div>
-            <div class="text-center panel-body" id="gettingValuesExample">
-                <span class="days">0</span><span> days</span>
-                <span class="hours">0</span><span> hours</span>
-                <span class="minutes">0</span><span> minutes</span>
-                <span class="seconds">0</span><span> seconds</span>
-                <span class="secondTenths">0</span><span> tenth of seconds</span>
-            </div>
-            <div class="col-md-offset-1"><strong>Total Values:</strong></div>
-            <div class="text-center panel-body" id="gettingTotalValuesExample">
-                <span class="days">0</span><span> days</span>
-                <span class="hours">0</span><span> hours</span>
-                <span class="minutes">0</span><span> minutes</span>
-                <span class="seconds">0</span><span> seconds</span>
-                <span class="secondTenths">0</span><span> tenth of seconds</span>
-            </div>
+          <h5>Result</h5>
+          <div class="card mb-5">
+              <div class="card-body">
+                  <div class="offset-md-1 card-title"><strong>Values:</strong></div>
+                  <div class="text-center" id="gettingValuesExample">
+                      <span class="days">0</span><span> days</span>
+                      <span class="hours">0</span><span> hours</span>
+                      <span class="minutes">0</span><span> minutes</span>
+                      <span class="seconds">0</span><span> seconds</span>
+                      <span class="secondTenths">0</span><span> tenth of seconds</span>
+                  </div>
+                  <div class="offset-md-1 card-title"><strong>Total Values:</strong></div>
+                  <div class="text-center" id="gettingTotalValuesExample">
+                      <span class="days">0</span><span> days</span>
+                      <span class="hours">0</span><span> hours</span>
+                      <span class="minutes">0</span><span> minutes</span>
+                      <span class="seconds">0</span><span> seconds</span>
+                      <span class="secondTenths">0</span><span> tenth of seconds</span>
+                  </div>
+              </div>
           </div>
 
-          <h3 id="chronometerExample">Start, Pause, Stop and Reset (Chronometer)</h3>
+          <h4 id="chronometerExample">Start, Pause, Stop and Reset (Chronometer)</h4>
           <p>
             You can start, pause, stop and reset the timer using the methods of same name. After each action, the timer will dispatch started, paused, stopped and reset events, respectively.
           </p>
-          <h4>Source code</h4>
+          <h5>Source code</h5>
             <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#chronoJs">Javascript</a></li>
-              <li><a href="#chronoHtml">HTML</a></li>
+              <li class="nav-item"><a class="nav-link active" href="#chronoJs">Javascript</a></li>
+              <li class="nav-item"><a class="nav-link" href="#chronoHtml">HTML</a></li>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="chronoJs">
             <p>
                 <pre>
@@ -288,31 +285,31 @@ timer.addEventListener('reset', function (e) {
             </p>
             </div>
           </div>
-          <h4>Result</h4>
-          <div class="panel panel-default lead">
-            <div class="text-center panel-body" id="chronoExample">
+          <h5>Result</h5>
+          <div class="card mb-5">
+            <div class="text-center card-body" id="chronoExample">
                 <div class="values">00:00:00</div>
                 <div>
-                    <button class="startButton btn btn-success btn-lg">Start</button>
-                    <button class="pauseButton btn btn-primary btn-lg" >Pause</button>
-                    <button class="stopButton btn btn-danger btn-lg">Stop</button>
-                    <button class="resetButton btn btn-warning btn-lg">Reset</button>
+                    <button class="startButton btn btn-success btn-lg mb-1">Start</button>
+                    <button class="pauseButton btn btn-primary btn-lg mb-1" >Pause</button>
+                    <button class="stopButton btn btn-danger btn-lg mb-1">Stop</button>
+                    <button class="resetButton btn btn-warning btn-lg mb-1">Reset</button>
                 </div>
             </div>
           </div>
 
-          <h3 id="startAndTargetValuesExample">Start and Target Values</h3>
+          <h4 id="startAndTargetValuesExample">Start and Target Values</h4>
           <p>
               When you start the timer, you can pass a javascript object with configuration values. In this examples, you pass the start value (90 seconds) and the target values (120 seconds).
               As you can see, the timer starts with 1 minute and 30 seconds and stops at 2 minutes. You can pass the units you like in these two parameters
               (days, hours, minutes, seconds and secondTenths)and the Timer will convert these units into the correct ones for each counter. When the counter achieves the target, it will dispatch targetAchieved event.
           </p>
-          <h4>Source code</h4>
+          <h5>Source code</h5>
           <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#svJs">Javascript</a></li>
-              <li><a href="#svHtml">HTML</a></li>
+              <li class="nav-item"><a class="nav-link active" href="#svJs">Javascript</a></li>
+              <li class="nav-item"><a class="nav-link" href="#svHtml">HTML</a></li>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="svJs">
             <p>
                 <pre>
@@ -340,25 +337,25 @@ timer.addEventListener('targetAchieved', function (e) {
             </p>
             </div>
           </div>
-          <h4>Result</h4>
-          <div class="panel panel-default lead">
-            <div class="text-center panel-body" id="startValuesAndTargetExample">
+          <h5>Result</h5>
+          <div class="card mb-5">
+            <div class="card-body text-center" id="startValuesAndTargetExample">
                 <div class="values"></div>
                 <div class="progress_bar">.</div>
             </div>
           </div>
 
-          <h3 id="countdownTimerExample">Countdown Timer</h3>
+          <h4 id="countdownTimerExample">Countdown Timer</h4>
             <p>
                 The timer can act as countdown timer if the countdown parameters is passed with a truly value to the start method. The minimum target value of the countdown timer
                 is 0.
             </p>
-          <h4>Source code</h4>
+          <h5>Source code</h5>
           <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#cdJs">Javascript</a></li>
-              <li><a href="#cdHtml">HTML</a></li>
+              <li class="nav-item"><a class="nav-link active" href="#cdJs">Javascript</a></li>
+              <li class="nav-item"><a class="nav-link" href="#cdHtml">HTML</a></li>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="cdJs">
             <p>
                 <pre>
@@ -384,23 +381,23 @@ timer.addEventListener('targetAchieved', function (e) {
             </p>
             </div>
           </div>
-          <h4>Result</h4>
-          <div class="panel panel-default lead">
-            <div class="text-center panel-body" id="countdownExample">
+          <h5>Result</h5>
+          <div class="card mb-5">
+            <div class="text-center card-body" id="countdownExample">
                 <div class="values"></div>
             </div>
           </div>
 
-          <h3 id="callbackExample">Callback</h3>
+          <h4 id="callbackTitleExample">Callback</h4>
           <p>
               If you prefer a callback instead of event listeners, you can pass a function with the callback parameter, and this callback will be executed every timer refresh.
           </p>
-          <h4>Source code</h4>
+          <h5>Source code</h5>
           <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#cbJs">Javascript</a></li>
-              <li><a href="#cbHtml">HTML</a></li>
+              <li class="nav-item"><a class="nav-link active" href="#cbJs">Javascript</a></li>
+              <li class="nav-item"><a class="nav-link" href="#cbHtml">HTML</a></li>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="cbJs">
             <p>
                 <pre>
@@ -422,24 +419,24 @@ timer.start({callback: function (timer) {
             </p>
             </div>
           </div>
-          <h4>Result</h4>
-          <div class="panel panel-default lead">
-            <div class="text-center panel-body" id="callbackExample">
+          <h5>Result</h5>
+          <div class="card mb-5">
+            <div class="text-center card-body" id="callbackExample">
                 <div class="values"></div>
             </div>
           </div>
 
-          <h3 id="tenthOfSecondsExample">Interval of Tenth of Seconds</h3>
+          <h4 id="tenthOfSecondsExample">Interval of Tenth of Seconds</h4>
           <p>
               The precision of the timer can be changed with the precision parameter. The accepted values of the precision parameters are seconds (default value), tenth of seconds, minutes and hours.
               In this example is passed precision with the value secondTenths. The timer will update the counters 10 times per second.
           </p>
-          <h4>Source code</h4>
+          <h5>Source code</h5>
           <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#tsJs">Javascript</a></li>
-              <li><a href="#tsHtml">HTML</a></li>
+              <li class="nav-item"><a class="nav-link active" href="#tsJs">Javascript</a></li>
+              <li class="nav-item"><a class="nav-link" href="#tsHtml">HTML</a></li>
           </ul>
-          <div class="tab-content">
+          <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="tsJs">
             <p>
                 <pre>
@@ -460,9 +457,9 @@ timer.addEventListener('secondTenthsUpdated', function (e) {
             </p>
             </div>
           </div>
-          <h4>Result</h4>
-          <div class="panel panel-default lead">
-            <div class="text-center panel-body" id="secondTenthsExample">
+          <h5>Result</h5>
+          <div class="card mb-5">
+            <div class="text-center card-body" id="secondTenthsExample">
                 <div class="values">00:00:00:00</div>
             </div>
           </div>
