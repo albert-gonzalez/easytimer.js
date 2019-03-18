@@ -4,6 +4,7 @@ if (typeof require !== 'undefined') {
   var sinon = require('sinon');
 } else {
   window.assert = window.chai.assert;
+  window.Timer = window.easytimer.Timer;
 }
 
 describe('timer.js', function () {
