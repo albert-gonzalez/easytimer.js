@@ -74,6 +74,13 @@ describe('timer.js', function () {
         sinon.assert.callCount(startedListener, 1);
       });
 
+      it('should throw an exception if has an invalid value in precision parameter', () => {
+        timer.stop();
+        assert.throws(function () {
+          timer.start({ precision: 'secons' });
+        }, /Error in precision parameter: secons is not a valid value/);
+      });
+
       describe('with default params', function () {
         it('should have seconds precision', function () {
           assert.equal(timer.getConfig().precision, 'seconds');
@@ -370,6 +377,12 @@ describe('timer.js', function () {
             emptyObjectTarget = {};
           });
 
+          it('should throw an exception if has an invalid value', () => {
+            assert.throws(function () {
+              timer.start({ target: { seconds: 10, minute: 5 } });
+            }, /Error in startValues or target parameter: minute is not a valid input value/);
+          });
+
           it('should transform object into array', function () {
             timer.start({ target: target });
             configTarget = timer.getConfig().target;
@@ -522,6 +535,12 @@ describe('timer.js', function () {
           beforeEach(function () {
             startValues = { secondTenths: 5, seconds: 10, minutes: 50, hours: 15, days: 1 };
             emptyObjectStartValues = {};
+          });
+
+          it('should throw an exception if has an invalid value', () => {
+            assert.throws(function () {
+              timer.start({ startValues: { seconds: 10, minute: 5 } });
+            }, /Error in startValues or target parameter: minute is not a valid input value/);
           });
 
           it('should transform object into array', function () {
