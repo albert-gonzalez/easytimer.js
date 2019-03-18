@@ -6,7 +6,7 @@ export class TimeCounter {
     hours: number;
     days: number;
 
-    toString(units?: string[3] | null, separator?: string, leftZeroPadding?: number): string;
+    toString(units?: string[] | null, separator?: string, leftZeroPadding?: number): string;
 }
 
 export type Precision = 'secondTenths' | 'seconds' | 'minutes' | 'hours' | 'days';

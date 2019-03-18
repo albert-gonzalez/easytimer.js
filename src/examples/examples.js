@@ -22,7 +22,7 @@ $(function () {
 
 $(function () {
   var timer = new Timer();
-  timer.start({precision: 'seconds'});
+  timer.start({ precision: 'seconds' });
   timer.addEventListener('secondsUpdated', function (e) {
     $('#gettingValuesExample .days').html(timer.getTimeValues().days);
     $('#gettingValuesExample .hours').html(timer.getTimeValues().hours);
@@ -72,7 +72,7 @@ $(function () {
 
 $(function () {
   var timer = new Timer();
-  timer.start({precision: 'seconds', startValues: {seconds: 90}, target: {seconds: 120}});
+  timer.start({ precision: 'seconds', startValues: { seconds: 90 }, target: { seconds: 120 } });
   $('#startValuesAndTargetExample .values').html(timer.getTimeValues().toString());
   timer.addEventListener('secondsUpdated', function (e) {
     $('#startValuesAndTargetExample .values').html(timer.getTimeValues().toString());
@@ -85,7 +85,7 @@ $(function () {
 
 $(function () {
   var timer = new Timer();
-  timer.start({countdown: true, startValues: {seconds: 30}});
+  timer.start({ countdown: true, startValues: { seconds: 30 } });
   $('#countdownExample .values').html(timer.getTimeValues().toString());
   timer.addEventListener('secondsUpdated', function (e) {
     $('#countdownExample .values').html(timer.getTimeValues().toString());
@@ -97,16 +97,16 @@ $(function () {
 
 $(function () {
   var timer = new Timer();
-  timer.start({callback: function (timer) {
+  timer.start({ callback: function (timer) {
     $('#callbackExample .values').html(
       'Hello, I am a callback and I am counting time: ' + timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths'])
     );
-  }});
+  } });
 });
 
 $(function () {
   var timer = new Timer();
-  timer.start({precision: 'secondTenths'});
+  timer.start({ precision: 'secondTenths' });
   timer.addEventListener('secondTenthsUpdated', function (e) {
     $('#secondTenthsExample .values').html(timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
   });

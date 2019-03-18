@@ -262,7 +262,7 @@ function Timer () {
     if (typeof params.target === 'object') {
       targetValues = setTarget(params.target);
     } else if (countdown) {
-      params.target = {seconds: 0};
+      params.target = { seconds: 0 };
       targetValues = setTarget(params.target);
     } else {
       targetValues = null;
@@ -378,9 +378,9 @@ function Timer () {
 
   /**
    * [start starts the timer configured by the params object. Dispatch started event]
-   * @param  {[object]} params [Configuration parameters]
+   * @param  {object} params [Configuration parameters]
    */
-  function start (params) {
+  function start (params = {}) {
     if (isRunning()) {
       return;
     }
@@ -392,7 +392,7 @@ function Timer () {
   /**
    * [pause stops the timer without resetting the counters. The timer it can be restarted with start function.
    * Dispatch paused event]
-   * @return {[type]} [description]
+   * @return {type} [description]
    */
   function pause () {
     stopTimer();
@@ -402,8 +402,8 @@ function Timer () {
 
   /**
    * [addEventListener Adds event listener to the timer]
-   * @param {[string]} event      [event to listen]
-   * @param {[function]} listener   [the event listener function]
+   * @param {string} event      [event to listen]
+   * @param {function} listener   [the event listener function]
    */
   function addEventListener (event, listener) {
     if (hasDOM()) {
@@ -415,8 +415,8 @@ function Timer () {
 
   /**
    * [removeEventListener Removes event listener to the timer]
-   * @param  {[string]} event    [event to remove listener]
-   * @param  {[function]} listener [listener to remove]
+   * @param  {string} event    [event to remove listener]
+   * @param  {function} listener [listener to remove]
    */
   function removeEventListener (event, listener) {
     if (hasDOM()) {
@@ -427,7 +427,7 @@ function Timer () {
   }
 
   /**
-   * [dispatchEvent dispatchs an event]
+   * [dispatchEvent dispatches an event]
    * @param  {string} event [event to dispatch]
    */
   function dispatchEvent (event, data) {
@@ -456,27 +456,27 @@ function Timer () {
 
   /**
    * [getTimeValues returns the counter with the current timer values]
-   * @return {[TimeCounter]}
+   * @return {TimeCounter}
    */
   function getTimeValues () {
     return counters;
-  };
+  }
 
   /**
    * [getTotalTimeValues returns the counter with the current timer total values]
-   * @return {[TimeCounter]}
+   * @return {TimeCounter}
    */
   function getTotalTimeValues () {
     return totalCounters;
-  };
+  }
 
   /**
-   * [getConfig returns the configuration paramameters]
-   * @return {[type]}
+   * [getConfig returns the configuration parameters]
+   * @return {type}
    */
   function getConfig () {
     return timerConfig;
-  };
+  }
 
   /**
    * Public API
@@ -509,7 +509,7 @@ function Timer () {
 
     this.off = removeEventListener;
   }
-};
+}
 
 export default Timer;
 

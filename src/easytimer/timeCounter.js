@@ -9,12 +9,12 @@ function TimeCounter () {
 
   /**
    * [toString convert the counted values on a string]
-   * @param  {[array]} units           [array with the units to display]
-   * @param  {[string]} separator       [separator of the units]
-   * @param  {[integer]} leftZeroPadding [number of zero padding]
-   * @return {[string]}                 [result string]
+   * @param  {array} units           [array with the units to display]
+   * @param  {string} separator       [separator of the units]
+   * @param  {number} leftZeroPadding [number of zero padding]
+   * @return {string}                 [result string]
    */
-  this.toString = function (units, separator, leftZeroPadding) {
+  this.toString = function (units = ['hours', 'minutes', 'seconds'], separator = ':', leftZeroPadding = 2) {
     units = units || ['hours', 'minutes', 'seconds'];
     separator = separator || ':';
     leftZeroPadding = leftZeroPadding || 2;
