@@ -673,6 +673,15 @@ describe('timer.js', function () {
               '0001:0002:0015'
             );
           });
+
+          it('should change show days with all the digits when days >= 100', function () {
+            const timerWith100days = new Timer();
+            timerWith100days.start({ startValues: { days: 205, seconds: 30 } });
+            assert.equal(
+              timerWith100days.getTimeValues().toString(['days', 'hours', 'minutes', 'seconds', 'secondTenths']),
+              '205:00:00:30:0'
+            );
+          });
         });
       });
     });
