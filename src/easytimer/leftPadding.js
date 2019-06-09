@@ -2,6 +2,8 @@ function leftPadding (string, padLength, character) {
   let i;
   let characters = '';
 
+  string = typeof string === 'number' ? String(string) : string;
+
   if (string.length > padLength) {
     return string;
   }
