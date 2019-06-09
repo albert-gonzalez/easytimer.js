@@ -1,7 +1,7 @@
 /**
  * easytimer.js
- * Generated: 2019-03-18
- * Version: 3.1.0
+ * Generated: 2019-06-09
+ * Version: 3.2.0
  */
 
 (function (global, factory) {
@@ -27,6 +27,7 @@
   function leftPadding(string, padLength, character) {
     var i;
     var characters = '';
+    string = typeof string === 'number' ? String(string) : string;
 
     if (string.length > padLength) {
       return string;
@@ -603,8 +604,8 @@
     }
   }
 
-  exports.default = Timer;
   exports.Timer = Timer;
+  exports.default = Timer;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
