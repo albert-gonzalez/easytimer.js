@@ -428,39 +428,40 @@ function Timer () {
 
   /**
    * [addEventListener Adds event listener to the timer]
-   * @param {string} event      [event to listen]
+   * @param {string} eventType      [event to listen]
    * @param {function} listener   [the event listener function]
    */
-  function addEventListener (event, listener) {
+  function addEventListener (eventType, listener) {
     if (hasDOM()) {
-      eventEmitter.addEventListener(event, listener);
+      eventEmitter.addEventListener(eventType, listener);
     } else if (hasEventEmitter()) {
-      eventEmitter.on(event, listener);
+      eventEmitter.on(eventType, listener);
     }
   }
 
   /**
    * [removeEventListener Removes event listener to the timer]
-   * @param  {string} event    [event to remove listener]
+   * @param  {string} eventType    [event to remove listener]
    * @param  {function} listener [listener to remove]
    */
-  function removeEventListener (event, listener) {
+  function removeEventListener (eventType, listener) {
     if (hasDOM()) {
-      eventEmitter.removeEventListener(event, listener);
+      eventEmitter.removeEventListener(eventType, listener);
     } else if (hasEventEmitter()) {
-      eventEmitter.removeListener(event, listener);
+      eventEmitter.removeListener(eventType, listener);
     }
   }
 
   /**
    * [dispatchEvent dispatches an event]
-   * @param  {string} event [event to dispatch]
+   * @param  {string} eventType [event to dispatch]
+   * @param data
    */
-  function dispatchEvent (event, data) {
+  function dispatchEvent (eventType, data) {
     if (hasDOM()) {
-      eventEmitter.dispatchEvent(new CustomEvent(event, data));
+      eventEmitter.dispatchEvent(new CustomEvent(eventType, data));
     } else if (hasEventEmitter()) {
-      eventEmitter.emit(event, data);
+      eventEmitter.emit(eventType, data);
     }
   }
 
