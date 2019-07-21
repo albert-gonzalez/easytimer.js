@@ -1,5 +1,12 @@
-export class TimeCounter {
+export interface TimerValues {
+    secondTenths?: number;
+    seconds?: number;
+    minutes?: number;
+    hours?: number;
+    days?: number;
+}
 
+export class TimeCounter implements TimerValues {
     secondTenths: number;
     seconds: number;
     minutes: number;
@@ -10,30 +17,36 @@ export class TimeCounter {
 }
 
 export type Precision = 'secondTenths' | 'seconds' | 'minutes' | 'hours' | 'days';
-export type Event = 'daysUpdated' | 'hoursUpdated' | 'minutesUpdated' | 'secondsUpdated' | 'secondTenthsUpdated' | 'targetAchieved' | 'stopped' | 'reset' | 'started' | 'paused';
+export type TimerEventType = 'daysUpdated' | 'hoursUpdated' | 'minutesUpdated' | 'secondsUpdated' | 'secondTenthsUpdated' | 'targetAchieved' | 'stopped' | 'reset' | 'started' | 'paused';
 
-export interface ITimerParams {
+export interface TimerEvent {
+    detail: {
+        timer: Timer
+    }
+}
+
+export interface TimerParams {
     precision?: Precision;
-    callback?: () => void;
+    callback?: (timer?: Timer) => void;
     countdown?: boolean;
-    target?: object;
-    startValues?: object;
+    target?: TimerValues | [number,number,number,number,number];
+    startValues?: TimerValues | [number,number,number,number,number];
 }
 
 export class Timer {
     stop(): void;
-    start(params?: ITimerParams): void;
+    start(params?: TimerParams): void;
     reset(): void;
     pause(): void;
-    addEventListener(event: Event, listener: () => void): void;
-    on(event: Event, listener: () => void): void;
-    removeEventListener(event: Event, listener: () => void): void;
-    off(event: Event, listener: () => void): void;
-    dispatchEvent(event: string): void;
+    addEventListener(eventType: TimerEventType, listener: (event?: TimerEvent) => void): void;
+    on(eventType: TimerEventType, listener: (event?: TimerEvent) => void): void;
+    removeEventListener(eventType: TimerEventType, listener: (event?: TimerEvent) => void): void;
+    off(eventType: TimerEventType, listener: (event?: TimerEvent) => void): void;
     isRunning(): boolean;
     isPaused(): boolean;
     getTimeValues(): TimeCounter;
     getTotalTimeValues(): TimeCounter;
+    getConfig(): TimerParams
 }
 
 export default Timer;
