@@ -27,7 +27,7 @@ export interface TimerEvent {
 
 export interface TimerParams {
     precision?: Precision;
-    callback?: (timer?: Timer) => void;
+    callback?: (timer: Timer) => void;
     countdown?: boolean;
     target?: TimerValues | [number,number,number,number,number];
     startValues?: TimerValues | [number,number,number,number,number];
@@ -38,10 +38,10 @@ export class Timer {
     start(params?: TimerParams): void;
     reset(): void;
     pause(): void;
-    addEventListener(eventType: TimerEventType, listener: (event?: TimerEvent) => void): void;
-    on(eventType: TimerEventType, listener: (event?: TimerEvent) => void): void;
-    removeEventListener(eventType: TimerEventType, listener: (event?: TimerEvent) => void): void;
-    off(eventType: TimerEventType, listener: (event?: TimerEvent) => void): void;
+    addEventListener(eventType: TimerEventType, listener: (event: TimerEvent) => void): void;
+    on(eventType: TimerEventType, listener: (event: TimerEvent) => void): void;
+    removeEventListener(eventType: TimerEventType, listener: (event: TimerEvent) => void): void;
+    off(eventType: TimerEventType, listener: (event: TimerEvent) => void): void;
     isRunning(): boolean;
     isPaused(): boolean;
     getTimeValues(): TimeCounter;
