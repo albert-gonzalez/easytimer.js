@@ -42,6 +42,7 @@
                   <li><a class="dropdown-item" href="#countdownTimerExample">Countdown Timer</a></li>
                   <li><a class="dropdown-item" href="#callbackTitleExample">Callback</a></li>
                   <li><a class="dropdown-item" href="#tenthOfSecondsExample">Interval of Tenth of Seconds</a></li>
+                  <li><a class="dropdown-item" href="#defaultParamsTitleExample">Default Parameters</a></li>
                 </ul>
             </li>
             <li class="nav-item"><a class="nav-link" href="https://github.com/albert-gonzalez/easytimer.js">GitHub</a></li>
@@ -461,6 +462,56 @@ timer.addEventListener('secondTenthsUpdated', function (e) {
           <div class="card mb-5">
             <div class="text-center card-body" id="secondTenthsExample">
                 <div class="values">00:00:00:00</div>
+            </div>
+          </div>
+
+
+          <h4 id="defaultParamsTitleExample">Default Parameters</h4>
+          <p>
+            You can initialize the Timer instance with default parameters. When the timer starts, you can pass
+            other parameters that will be merged with the default parameters. If you don't pass any parameter
+            in the start function, the default parameters will be used.
+          </p>
+          <p>
+            In the following example, the timer instance's configuration has 2 default parameters: countdown
+            timer and it will starts with 5 seconds. But when the timer starts, the timer's configuration changes
+            to a start value of 30 seconds (it replaces the 5 seconds) and a target value of 10 seconds.
+          </p>
+          <h5>Source code</h5>
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link active" href="#tsJs">Javascript</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tsHtml">HTML</a></li>
+          </ul>
+          <div class="tab-content bg-light p-2 mb-4">
+            <div class="tab-pane active in" id="dpJs">
+              <p>
+              <pre>
+var timer = new Timer({ countdown: true, startValues: { seconds: 5 } });
+
+timer.start({ startValues: { seconds: 30 }, target: { seconds: 10 } });
+$('#defaultParamsExample .values').html(timer.getTimeValues().toString());
+timer.addEventListener('secondsUpdated', function (e) {
+  $('#defaultParamsExample .values').html(timer.getTimeValues().toString());
+});
+timer.addEventListener('targetAchieved', function (e) {
+  $('#defaultParamsExample .values').html('The bomb has been defused!');
+});            </pre>
+              </p>
+            </div>
+            <div class="tab-pane" id="dpHtml">
+              <p>
+              <pre>
+&lt;div id="defaultParamsExample"&gt;
+    &lt;div class="values"&gt;&lt;/div&gt;
+&lt;/div&gt;
+                </pre>
+              </p>
+            </div>
+          </div>
+          <h5>Result</h5>
+          <div class="card mb-5">
+            <div class="text-center card-body" id="defaultParamsExample">
+              <div class="values"></div>
             </div>
           </div>
         </div>

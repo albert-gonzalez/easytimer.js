@@ -111,3 +111,16 @@ $(function () {
     $('#secondTenthsExample .values').html(timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
   });
 });
+
+$(function () {
+  var timer = new Timer({ countdown: true, startValues: { seconds: 5 } });
+
+  timer.start({ startValues: { seconds: 30 }, target: { seconds: 10 } });
+  $('#defaultParamsExample .values').html(timer.getTimeValues().toString());
+  timer.addEventListener('secondsUpdated', function (e) {
+    $('#defaultParamsExample .values').html(timer.getTimeValues().toString());
+  });
+  timer.addEventListener('targetAchieved', function (e) {
+    $('#defaultParamsExample .values').html('The bomb has been defused!');
+  });
+});

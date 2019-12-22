@@ -34,6 +34,7 @@ export interface TimerParams {
 }
 
 export class Timer {
+    constructor(defaultParams?: TimerParams);
     stop(): void;
     start(params?: TimerParams): void;
     reset(): void;

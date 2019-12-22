@@ -8,24 +8,24 @@ import './customEventPolyfill';
 /*
  * General functions, variables and constants
  */
-let SECOND_TENTHS_PER_SECOND = 10;
-let SECONDS_PER_MINUTE = 60;
-let MINUTES_PER_HOUR = 60;
-let HOURS_PER_DAY = 24;
+const SECOND_TENTHS_PER_SECOND = 10;
+const SECONDS_PER_MINUTE = 60;
+const MINUTES_PER_HOUR = 60;
+const HOURS_PER_DAY = 24;
 
-let SECOND_TENTHS_POSITION = 0;
-let SECONDS_POSITION = 1;
-let MINUTES_POSITION = 2;
-let HOURS_POSITION = 3;
-let DAYS_POSITION = 4;
+const SECOND_TENTHS_POSITION = 0;
+const SECONDS_POSITION = 1;
+const MINUTES_POSITION = 2;
+const HOURS_POSITION = 3;
+const DAYS_POSITION = 4;
 
-let SECOND_TENTHS = 'secondTenths';
-let SECONDS = 'seconds';
-let MINUTES = 'minutes';
-let HOURS = 'hours';
-let DAYS = 'days';
+const SECOND_TENTHS = 'secondTenths';
+const SECONDS = 'seconds';
+const MINUTES = 'minutes';
+const HOURS = 'hours';
+const DAYS = 'days';
 
-let VALID_INPUT_VALUES = [
+const VALID_INPUT_VALUES = [
   SECOND_TENTHS,
   SECONDS,
   MINUTES,
@@ -33,7 +33,7 @@ let VALID_INPUT_VALUES = [
   DAYS
 ];
 
-let unitsInMilliseconds = {
+const unitsInMilliseconds = {
   secondTenths: 100,
   seconds: 1000,
   minutes: 60000,
@@ -41,14 +41,14 @@ let unitsInMilliseconds = {
   days: 86400000
 };
 
-let groupedUnits = {
+const groupedUnits = {
   secondTenths: SECOND_TENTHS_PER_SECOND,
   seconds: SECONDS_PER_MINUTE,
   minutes: MINUTES_PER_HOUR,
   hours: HOURS_PER_DAY
 };
 
-let events = typeof module !== 'undefined' && module.exports && typeof require === 'function' ? require('events') : undefined;
+const events = typeof module !== 'undefined' && module.exports && typeof require === 'function' ? require('events') : undefined;
 
 function hasDOM () {
   return typeof document !== 'undefined';
@@ -67,15 +67,15 @@ function mod (number, module) {
  * Can update time values with different time intervals: tenth of seconds,
  * seconds, minutes and hours.]
  */
-function Timer () {
+function Timer (defaultParams = {}) {
   /*
   * PRIVATE variables and Functions
   */
-  let counters = new TimeCounter();
+  const counters = new TimeCounter();
   let totalCounters = new TimeCounter();
 
   let intervalId;
-  let eventEmitter = hasDOM() ? document.createElement('span')
+  const eventEmitter = hasDOM() ? document.createElement('span')
     : hasEventEmitter() ? new events.EventEmitter() : undefined;
   let running = false;
   let paused = false;
@@ -89,11 +89,13 @@ function Timer () {
   let countdown;
   let startingDate;
   let targetDate;
-  let eventData = {
+  const eventData = {
     detail: {
       timer: this
     }
   };
+
+  setParams(defaultParams);
 
   function updateCounters (precision, roundedValue) {
     totalCounters[precision] = roundedValue;
@@ -128,7 +130,7 @@ function Timer () {
   }
 
   function updateUnitByPrecision (value, precision) {
-    let previousValue = totalCounters[precision];
+    const previousValue = totalCounters[precision];
     updateCounters(precision, calculateIntegerUnitQuotient(value, unitsInMilliseconds[precision]));
 
     return totalCounters[precision] !== previousValue;
@@ -158,7 +160,7 @@ function Timer () {
   }
 
   function startTimer () {
-    let interval = unitsInMilliseconds[precision];
+    const interval = unitsInMilliseconds[precision];
 
     if (isTargetAchieved(roundTimestamp(Date.now()))) {
       return;
@@ -180,8 +182,8 @@ function Timer () {
   }
 
   function updateTimerAndDispatchEvents () {
-    let currentTime = roundTimestamp(Date.now());
-    let valuesUpdated = updateTimer();
+    const currentTime = roundTimestamp(Date.now());
+    const valuesUpdated = updateTimer();
 
     dispatchEvents(valuesUpdated);
 
@@ -193,8 +195,8 @@ function Timer () {
   }
 
   function updateTimer (currentTime = roundTimestamp(Date.now())) {
-    let elapsedTime = timerTypeFactor > 0 ? (currentTime - startingDate) : (startingDate - currentTime);
-    let valuesUpdated = {};
+    const elapsedTime = timerTypeFactor > 0 ? (currentTime - startingDate) : (startingDate - currentTime);
+    const valuesUpdated = {};
 
     valuesUpdated[SECOND_TENTHS] = updateSecondTenths(elapsedTime);
     valuesUpdated[SECONDS] = updateSeconds(elapsedTime);
@@ -233,13 +235,13 @@ function Timer () {
   }
 
   function resetCounters () {
-    for (let counter in counters) {
+    for (const counter in counters) {
       if (counters.hasOwnProperty(counter) && typeof counters[counter] === 'number') {
         counters[counter] = 0;
       }
     }
 
-    for (let counter in totalCounters) {
+    for (const counter in totalCounters) {
       if (totalCounters.hasOwnProperty(counter) && typeof totalCounters[counter] === 'number') {
         totalCounters[counter] = 0;
       }
@@ -309,7 +311,7 @@ function Timer () {
         }
         values = inputValues;
       } else {
-        for (let value in inputValues) {
+        for (const value in inputValues) {
           if (VALID_INPUT_VALUES.indexOf(value) < 0) {
             throw new Error(`Error in startValues or target parameter: ${value} is not a valid input value`);
           }
@@ -338,7 +340,7 @@ function Timer () {
   }
 
   function calculateIntegerUnitQuotient (unit, divisor) {
-    let quotient = unit / divisor;
+    const quotient = unit / divisor;
 
     return quotient < 0 ? Math.ceil(quotient) : Math.floor(quotient);
   }
@@ -349,7 +351,7 @@ function Timer () {
     }
 
     targetValues = configInputValues(inputTarget);
-    let targetCounter = calculateTotalCounterFromValues(targetValues);
+    const targetCounter = calculateTotalCounterFromValues(targetValues);
     targetDate = startingDate +
       targetCounter.secondTenths *
       unitsInMilliseconds[SECOND_TENTHS] *
@@ -370,7 +372,7 @@ function Timer () {
   }
 
   function calculateTotalCounterFromValues (values, outputCounter) {
-    let total = outputCounter || {};
+    const total = outputCounter || {};
 
     total.days = values[DAYS_POSITION];
     total.hours = total.days * HOURS_PER_DAY + values[HOURS_POSITION];
@@ -407,6 +409,11 @@ function Timer () {
    * @param  {object} params [Configuration parameters]
    */
   function start (params = {}) {
+    params = {
+      ...defaultParams,
+      ...params
+    };
+
     if (isRunning()) {
       return;
     }

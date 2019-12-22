@@ -75,8 +75,8 @@ http://albert-gonzalez.github.io/easytimer.js/
 ## Basic Usage
 
 ```js
-var timer = new Timer();
-timer.start();
+var timer = new Timer(/* default config */);
+timer.start(/* config */);
 timer.addEventListener('secondsUpdated', function (e) {
     $('#basicUsage').html(timer.getTimeValues().toString());
 });
@@ -98,6 +98,8 @@ timer.addEventListener('secondsUpdated', function (e) {
                 * Default value: 'seconds'
             * callback (function): A callback function executed every time the timer is updated. The callback receives the timer as a parameter.
             * countdown (bool): If true, the timer is a countdown.
+    * You can pass this same config when a Timer instance is created. For example: `new Timer({ target: { seconds: 10 } })`.
+    This default config will be merged with the config passed to the start function.
 * stop(): Stop the timer
 * pause(): Pause the timer. After pause, you can call the start method without parameters to resume the timer.
 * reset(): Reset the timer values
