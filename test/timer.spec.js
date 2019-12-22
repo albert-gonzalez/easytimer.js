@@ -9,12 +9,12 @@ if (typeof require !== 'undefined') {
 
 describe('timer.js', function () {
   this.timeout(10000);
-  var timer,
+  let timer,
     clock;
 
   function assertTimes (timer, timesValues, totalTimesValues) {
-    var times = timer.getTimeValues();
-    var totalTimes = timer.getTotalTimeValues();
+    const times = timer.getTimeValues();
+    const totalTimes = timer.getTotalTimeValues();
 
     assert.deepEqual(times.secondTenths, timesValues[0]);
     assert.deepEqual(times.seconds, timesValues[1]);
@@ -30,7 +30,7 @@ describe('timer.js', function () {
   }
 
   function assertEventTriggered (timer, event, millisecons, timesTriggered) {
-    var callback = sinon.spy();
+    const callback = sinon.spy();
     timer.addEventListener(event, callback);
     clock.tick(millisecons);
     sinon.assert.callCount(callback, timesTriggered);
@@ -60,7 +60,7 @@ describe('timer.js', function () {
     });
 
     describe('start function', function () {
-      var startedListener;
+      let startedListener;
       beforeEach(function () {
         startedListener = sinon.spy();
         timer.addEventListener('started', startedListener);
@@ -100,7 +100,7 @@ describe('timer.js', function () {
     describe('started', function () {
       describe('regular timer', function () {
         describe('with tenth of seconds precision', function () {
-          var params;
+          let params;
           beforeEach(function () {
             params = { precision: 'secondTenths', callback: sinon.spy() };
             clock = sinon.useFakeTimers();
@@ -138,7 +138,7 @@ describe('timer.js', function () {
         });
 
         describe('with seconds precision', function () {
-          var params;
+          let params;
           beforeEach(function () {
             params = { precision: 'seconds', callback: sinon.spy() };
             clock = sinon.useFakeTimers();
@@ -171,7 +171,7 @@ describe('timer.js', function () {
         });
 
         describe('with minutes precision', function () {
-          var params;
+          let params;
           beforeEach(function () {
             params = { precision: 'minutes', callback: sinon.spy() };
             clock = sinon.useFakeTimers();
@@ -204,7 +204,7 @@ describe('timer.js', function () {
         });
 
         describe('with hours precision', function () {
-          var params;
+          let params;
           beforeEach(function () {
             params = { precision: 'hours', callback: sinon.spy() };
             clock = sinon.useFakeTimers();
@@ -234,7 +234,7 @@ describe('timer.js', function () {
 
       describe('countdown timer', function () {
         describe('with tenth of seconds precision', function () {
-          var params;
+          let params;
           beforeEach(function () {
             params = { precision: 'secondTenths', callback: sinon.spy(), startValues: { seconds: 7199 }, countdown: true };
             clock = sinon.useFakeTimers();
@@ -272,7 +272,7 @@ describe('timer.js', function () {
         });
 
         describe('with seconds precision', function () {
-          var params;
+          let params;
           beforeEach(function () {
             params = { precision: 'seconds', callback: sinon.spy(), startValues: { seconds: 7199 }, countdown: true };
             clock = sinon.useFakeTimers();
@@ -305,7 +305,7 @@ describe('timer.js', function () {
         });
 
         describe('with minutes precision', function () {
-          var params;
+          let params;
           beforeEach(function () {
             params = { precision: 'minutes', callback: sinon.spy(), startValues: { seconds: 172799 }, countdown: true };
             clock = sinon.useFakeTimers();
@@ -338,7 +338,7 @@ describe('timer.js', function () {
         });
 
         describe('with hours precision', function () {
-          var params;
+          let params;
           beforeEach(function () {
             params = { precision: 'hours', callback: sinon.spy(), startValues: { seconds: 172799 }, countdown: true };
             clock = sinon.useFakeTimers();
@@ -369,10 +369,10 @@ describe('timer.js', function () {
 
     describe('with time target', function () {
       describe('setting target params', function () {
-        var target,
+        let target,
           configTarget;
         describe('with object input', function () {
-          var emptyObjectTarget;
+          let emptyObjectTarget;
           beforeEach(function () {
             target = { secondTenths: 5, seconds: 10, minutes: 50, hours: 15, days: 2 };
             emptyObjectTarget = {};
@@ -413,7 +413,7 @@ describe('timer.js', function () {
 
         describe('with array input', function () {
           it('should throw exception if the size is incorrect', function () {
-            var target = [];
+            const target = [];
             assert.throws(function () {
               timer.start({ target: target });
             }, /Array size not valid/);
@@ -438,7 +438,7 @@ describe('timer.js', function () {
 
         it('should not start if start values and target are equal', function () {
           target = [0, 0, 95, 0, 0];
-          var startValues = [0, 0, 95, 0, 0];
+          const startValues = [0, 0, 95, 0, 0];
           timer.start({ target: target, startValues: startValues });
           assert(!timer.isRunning());
         });
@@ -482,7 +482,7 @@ describe('timer.js', function () {
 
           it('should stop when target is negative and hours counter == hours target and minutes counter == minutes target and seconds counter >= seconds target', function () {
             target = [0, -1, -5, 0, 0];
-            var start = [0, -2, -6, 0, 0];
+            const start = [0, -2, -6, 0, 0];
             timer.start({ target: target, startValues: start, precision: 'seconds' });
             assertEventTriggered(timer, 'targetAchieved', 61000, 1);
             assert(!timer.isRunning());
@@ -490,7 +490,7 @@ describe('timer.js', function () {
         });
 
         describe('with countdown timer', function () {
-          var startValues;
+          let startValues;
 
           beforeEach(function () {
             clock = sinon.useFakeTimers();
@@ -529,10 +529,10 @@ describe('timer.js', function () {
 
     describe('with start values', function () {
       describe('setting start values params', function () {
-        var startValues,
+        let startValues,
           configStartValues;
         describe('with object input', function () {
-          var emptyObjectStartValues;
+          let emptyObjectStartValues;
           beforeEach(function () {
             startValues = { secondTenths: 5, seconds: 10, minutes: 50, hours: 15, days: 1 };
             emptyObjectStartValues = {};
@@ -573,7 +573,7 @@ describe('timer.js', function () {
 
         describe('with array input', function () {
           it('should throw exception if the size is incorrect', function () {
-            var startValues = [];
+            const startValues = [];
             assert.throws(function () {
               timer.start({ startValues: startValues });
             }, /Array size not valid/);
@@ -635,8 +635,8 @@ describe('timer.js', function () {
 
       describe('Time Values Counters', function () {
         it('should have toString function', function () {
-          assert(timer.getTimeValues().hasOwnProperty('toString'));
-          assert(timer.getTotalTimeValues().hasOwnProperty('toString'));
+          assert.isDefined(timer.getTimeValues().toString);
+          assert.isDefined(timer.getTotalTimeValues().toString);
         });
 
         describe('toString function', function () {
@@ -704,7 +704,7 @@ describe('timer.js', function () {
       });
 
       it('should trigger stopped event', function () {
-        var callback = sinon.spy();
+        const callback = sinon.spy();
         timer.addEventListener('stopped', callback);
         timer.start();
         timer.stop();
@@ -714,7 +714,7 @@ describe('timer.js', function () {
     });
 
     describe('pause function', function () {
-      var params;
+      let params;
       beforeEach(function () {
         params = { startValues: { seconds: 120 }, countdown: true };
         clock = sinon.useFakeTimers();
@@ -725,7 +725,7 @@ describe('timer.js', function () {
       });
 
       it('should trigger paused event', function () {
-        var callback = sinon.spy();
+        const callback = sinon.spy();
         timer.addEventListener('paused', callback);
         timer.start();
         timer.pause();
@@ -786,7 +786,7 @@ describe('timer.js', function () {
       });
 
       it('should trigger reset event', function () {
-        var callback = sinon.spy();
+        const callback = sinon.spy();
         timer.addEventListener('reset', callback);
         timer.start();
         timer.reset();
@@ -829,8 +829,8 @@ describe('timer.js', function () {
     });
 
     describe('removeEventListener function', function () {
-      var secondsUpdatedListener;
-      var secondTimer;
+      let secondsUpdatedListener;
+      let secondTimer;
       beforeEach(function () {
         clock = sinon.useFakeTimers();
         secondsUpdatedListener = sinon.spy();
@@ -881,6 +881,64 @@ describe('timer.js', function () {
     describe('off function', () => {
       it('should be an alias of removeEventListener', () => {
         assert.equal(timer.removeEventListener, timer.off);
+      });
+    });
+
+    describe('with instance default params', () => {
+      let timer, callback;
+
+      beforeEach(() => {
+        callback = () => {};
+        timer = new Timer({ startValues: { seconds: 10 }, target: { seconds: 20 }, precision: 'minutes', callback });
+      });
+
+      afterEach(() => {
+        timer.stop();
+      });
+
+      it('should start the timer with the default params set in the instance creation', () => {
+        assert.deepEqual(timer.getConfig(), { precision: 'minutes', callback, countdown: false, target: [0, 20, 0, 0, 0], startValues: [0, 10, 0, 0, 0] });
+
+        timer.start();
+        assert.deepEqual(timer.getConfig(), { precision: 'minutes', callback, countdown: false, target: [0, 20, 0, 0, 0], startValues: [0, 10, 0, 0, 0] });
+      });
+
+      it('should merge the default params with the params set in the start function', () => {
+        assert.deepEqual(timer.getConfig(), { precision: 'minutes', callback, countdown: false, target: [0, 20, 0, 0, 0], startValues: [0, 10, 0, 0, 0] });
+
+        timer.start({ precision: 'seconds', target: { minutes: 1 }, startValues: { minutes: 1, seconds: 30 }, countdown: true });
+        assert.deepEqual(timer.getConfig(), { precision: 'seconds', callback, countdown: true, target: [0, 0, 1, 0, 0], startValues: [0, 30, 1, 0, 0] });
+      });
+
+      it('should keep the default values when the timer is stopped and started again', () => {
+        timer.start();
+        timer.stop();
+        timer.start();
+
+        assert.deepEqual(timer.getConfig(), { precision: 'minutes', callback, countdown: false, target: [0, 20, 0, 0, 0], startValues: [0, 10, 0, 0, 0] });
+      });
+
+      it('should keep the default values when the timer is reset', () => {
+        timer.start();
+        timer.reset();
+
+        assert.deepEqual(timer.getConfig(), { precision: 'minutes', callback, countdown: false, target: [0, 20, 0, 0, 0], startValues: [0, 10, 0, 0, 0] });
+      });
+
+      it('should keep the default values when the timer is paused', () => {
+        timer.start();
+        timer.pause();
+
+        assert.deepEqual(timer.getConfig(), { precision: 'minutes', callback, countdown: false, target: [0, 20, 0, 0, 0], startValues: [0, 10, 0, 0, 0] });
+      });
+
+      it('should run like a timer without default params', () => {
+        clock = sinon.useFakeTimers();
+        const target = [0, 5, 5, 0, 0];
+        timer.start({ target: target, precision: 'seconds', startValues: { seconds: 0} });
+        assertEventTriggered(timer, 'targetAchieved', 305000, 1);
+        assert(!timer.isRunning());
+        clock.restore();
       });
     });
   });
