@@ -235,17 +235,8 @@ function Timer (defaultParams = {}) {
   }
 
   function resetCounters () {
-    for (const counter in counters) {
-      if (counters.hasOwnProperty(counter) && typeof counters[counter] === 'number') {
-        counters[counter] = 0;
-      }
-    }
-
-    for (const counter in totalCounters) {
-      if (totalCounters.hasOwnProperty(counter) && typeof totalCounters[counter] === 'number') {
-        totalCounters[counter] = 0;
-      }
-    }
+    counters.reset();
+    totalCounters.reset();
   }
 
   function setParams (params) {
@@ -303,7 +294,7 @@ function Timer (defaultParams = {}) {
   }
 
   function configInputValues (inputValues) {
-    let secondTenths, seconds, minutes, hours, days, values;
+    let values;
     if (typeof inputValues === 'object') {
       if (inputValues instanceof Array) {
         if (inputValues.length !== 5) {
@@ -324,11 +315,11 @@ function Timer (defaultParams = {}) {
       }
     }
 
-    secondTenths = values[SECOND_TENTHS_POSITION];
-    seconds = values[SECONDS_POSITION] + calculateIntegerUnitQuotient(secondTenths, SECOND_TENTHS_PER_SECOND);
-    minutes = values[MINUTES_POSITION] + calculateIntegerUnitQuotient(seconds, SECONDS_PER_MINUTE);
-    hours = values[HOURS_POSITION] + calculateIntegerUnitQuotient(minutes, MINUTES_PER_HOUR);
-    days = values[DAYS_POSITION] + calculateIntegerUnitQuotient(hours, HOURS_PER_DAY);
+    const secondTenths = values[SECOND_TENTHS_POSITION];
+    const seconds = values[SECONDS_POSITION] + calculateIntegerUnitQuotient(secondTenths, SECOND_TENTHS_PER_SECOND);
+    const minutes = values[MINUTES_POSITION] + calculateIntegerUnitQuotient(seconds, SECONDS_PER_MINUTE);
+    const hours = values[HOURS_POSITION] + calculateIntegerUnitQuotient(minutes, MINUTES_PER_HOUR);
+    const days = values[DAYS_POSITION] + calculateIntegerUnitQuotient(hours, HOURS_PER_DAY);
 
     values[SECOND_TENTHS_POSITION] = secondTenths % SECOND_TENTHS_PER_SECOND;
     values[SECONDS_POSITION] = seconds % SECONDS_PER_MINUTE;

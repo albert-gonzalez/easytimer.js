@@ -2,8 +2,10 @@ import Timer from '../easytimer/easytimer';
 import $ from './jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
+import Prism from 'prismjs';
 
 window.jQuery = $;
+Prism.highlightAll();
 
 $(function () {
   $('.nav-tabs a').click(function (e) {
@@ -97,11 +99,13 @@ $(function () {
 
 $(function () {
   var timer = new Timer();
-  timer.start({ callback: function (timer) {
-    $('#callbackExample .values').html(
-      'Hello, I am a callback and I am counting time: ' + timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths'])
-    );
-  } });
+  timer.start({
+    callback: function (timer) {
+      $('#callbackExample .values').html(
+        'Hello, I am a callback and I am counting time: ' + timer.getTimeValues().toString(['days', 'hours', 'minutes', 'seconds', 'secondTenths'])
+      );
+    }
+  });
 });
 
 $(function () {

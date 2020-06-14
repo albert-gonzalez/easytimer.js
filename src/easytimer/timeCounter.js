@@ -1,12 +1,6 @@
 import leftPadding from './leftPadding';
 
 function TimeCounter () {
-  this.secondTenths = 0;
-  this.seconds = 0;
-  this.minutes = 0;
-  this.hours = 0;
-  this.days = 0;
-
   /**
    * [toString convert the counted values on a string]
    * @param  {array} units           [array with the units to display]
@@ -19,8 +13,7 @@ function TimeCounter () {
     separator = separator || ':';
     leftZeroPadding = leftZeroPadding || 2;
 
-    let stringTime;
-    let arrayTime = [];
+    const arrayTime = [];
     let i;
 
     for (i = 0; i < units.length; i = i + 1) {
@@ -32,10 +25,19 @@ function TimeCounter () {
         }
       }
     }
-    stringTime = arrayTime.join(separator);
 
-    return stringTime;
+    return arrayTime.join(separator);
   };
+
+  this.reset = function () {
+    this.secondTenths = 0;
+    this.seconds = 0;
+    this.minutes = 0;
+    this.hours = 0;
+    this.days = 0;
+  };
+
+  this.reset();
 }
 
 export default TimeCounter;

@@ -1,7 +1,7 @@
 /**
  * easytimer.js
- * Generated: 2019-12-22
- * Version: 4.1.1
+ * Generated: 2020-06-14
+ * Version: 4.2.0
  */
 
 (function (global, factory) {
@@ -11,6 +11,8 @@
 }(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
+    "@babel/helpers - typeof";
+
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       _typeof = function (obj) {
         return typeof obj;
@@ -90,11 +92,6 @@
   }
 
   function TimeCounter() {
-    this.secondTenths = 0;
-    this.seconds = 0;
-    this.minutes = 0;
-    this.hours = 0;
-    this.days = 0;
     /**
      * [toString convert the counted values on a string]
      * @param  {array} units           [array with the units to display]
@@ -102,7 +99,6 @@
      * @param  {number} leftZeroPadding [number of zero padding]
      * @return {string}                 [result string]
      */
-
     this.toString = function () {
       var units = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['hours', 'minutes', 'seconds'];
       var separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ':';
@@ -110,7 +106,6 @@
       units = units || ['hours', 'minutes', 'seconds'];
       separator = separator || ':';
       leftZeroPadding = leftZeroPadding || 2;
-      var stringTime;
       var arrayTime = [];
       var i;
 
@@ -124,9 +119,18 @@
         }
       }
 
-      stringTime = arrayTime.join(separator);
-      return stringTime;
+      return arrayTime.join(separator);
     };
+
+    this.reset = function () {
+      this.secondTenths = 0;
+      this.seconds = 0;
+      this.minutes = 0;
+      this.hours = 0;
+      this.days = 0;
+    };
+
+    this.reset();
   }
 
   /*
@@ -363,17 +367,8 @@
     }
 
     function resetCounters() {
-      for (var counter in counters) {
-        if (counters.hasOwnProperty(counter) && typeof counters[counter] === 'number') {
-          counters[counter] = 0;
-        }
-      }
-
-      for (var _counter in totalCounters) {
-        if (totalCounters.hasOwnProperty(_counter) && typeof totalCounters[_counter] === 'number') {
-          totalCounters[_counter] = 0;
-        }
-      }
+      counters.reset();
+      totalCounters.reset();
     }
 
     function setParams(params) {
@@ -428,7 +423,7 @@
     }
 
     function configInputValues(inputValues) {
-      var secondTenths, seconds, minutes, hours, days, values;
+      var values;
 
       if (_typeof(inputValues) === 'object') {
         if (inputValues instanceof Array) {
@@ -448,11 +443,11 @@
         }
       }
 
-      secondTenths = values[SECOND_TENTHS_POSITION];
-      seconds = values[SECONDS_POSITION] + calculateIntegerUnitQuotient(secondTenths, SECOND_TENTHS_PER_SECOND);
-      minutes = values[MINUTES_POSITION] + calculateIntegerUnitQuotient(seconds, SECONDS_PER_MINUTE);
-      hours = values[HOURS_POSITION] + calculateIntegerUnitQuotient(minutes, MINUTES_PER_HOUR);
-      days = values[DAYS_POSITION] + calculateIntegerUnitQuotient(hours, HOURS_PER_DAY);
+      var secondTenths = values[SECOND_TENTHS_POSITION];
+      var seconds = values[SECONDS_POSITION] + calculateIntegerUnitQuotient(secondTenths, SECOND_TENTHS_PER_SECOND);
+      var minutes = values[MINUTES_POSITION] + calculateIntegerUnitQuotient(seconds, SECONDS_PER_MINUTE);
+      var hours = values[HOURS_POSITION] + calculateIntegerUnitQuotient(minutes, MINUTES_PER_HOUR);
+      var days = values[DAYS_POSITION] + calculateIntegerUnitQuotient(hours, HOURS_PER_DAY);
       values[SECOND_TENTHS_POSITION] = secondTenths % SECOND_TENTHS_PER_SECOND;
       values[SECONDS_POSITION] = seconds % SECONDS_PER_MINUTE;
       values[MINUTES_POSITION] = minutes % MINUTES_PER_HOUR;
@@ -527,7 +522,7 @@
 
     function start() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      params = _objectSpread2({}, defaultParams, {}, params);
+      params = _objectSpread2(_objectSpread2({}, defaultParams), params);
 
       if (isRunning()) {
         return;
