@@ -92,30 +92,18 @@
           </ul>
           <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="amd">
-                <p>
-                    <pre>
-require(['lib/easytimer/dist/easytimer.min.js'], function (easytimer) {
+                    <pre><code class="language-js">require(['lib/easytimer/dist/easytimer.min.js'], function (easytimer) {
     var timer = new easytimer.Timer();
-});
-                    </pre>
-                </p>
+});</code></pre>
               </div>
               <div class="tab-pane" id="node">
-              <p>
-                    <pre>
-var { Timer } = require('lib/easytimer/dist/easytimer.min.js');
-                    </pre>
-                </p>
+                <pre><code class="language-js">var { Timer } = require('lib/easytimer/dist/easytimer.min.js');</code></pre>
               </div>
               <div class="tab-pane" id="script">
-                <p>
-                    <pre>
-&lt;script src="lib/easytimer/dist/easytimer.min.js"&gt;&lt;/script&gt;
+                    <pre><code class="language-html">&lt;script src="lib/easytimer/dist/easytimer.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
     var timerInstance = new easytimer.Timer();
-&lt;/script&gt;
-                    </pre>
-                </p>
+&lt;/script&gt;</code></pre>
               </div>
           </div>
           <h4 id="basicUsageExample">Basic Usage</h4>
@@ -130,21 +118,16 @@ var { Timer } = require('lib/easytimer/dist/easytimer.min.js');
           </ul>
           <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="buJs">
-            <p>
-                <pre>
-var timer = new Timer();
+                <pre><code class="language-js">var timer = new Timer();
 timer.start();
+
 timer.addEventListener('secondsUpdated', function (e) {
     $('#basicUsage').html(timer.getTimeValues().toString());
-});
-                </pre>
-            </p>
+});</code></pre>
             </div>
             <div class="tab-pane" id="buHtml">
             <p>
-                <pre>
-&lt;div id="basicUsage"&gt;00:00:00&lt;/div&gt;
-                </pre>
+              <pre><code class="language-html">&lt;div id="basicUsage"&gt;00:00:00&lt;/div&gt;</code></pre>
             </p>
             </div>
           </div>
@@ -167,9 +150,7 @@ timer.addEventListener('secondsUpdated', function (e) {
           </ul>
           <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="gvJs">
-            <p>
-                <pre>
-var timer = new Timer();
+                <pre><code class="language-js">var timer = new Timer();
 timer.start({precision: 'seconds'});
 timer.addEventListener('secondsUpdated', function (e) {
     $('#gettingValuesExample .days').html(timer.getTimeValues().days);
@@ -183,14 +164,10 @@ timer.addEventListener('secondsUpdated', function (e) {
     $('#gettingTotalValuesExample .minutes').html(timer.getTotalTimeValues().minutes);
     $('#gettingTotalValuesExample .seconds').html(timer.getTotalTimeValues().seconds);
     $('#gettingTotalValuesExample .secondTenths').html(timer.getTotalTimeValues().secondTenths);
-});
-                </pre>
-            </p>
+});</code></pre>
             </div>
             <div class="tab-pane" id="gvHtml">
-            <p>
-                <pre>
-&lt;div&gt;&lt;strong&gt;Values:&lt;/strong&gt;&lt;/div&gt;
+                <pre><code class="language-html">&lt;div&gt;&lt;strong&gt;Values:&lt;/strong&gt;&lt;/div&gt;
 &lt;div id="gettingValuesExample"&gt;
     &lt;span class="days"&gt;0&lt;/span&gt;&lt;span&gt; days&lt;/span&gt;
     &lt;span class="hours"&gt;0&lt;/span&gt;&lt;span&gt; hours&lt;/span&gt;
@@ -205,9 +182,7 @@ timer.addEventListener('secondsUpdated', function (e) {
     &lt;span class="minutes"&gt;0&lt;/span&gt;&lt;span&gt; minutes&lt;/span&gt;
     &lt;span class="seconds"&gt;0&lt;/span&gt;&lt;span&gt; seconds&lt;/span&gt;
     &lt;span class="secondTenths"&gt;0&lt;/span&gt;&lt;span&gt; tenth of seconds&lt;/span&gt;
-&lt;/div&gt;
-                </pre>
-            </p>
+&lt;/div&gt;</code></pre>
             </div>
           </div>
           <h5>Result</h5>
@@ -243,37 +218,37 @@ timer.addEventListener('secondsUpdated', function (e) {
           </ul>
           <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="chronoJs">
-            <p>
-                <pre>
-var timer = new Timer();
+                <pre><code class="language-js">var timer = new Timer();
 $('#chronoExample .startButton').click(function () {
     timer.start();
 });
+
 $('#chronoExample .pauseButton').click(function () {
     timer.pause();
 });
+
 $('#chronoExample .stopButton').click(function () {
     timer.stop();
 });
+
 $('#chronoExample .resetButton').click(function () {
     timer.reset();
 });
+
 timer.addEventListener('secondsUpdated', function (e) {
     $('#chronoExample .values').html(timer.getTimeValues().toString());
 });
+
 timer.addEventListener('started', function (e) {
     $('#chronoExample .values').html(timer.getTimeValues().toString());
 });
+
 timer.addEventListener('reset', function (e) {
     $('#chronoExample .values').html(timer.getTimeValues().toString());
-});
-                </pre>
-            </p>
+});</code></pre>
             </div>
             <div class="tab-pane" id="chronoHtml">
-            <p>
-                <pre>
-&lt;div id="chronoExample"&gt;
+                <pre><code class="language-html">&lt;div id="chronoExample"&gt;
     &lt;div class="values"&gt;00:00:00&lt;/div&gt;
     &lt;div&gt;
         &lt;button class="startButton"&gt;Start&lt;/button&gt;
@@ -281,9 +256,7 @@ timer.addEventListener('reset', function (e) {
         &lt;button class="stopButton"&gt;Stop&lt;/button&gt;
         &lt;button class="resetButton"&gt;Reset&lt;/button&gt;
     &lt;/div&gt;
-&lt;/div&gt;
-                </pre>
-            </p>
+&lt;/div&gt;</code></pre>
             </div>
           </div>
           <h5>Result</h5>
@@ -312,30 +285,25 @@ timer.addEventListener('reset', function (e) {
           </ul>
           <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="svJs">
-            <p>
-                <pre>
-var timer = new Timer();
+                <pre><code class="language-js">var timer = new Timer();
 timer.start({precision: 'seconds', startValues: {seconds: 90}, target: {seconds: 120}});
+
 $('#startValuesAndTargetExample .values').html(timer.getTimeValues().toString());
+
 timer.addEventListener('secondsUpdated', function (e) {
     $('#startValuesAndTargetExample .values').html(timer.getTimeValues().toString());
     $('#startValuesAndTargetExample .progress_bar').html($('#startValuesAndTargetExample .progress_bar').html() + '.');
 });
+
 timer.addEventListener('targetAchieved', function (e) {
     $('#startValuesAndTargetExample .progress_bar').html('COMPLETE!!');
-});
-                </pre>
-            </p>
+});</code></pre>
             </div>
             <div class="tab-pane" id="svHtml">
-            <p>
-                <pre>
-&lt;div id="startValuesAndTargetExample"&gt;
+                <pre><code class="language-html">&lt;div id="startValuesAndTargetExample"&gt;
     &lt;div class="values"&gt;&lt;/div&gt;
     &lt;div class="progress_bar"&gt;.&lt;/div&gt;
-&lt;/div&gt;
-                </pre>
-            </p>
+&lt;/div&gt;</code></pre>
             </div>
           </div>
           <h5>Result</h5>
@@ -358,28 +326,23 @@ timer.addEventListener('targetAchieved', function (e) {
           </ul>
           <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="cdJs">
-            <p>
-                <pre>
-var timer = new Timer();
+                <pre><code class="language-js">var timer = new Timer();
 timer.start({countdown: true, startValues: {seconds: 30}});
+
 $('#countdownExample .values').html(timer.getTimeValues().toString());
+
 timer.addEventListener('secondsUpdated', function (e) {
     $('#countdownExample .values').html(timer.getTimeValues().toString());
 });
+
 timer.addEventListener('targetAchieved', function (e) {
     $('#countdownExample .values').html('KABOOM!!');
-});
-                </pre>
-            </p>
+});</code></pre>
             </div>
             <div class="tab-pane" id="cdHtml">
-            <p>
-                <pre>
-&lt;div id="countdownExample"&gt;
+                <pre><code class="language-html">&lt;div id="countdownExample"&gt;
     &lt;div class="values"&gt;&lt;/div&gt;
-&lt;/div&gt;
-                </pre>
-            </p>
+&lt;/div&gt;</code></pre>
             </div>
           </div>
           <h5>Result</h5>
@@ -400,24 +363,17 @@ timer.addEventListener('targetAchieved', function (e) {
           </ul>
           <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="cbJs">
-            <p>
-                <pre>
-var timer = new Timer();
+                <pre><code class="language-js">var timer = new Timer();
 timer.start({callback: function (timer) {
     $('#callbackExample .values').html(
-        'Hello, I am a callback and I am counting time: ' + timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths'])
+        'Hello, I am a callback and I am counting time: ' + timer.getTimeValues().toString(['days', 'hours', 'minutes', 'seconds', 'secondTenths'])
     );
-}});            </pre>
-            </p>
+}});</code></pre>
             </div>
             <div class="tab-pane" id="cbHtml">
-            <p>
-                <pre>
-&lt;div id="callbackExample"&gt;
+                <pre><code class="language-html">&lt;div id="callbackExample"&gt;
     &lt;div class="values"&gt;&lt;/div&gt;
-&lt;/div&gt;
-                </pre>
-            </p>
+&lt;/div&gt;</code></pre>
             </div>
           </div>
           <h5>Result</h5>
@@ -440,21 +396,19 @@ timer.start({callback: function (timer) {
           <div class="tab-content bg-light p-2 mb-4">
               <div class="tab-pane active in" id="tsJs">
             <p>
-                <pre>
-var timer = new Timer();
+                <pre><code class="language-js">var timer = new Timer();
 timer.start({precision: 'secondTenths'});
+
 timer.addEventListener('secondTenthsUpdated', function (e) {
     $('#secondTenthsExample .values').html(timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
-});            </pre>
+});</code></pre>
             </p>
             </div>
             <div class="tab-pane" id="tsHtml">
             <p>
-                <pre>
-&lt;div id="secondTenthsExample"&gt;
+                <pre><code class="language-html">&lt;div id="secondTenthsExample"&gt;
     &lt;div class="values"&gt;&lt;/div&gt;
-&lt;/div&gt;
-                </pre>
+&lt;/div&gt;</code></pre>
             </p>
             </div>
           </div>
@@ -479,33 +433,28 @@ timer.addEventListener('secondTenthsUpdated', function (e) {
           </p>
           <h5>Source code</h5>
           <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item"><a class="nav-link active" href="#tsJs">Javascript</a></li>
-            <li class="nav-item"><a class="nav-link" href="#tsHtml">HTML</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#dpJs">Javascript</a></li>
+            <li class="nav-item"><a class="nav-link" href="#dpHtml">HTML</a></li>
           </ul>
           <div class="tab-content bg-light p-2 mb-4">
             <div class="tab-pane active in" id="dpJs">
-              <p>
-              <pre>
-var timer = new Timer({ countdown: true, startValues: { seconds: 5 } });
+                <pre><code class="language-js">var timer = new Timer({ countdown: true, startValues: { seconds: 5 } });
 
 timer.start({ startValues: { seconds: 30 }, target: { seconds: 10 } });
 $('#defaultParamsExample .values').html(timer.getTimeValues().toString());
+
 timer.addEventListener('secondsUpdated', function (e) {
   $('#defaultParamsExample .values').html(timer.getTimeValues().toString());
 });
+
 timer.addEventListener('targetAchieved', function (e) {
   $('#defaultParamsExample .values').html('The bomb has been defused!');
-});            </pre>
-              </p>
+});</code></pre>
             </div>
             <div class="tab-pane" id="dpHtml">
-              <p>
-              <pre>
-&lt;div id="defaultParamsExample"&gt;
+                <pre><code class="language-html">&lt;div id="defaultParamsExample"&gt;
     &lt;div class="values"&gt;&lt;/div&gt;
-&lt;/div&gt;
-                </pre>
-              </p>
+&lt;/div&gt;</code></pre>
             </div>
           </div>
           <h5>Result</h5>

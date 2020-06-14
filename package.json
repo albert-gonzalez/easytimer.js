@@ -32,28 +32,30 @@
   "author": "Albert Gonzalez",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/preset-env": "^7.7.7",
-    "bootstrap": "^4.4.1",
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "babel-plugin-prismjs": "^2.0.1",
+    "bootstrap": "^4.5.0",
     "chai": "^4.2.0",
-    "eslint": "^6.8.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-node": "^10.0.0",
+    "eslint": "^7.2.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "http-server": "~0.12.0",
-    "jquery": "^3.4.1",
-    "mocha": "^6.2.2",
-    "popper.js": "^1.16.0",
-    "rollup": "^1.27.13",
-    "rollup-plugin-babel": "^4.3.3",
+    "http-server": "~0.12.3",
+    "jquery": "^3.5.1",
+    "mocha": "^8.0.1",
+    "popper.js": "^1.16.1",
+    "prismjs": "^1.20.0",
+    "rollup": "^2.16.1",
+    "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-css-only": "^1.0.0",
-    "rollup-plugin-license": "^0.13.0",
+    "rollup-plugin-css-only": "^2.1.0",
+    "rollup-plugin-license": "^2.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-uglify": "^6.0.4",
-    "sinon": "^7.5.0"
+    "sinon": "^9.0.2"
   },
   "babel": {
     "presets": [
@@ -61,6 +63,19 @@
         "@babel/env",
         {
           "modules": false
+        }
+      ]
+    ],
+    "plugins": [
+      [
+        "prismjs",
+        {
+          "languages": [
+            "javascript",
+            "html"
+          ],
+          "theme": "tomorrow",
+          "css": true
         }
       ]
     ]
