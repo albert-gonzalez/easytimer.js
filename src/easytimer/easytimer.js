@@ -3,7 +3,6 @@
  */
 
 import TimeCounter from './timeCounter';
-import './customEventPolyfill';
 import EventEmitter from './eventEmitter';
 
 /*
