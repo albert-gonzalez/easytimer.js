@@ -4,6 +4,7 @@
 
 import TimeCounter from './timeCounter';
 import './customEventPolyfill';
+import EventEmitter from './eventEmitter';
 
 /*
  * General functions, variables and constants
@@ -48,16 +49,6 @@ const groupedUnits = {
   hours: HOURS_PER_DAY
 };
 
-const events = typeof module !== 'undefined' && module.exports && typeof require === 'function' ? require('events') : undefined;
-
-function hasDOM () {
-  return typeof document !== 'undefined';
-}
-
-function hasEventEmitter () {
-  return events;
-}
-
 function mod (number, module) {
   return ((number % module) + module) % module;
 }
@@ -75,8 +66,7 @@ function Timer (defaultParams = {}) {
   let totalCounters = new TimeCounter();
 
   let intervalId;
-  const eventEmitter = hasDOM() ? document.createElement('span')
-    : hasEventEmitter() ? new events.EventEmitter() : undefined;
+  const eventEmitter = new EventEmitter();
   let running = false;
   let paused = false;
   let precision;
@@ -430,11 +420,7 @@ function Timer (defaultParams = {}) {
    * @param {function} listener   [the event listener function]
    */
   function addEventListener (eventType, listener) {
-    if (hasDOM()) {
-      eventEmitter.addEventListener(eventType, listener);
-    } else if (hasEventEmitter()) {
-      eventEmitter.on(eventType, listener);
-    }
+    eventEmitter.on(eventType, listener);
   }
 
   /**
@@ -443,11 +429,7 @@ function Timer (defaultParams = {}) {
    * @param  {function} listener [listener to remove]
    */
   function removeEventListener (eventType, listener) {
-    if (hasDOM()) {
-      eventEmitter.removeEventListener(eventType, listener);
-    } else if (hasEventEmitter()) {
-      eventEmitter.removeListener(eventType, listener);
-    }
+    eventEmitter.removeListener(eventType, listener);
   }
 
   /**
@@ -456,11 +438,7 @@ function Timer (defaultParams = {}) {
    * @param data
    */
   function dispatchEvent (eventType, data) {
-    if (hasDOM()) {
-      eventEmitter.dispatchEvent(new CustomEvent(eventType, data));
-    } else if (hasEventEmitter()) {
-      eventEmitter.emit(eventType, data);
-    }
+    eventEmitter.emit(eventType, data);
   }
 
   /**
