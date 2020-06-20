@@ -1,7 +1,7 @@
 /**
  * easytimer.js
- * Generated: 2020-06-14
- * Version: 4.2.0
+ * Generated: 2020-06-20
+ * Version: 4.3.0
  */
 
 (function (global, factory) {
@@ -92,67 +92,92 @@
   }
 
   function TimeCounter() {
-    /**
-     * [toString convert the counted values on a string]
-     * @param  {array} units           [array with the units to display]
-     * @param  {string} separator       [separator of the units]
-     * @param  {number} leftZeroPadding [number of zero padding]
-     * @return {string}                 [result string]
-     */
-    this.toString = function () {
-      var units = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['hours', 'minutes', 'seconds'];
-      var separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ':';
-      var leftZeroPadding = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
-      units = units || ['hours', 'minutes', 'seconds'];
-      separator = separator || ':';
-      leftZeroPadding = leftZeroPadding || 2;
-      var arrayTime = [];
-      var i;
-
-      for (i = 0; i < units.length; i = i + 1) {
-        if (this[units[i]] !== undefined) {
-          if (units[i] === 'secondTenths') {
-            arrayTime.push(this[units[i]]);
-          } else {
-            arrayTime.push(leftPadding(this[units[i]], leftZeroPadding, '0'));
-          }
-        }
-      }
-
-      return arrayTime.join(separator);
-    };
-
-    this.reset = function () {
-      this.secondTenths = 0;
-      this.seconds = 0;
-      this.minutes = 0;
-      this.hours = 0;
-      this.days = 0;
-    };
-
     this.reset();
   }
+  /**
+   * [toString convert the counted values on a string]
+   * @param  {array} units           [array with the units to display]
+   * @param  {string} separator       [separator of the units]
+   * @param  {number} leftZeroPadding [number of zero padding]
+   * @return {string}                 [result string]
+   */
 
-  /*
-  * Polyfill por IE9, IE10 and IE11
-  */
-  var CustomEvent$1 = typeof window !== 'undefined' ? window.CustomEvent : undefined;
 
-  if (typeof window !== 'undefined' && typeof CustomEvent$1 !== 'function') {
-    CustomEvent$1 = function CustomEvent(event, params) {
-      params = params || {
-        bubbles: false,
-        cancelable: false,
-        detail: undefined
-      };
-      var evt = document.createEvent('CustomEvent');
-      evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-      return evt;
-    };
+  TimeCounter.prototype.toString = function () {
+    var units = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['hours', 'minutes', 'seconds'];
+    var separator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ':';
+    var leftZeroPadding = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
+    units = units || ['hours', 'minutes', 'seconds'];
+    separator = separator || ':';
+    leftZeroPadding = leftZeroPadding || 2;
+    var arrayTime = [];
+    var i;
 
-    CustomEvent$1.prototype = window.Event.prototype;
-    window.CustomEvent = CustomEvent$1;
+    for (i = 0; i < units.length; i = i + 1) {
+      if (this[units[i]] !== undefined) {
+        if (units[i] === 'secondTenths') {
+          arrayTime.push(this[units[i]]);
+        } else {
+          arrayTime.push(leftPadding(this[units[i]], leftZeroPadding, '0'));
+        }
+      }
+    }
+
+    return arrayTime.join(separator);
+  };
+  /**
+   * [reset reset counter]
+   */
+
+
+  TimeCounter.prototype.reset = function () {
+    this.secondTenths = 0;
+    this.seconds = 0;
+    this.minutes = 0;
+    this.hours = 0;
+    this.days = 0;
+  };
+
+  function EventEmitter() {
+    this.events = {};
   }
+
+  EventEmitter.prototype.on = function (event, listener) {
+    var _this = this;
+
+    if (!Array.isArray(this.events[event])) {
+      this.events[event] = [];
+    }
+
+    this.events[event].push(listener);
+    return function () {
+      return _this.removeListener(event, listener);
+    };
+  };
+
+  EventEmitter.prototype.removeListener = function (event, listener) {
+    if (Array.isArray(this.events[event])) {
+      var eventIndex = this.events[event].indexOf(listener);
+
+      if (eventIndex > -1) {
+        this.events[event].splice(eventIndex, 1);
+      }
+    }
+  };
+
+  EventEmitter.prototype.emit = function (event) {
+    var _this2 = this;
+
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    if (Array.isArray(this.events[event])) {
+      this.events[event].forEach(function (listener) {
+        return listener.apply(_this2, args);
+      });
+    }
+  };
 
   /*
    * General functions, variables and constants
@@ -186,15 +211,6 @@
     minutes: MINUTES_PER_HOUR,
     hours: HOURS_PER_DAY
   };
-  var events = typeof module !== 'undefined' && module.exports && typeof require === 'function' ? require('events') : undefined;
-
-  function hasDOM() {
-    return typeof document !== 'undefined';
-  }
-
-  function hasEventEmitter() {
-    return events;
-  }
 
   function mod(number, module) {
     return (number % module + module) % module;
@@ -215,7 +231,7 @@
     var counters = new TimeCounter();
     var totalCounters = new TimeCounter();
     var intervalId;
-    var eventEmitter = hasDOM() ? document.createElement('span') : hasEventEmitter() ? new events.EventEmitter() : undefined;
+    var eventEmitter = new EventEmitter();
     var running = false;
     var paused = false;
     var precision;
@@ -551,11 +567,7 @@
 
 
     function addEventListener(eventType, listener) {
-      if (hasDOM()) {
-        eventEmitter.addEventListener(eventType, listener);
-      } else if (hasEventEmitter()) {
-        eventEmitter.on(eventType, listener);
-      }
+      eventEmitter.on(eventType, listener);
     }
     /**
      * [removeEventListener Removes event listener to the timer]
@@ -565,11 +577,7 @@
 
 
     function removeEventListener(eventType, listener) {
-      if (hasDOM()) {
-        eventEmitter.removeEventListener(eventType, listener);
-      } else if (hasEventEmitter()) {
-        eventEmitter.removeListener(eventType, listener);
-      }
+      eventEmitter.removeListener(eventType, listener);
     }
     /**
      * [dispatchEvent dispatches an event]
@@ -579,11 +587,7 @@
 
 
     function dispatchEvent(eventType, data) {
-      if (hasDOM()) {
-        eventEmitter.dispatchEvent(new CustomEvent(eventType, data));
-      } else if (hasEventEmitter()) {
-        eventEmitter.emit(eventType, data);
-      }
+      eventEmitter.emit(eventType, data);
     }
     /**
      * [isRunning return true if the timer is running]
