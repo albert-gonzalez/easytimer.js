@@ -135,3 +135,9 @@ Easytimer uses dispatchEvent, and this feature is available in these Browsers:
 * Opera (version >= 9)
 * Safari (version >= 3)
 * Mobile browsers
+
+## Known Issues
+
+This library uses the Date class to calculate timer values. Date uses the system clock. If this clock is changed to a 
+different date while the timer is running the timer values will be incorrect after that. If you know a way to fix that
+without losing time precision, please collaborate!
