@@ -6,4 +6,5 @@ bower.json
 rollup.config.js
 dist/examples*
 src/examples/*
+.github/*
 index.html
