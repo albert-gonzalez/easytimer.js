@@ -87,14 +87,15 @@ function Timer (defaultParams = {}) {
   setParams(defaultParams);
 
   function updateCounters (precision, roundedValue) {
+    const unitsPerGroup = groupedUnits[precision];
     totalCounters[precision] = roundedValue;
 
     if (precision === DAYS) {
-      counters[precision] = roundedValue;
+      counters[precision] = Math.abs(roundedValue);
     } else if (roundedValue >= 0) {
-      counters[precision] = mod(roundedValue, groupedUnits[precision]);
+      counters[precision] = mod(roundedValue, unitsPerGroup);
     } else {
-      counters[precision] = groupedUnits[precision] - mod(roundedValue, groupedUnits[precision]);
+      counters[precision] = mod(unitsPerGroup - mod(roundedValue, unitsPerGroup), unitsPerGroup);
     }
   }
 
