@@ -15,7 +15,7 @@ $(function () {
 });
 
 $(function () {
-  var timer = new Timer();
+  const timer = new Timer();
   timer.start();
   timer.addEventListener('secondsUpdated', function (e) {
     $('#basicUsage').html(timer.getTimeValues().toString());
@@ -23,7 +23,7 @@ $(function () {
 });
 
 $(function () {
-  var timer = new Timer();
+  const timer = new Timer();
   timer.start({ precision: 'seconds' });
   timer.addEventListener('secondsUpdated', function (e) {
     $('#gettingValuesExample .days').html(timer.getTimeValues().days);
@@ -41,7 +41,7 @@ $(function () {
 });
 
 $(function () {
-  var timer = new Timer();
+  const timer = new Timer();
 
   $('#chronoExample .startButton').click(function () {
     timer.start();
@@ -73,7 +73,7 @@ $(function () {
 });
 
 $(function () {
-  var timer = new Timer();
+  const timer = new Timer();
   timer.start({ precision: 'seconds', startValues: { seconds: 90 }, target: { seconds: 120 } });
   $('#startValuesAndTargetExample .values').html(timer.getTimeValues().toString());
   timer.addEventListener('secondsUpdated', function (e) {
@@ -86,7 +86,7 @@ $(function () {
 });
 
 $(function () {
-  var timer = new Timer();
+  const timer = new Timer();
   timer.start({ countdown: true, startValues: { seconds: 30 } });
   $('#countdownExample .values').html(timer.getTimeValues().toString());
   timer.addEventListener('secondsUpdated', function (e) {
@@ -98,7 +98,7 @@ $(function () {
 });
 
 $(function () {
-  var timer = new Timer();
+  const timer = new Timer();
   timer.start({
     callback: function (timer) {
       $('#callbackExample .values').html(
@@ -109,7 +109,7 @@ $(function () {
 });
 
 $(function () {
-  var timer = new Timer();
+  const timer = new Timer();
   timer.start({ precision: 'secondTenths' });
   timer.addEventListener('secondTenthsUpdated', function (e) {
     $('#secondTenthsExample .values').html(timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']));
@@ -117,7 +117,7 @@ $(function () {
 });
 
 $(function () {
-  var timer = new Timer({ countdown: true, startValues: { seconds: 5 } });
+  const timer = new Timer({ countdown: true, startValues: { seconds: 5 } });
 
   timer.start({ startValues: { seconds: 30 }, target: { seconds: 10 } });
   $('#defaultParamsExample .values').html(timer.getTimeValues().toString());

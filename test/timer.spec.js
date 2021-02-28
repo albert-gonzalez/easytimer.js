@@ -26,13 +26,13 @@ describe('timer.js', function () {
     assert.deepEqual(totalTimes.seconds, totalTimesValues[1]);
     assert.deepEqual(totalTimes.minutes, totalTimesValues[2]);
     assert.deepEqual(totalTimes.hours, totalTimesValues[3]);
-    assert.deepEqual(totalTimes.days, timesValues[4]);
+    assert.deepEqual(totalTimes.days, totalTimesValues[4]);
   }
 
-  function assertEventTriggered (timer, event, millisecons, timesTriggered) {
+  function assertEventTriggered (timer, event, milliseconds, timesTriggered) {
     const callback = sinon.spy();
     timer.addEventListener(event, callback);
-    clock.tick(millisecons);
+    clock.tick(milliseconds);
     sinon.assert.callCount(callback, timesTriggered);
     assert.equal(timer, callback.args[0][0].detail.timer);
   }
@@ -135,6 +135,15 @@ describe('timer.js', function () {
             clock.tick(100);
             assert(params.callback.called);
           });
+
+          it('should allow negative values and update the counter correctly', function () {
+            const startValues = { seconds: -10 };
+            timer.stop();
+            timer.start({ startValues: startValues, precision: 'secondTenths' });
+
+            assertEventTriggered(timer, 'secondTenthsUpdated', 1000, 10);
+            assertTimes(timer, [0, 9, 0, 0, 0], [-90, -9, -0, -0, -0]);
+          });
         });
 
         describe('with seconds precision', function () {
@@ -167,6 +176,15 @@ describe('timer.js', function () {
           it('should execute callback every second', function () {
             clock.tick(1000);
             assert(params.callback.called);
+          });
+
+          it('should allow negative values and update the counter correctly', function () {
+            const startValues = { seconds: -10 };
+            timer.stop();
+            timer.start({ startValues, precision: 'seconds' });
+
+            assertEventTriggered(timer, 'secondsUpdated', 11000, 11);
+            assertTimes(timer, [0, 1, 0, 0, 0], [10, 1, 0, 0, 0]);
           });
         });
 
@@ -201,6 +219,15 @@ describe('timer.js', function () {
             clock.tick(60000);
             sinon.assert.callCount(params.callback, 1);
           });
+
+          it('should allow negative values and update the counter correctly', function () {
+            const startValues = { minutes: -2, seconds: -35 };
+            timer.stop();
+            timer.start({ startValues, precision: 'minutes' });
+
+            assertEventTriggered(timer, 'minutesUpdated', 120000, 2);
+            assertTimes(timer, [0, 35, 0, 0, 0], [-350, -35, -0, -0, -0]);
+          });
         });
 
         describe('with hours precision', function () {
@@ -228,6 +255,15 @@ describe('timer.js', function () {
           it('should execute callback every 3600 seconds', function () {
             clock.tick(3600000);
             sinon.assert.callCount(params.callback, 1);
+          });
+
+          it('should allow negative values and update the counter correctly', function () {
+            const startValues = { hours: -1, minutes: -14 };
+            timer.stop();
+            timer.start({ startValues, precision: 'hours' });
+
+            assertEventTriggered(timer, 'hoursUpdated', 3600000, 1);
+            assertTimes(timer, [0, 0, 14, 0, 0], [-8400, -840, -14, -0, -0]);
           });
         });
       });

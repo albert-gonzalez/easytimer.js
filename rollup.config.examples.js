@@ -13,7 +13,7 @@ export default {
   plugins: [
     resolve(),
     commonjs(),
-    css({ output: 'dist/examples.min.css' }),
+    css({ output: 'examples.min.css' }),
     babel({
       exclude: 'node_modules/**'
     }),
