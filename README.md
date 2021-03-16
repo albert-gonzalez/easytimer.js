@@ -113,6 +113,7 @@ If you want to use EasyTimer with React, you can use the EasyTimer React Hook. Y
 - pause(): Pause the timer. After pause, you can call the start method without parameters to resume the timer.
 - reset(): Reset the timer values
 - isRunning(): Returns true if the timer is currently running.
+- isPaused(): Returns true if the timer is paused.
 - addEventListener(eventType, callback): Add a listener to an event. Timer triggers events when is updated
   - Events triggered:
     - secondTenthsUpdated
@@ -133,6 +134,7 @@ If you want to use EasyTimer with React, you can use the EasyTimer React Hook. Y
 - off(eventType, callback): removeEventListener alias.
 - getTimeValues(): Returns an object with the current values. The keys of the returned object are 'secondTenths', 'seconds', 'minutes', 'hours' and 'days'.
 - getTotalTimeValues(): Returns an object with the current absolute values. The keys of the returned object are 'secondTenths', 'seconds', 'minutes', 'hours' and 'days'.
+- getConfig(): Returns the configuration parameters.
 
 ## Browser Support
 
