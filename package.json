@@ -15,7 +15,7 @@
   "scripts": {
     "prestart": "npm install",
     "start": "http-server -a 0.0.0.0 -p 8001",
-    "test": "mocha",
+    "test": "mocha --exit",
     "build": "rollup -c && rollup -c --environment optimize",
     "build-examples": "rollup -c rollup.config.examples.js"
   },
