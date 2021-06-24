@@ -305,6 +305,8 @@ function Timer (defaultParams = {}) {
       }
     }
 
+    values = values.map((value) => parseInt(value, 10));
+
     const secondTenths = values[SECOND_TENTHS_POSITION];
     const seconds = values[SECONDS_POSITION] + calculateIntegerUnitQuotient(secondTenths, SECOND_TENTHS_PER_SECOND);
     const minutes = values[MINUTES_POSITION] + calculateIntegerUnitQuotient(seconds, SECONDS_PER_MINUTE);
