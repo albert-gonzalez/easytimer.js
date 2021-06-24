@@ -1,4 +1,4 @@
-import { uglify } from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 import babel from 'rollup-plugin-babel';
 import license from 'rollup-plugin-license';
 
@@ -16,7 +16,7 @@ export default {
     babel({
       exclude: 'node_modules/**'
     }),
-    optimize ? uglify() : {},
+    optimize ? terser() : {},
     license({
       banner: `
         <%= pkg.name %>
