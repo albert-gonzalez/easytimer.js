@@ -82,6 +82,29 @@ describe('timer.js', function () {
         }, /Error in precision parameter: secons is not a valid value/);
       });
 
+      describe('with timer values params passed as string', () => {
+        const assertCastedValues = (timer) => {
+          assertTimes(timer, [1, 2, 3, 4, 5], [4465821, 446582, 7443, 124, 5]);
+          assert.deepEqual(timer.getConfig().target[0], 5);
+          assert.deepEqual(timer.getConfig().target[1], 4);
+          assert.deepEqual(timer.getConfig().target[2], 3);
+          assert.deepEqual(timer.getConfig().target[3], 2);
+          assert.deepEqual(timer.getConfig().target[4], 1);
+        };
+
+        it('should cast the string values to integer values when creating a new instance', () => {
+          timer = new Timer({ startValues: ['1', '2', '3', '4', '5'], target: ['5', '4', '3', '2', '1'] });
+          assertCastedValues(timer);
+        });
+
+        it('should cast the string values to integer values when starting the timer', () => {
+          timer = new Timer();
+          timer.start({ startValues: ['1', '2', '3', '4', '5'], target: ['5', '4', '3', '2', '1'] });
+          assertCastedValues(timer);
+          timer.stop();
+        });
+      });
+
       describe('with default params', function () {
         it('should have seconds precision', function () {
           assert.equal(timer.getConfig().precision, 'seconds');
