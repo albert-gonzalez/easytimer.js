@@ -420,9 +420,10 @@ function Timer (defaultParams = {}) {
    * [addEventListener Adds event listener to the timer]
    * @param {string} eventType      [event to listen]
    * @param {function} listener   [the event listener function]
+   * @param {string} [id]   [optional identifier]
    */
-  function addEventListener (eventType, listener) {
-    eventEmitter.on(eventType, listener);
+  function addEventListener (eventType, listener, id) {
+    eventEmitter.on(eventType, listener, id);
   }
 
   /**
@@ -432,6 +433,15 @@ function Timer (defaultParams = {}) {
    */
   function removeEventListener (eventType, listener) {
     eventEmitter.removeListener(eventType, listener);
+  }
+
+  /**
+   * [removeEventListenerByID Removes event listener to the timer]
+   * @param  {string} eventType    [event to remove listener]
+   * @param  {string} id   [identifier of the listener to remove]
+   */
+  function removeEventListenerByID (eventType, id) {
+    eventEmitter.removeListenerByID(eventType, id);
   }
 
   /**
@@ -511,6 +521,8 @@ function Timer (defaultParams = {}) {
     this.on = addEventListener;
 
     this.removeEventListener = removeEventListener;
+
+    this.removeEventListenerByID = removeEventListenerByID;
 
     this.off = removeEventListener;
   }

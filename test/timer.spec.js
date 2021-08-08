@@ -888,11 +888,15 @@ describe('timer.js', function () {
     });
 
     describe('removeEventListener function', function () {
-      let secondsUpdatedListener;
+      let secondsUpdatedListener1;
+      let secondsUpdatedListener2;
       let secondTimer;
+      const listenerID1 = 'my listener 1';
+      const listenerID2 = 'my listener 2';
       beforeEach(function () {
         clock = sinon.useFakeTimers();
-        secondsUpdatedListener = sinon.spy();
+        secondsUpdatedListener1 = sinon.spy();
+        secondsUpdatedListener2 = sinon.spy();
         timer.start();
         secondTimer = new Timer();
         secondTimer.start();
@@ -905,29 +909,64 @@ describe('timer.js', function () {
       });
 
       it('should remove the listener from the event', function () {
-        timer.addEventListener('secondsUpdated', secondsUpdatedListener);
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener1);
         clock.tick(2000);
-        sinon.assert.callCount(secondsUpdatedListener, 2);
+        sinon.assert.callCount(secondsUpdatedListener1, 2);
 
-        timer.removeEventListener('secondsUpdated', secondsUpdatedListener);
+        timer.removeEventListener('secondsUpdated', secondsUpdatedListener1);
         clock.tick(2000);
-        sinon.assert.callCount(secondsUpdatedListener, 2);
+        sinon.assert.callCount(secondsUpdatedListener1, 2);
 
-        secondTimer.addEventListener('secondsUpdated', secondsUpdatedListener);
+        secondTimer.addEventListener('secondsUpdated', secondsUpdatedListener1);
         clock.tick(1000);
-        sinon.assert.callCount(secondsUpdatedListener, 3);
+        sinon.assert.callCount(secondsUpdatedListener1, 3);
 
-        timer.addEventListener('secondsUpdated', secondsUpdatedListener);
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener1);
         clock.tick(1000);
-        sinon.assert.callCount(secondsUpdatedListener, 5);
+        sinon.assert.callCount(secondsUpdatedListener1, 5);
 
-        secondTimer.removeEventListener('secondsUpdated', secondsUpdatedListener);
+        secondTimer.removeEventListener('secondsUpdated', secondsUpdatedListener1);
         clock.tick(1000);
-        sinon.assert.callCount(secondsUpdatedListener, 6);
+        sinon.assert.callCount(secondsUpdatedListener1, 6);
 
-        timer.removeEventListener('secondsUpdated', secondsUpdatedListener);
+        timer.removeEventListener('secondsUpdated', secondsUpdatedListener1);
         clock.tick(1000);
-        sinon.assert.callCount(secondsUpdatedListener, 6);
+        sinon.assert.callCount(secondsUpdatedListener1, 6);
+      });
+
+      it('should remove the listener from the event by ID', function () {
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener1, listenerID1);
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener2, listenerID2);
+        clock.tick(2000);
+        sinon.assert.callCount(secondsUpdatedListener1, 2);
+        sinon.assert.callCount(secondsUpdatedListener2, 2);
+
+        timer.removeEventListenerByID('secondsUpdated', listenerID2);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 3);
+        sinon.assert.callCount(secondsUpdatedListener2, 2);
+
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener2, listenerID2);
+        timer.removeEventListenerByID('secondsUpdated', listenerID1);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 3);
+        sinon.assert.callCount(secondsUpdatedListener2, 3);
+
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener1, listenerID1);
+        secondTimer.addEventListener('secondsUpdated', secondsUpdatedListener1, listenerID1);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 5);
+        sinon.assert.callCount(secondsUpdatedListener2, 4);
+
+        secondTimer.removeEventListenerByID('secondsUpdated', listenerID1);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 6);
+        sinon.assert.callCount(secondsUpdatedListener2, 5);
+
+        secondTimer.removeEventListenerByID('secondsUpdated', listenerID1);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 7);
+        sinon.assert.callCount(secondsUpdatedListener2, 6);
       });
     });
 

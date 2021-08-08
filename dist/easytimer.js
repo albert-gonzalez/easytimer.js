@@ -1,6 +1,6 @@
 /**
  * easytimer.js
- * Generated: 2021-06-24
+ * Generated: 2021-08-08
  * Version: 4.4.0
  */
 
@@ -146,14 +146,17 @@
     this.events = {};
   }
 
-  EventEmitter.prototype.on = function (event, listener) {
+  EventEmitter.prototype.on = function (event, listener, id) {
     var _this = this;
 
     if (!Array.isArray(this.events[event])) {
       this.events[event] = [];
     }
 
-    this.events[event].push(listener);
+    this.events[event].push({
+      listener: listener,
+      id: id
+    });
     return function () {
       return _this.removeListener(event, listener);
     };
@@ -161,7 +164,21 @@
 
   EventEmitter.prototype.removeListener = function (event, listener) {
     if (Array.isArray(this.events[event])) {
-      var eventIndex = this.events[event].indexOf(listener);
+      var eventIndex = this.events[event].findIndex(function (eventListener) {
+        return eventListener.listener === listener;
+      });
+
+      if (eventIndex > -1) {
+        this.events[event].splice(eventIndex, 1);
+      }
+    }
+  };
+
+  EventEmitter.prototype.removeListenerByID = function (event, id) {
+    if (Array.isArray(this.events[event])) {
+      var eventIndex = this.events[event].findIndex(function (eventListener) {
+        return eventListener.id === id;
+      });
 
       if (eventIndex > -1) {
         this.events[event].splice(eventIndex, 1);
@@ -177,7 +194,8 @@
     }
 
     if (Array.isArray(this.events[event])) {
-      this.events[event].forEach(function (listener) {
+      this.events[event].forEach(function (_ref) {
+        var listener = _ref.listener;
         return listener.apply(_this2, args);
       });
     }
@@ -571,11 +589,12 @@
      * [addEventListener Adds event listener to the timer]
      * @param {string} eventType      [event to listen]
      * @param {function} listener   [the event listener function]
+     * @param {string} [id]   [optional identifier]
      */
 
 
-    function addEventListener(eventType, listener) {
-      eventEmitter.on(eventType, listener);
+    function addEventListener(eventType, listener, id) {
+      eventEmitter.on(eventType, listener, id);
     }
     /**
      * [removeEventListener Removes event listener to the timer]
@@ -586,6 +605,16 @@
 
     function removeEventListener(eventType, listener) {
       eventEmitter.removeListener(eventType, listener);
+    }
+    /**
+     * [removeEventListenerByID Removes event listener to the timer]
+     * @param  {string} eventType    [event to remove listener]
+     * @param  {string} id   [identifier of the listener to remove]
+     */
+
+
+    function removeEventListenerByID(eventType, id) {
+      eventEmitter.removeListenerByID(eventType, id);
     }
     /**
      * [dispatchEvent dispatches an event]
@@ -661,6 +690,7 @@
       this.addEventListener = addEventListener;
       this.on = addEventListener;
       this.removeEventListener = removeEventListener;
+      this.removeEventListenerByID = removeEventListenerByID;
       this.off = removeEventListener;
     }
   }
