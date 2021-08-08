@@ -931,6 +931,91 @@ describe('timer.js', function () {
       });
     });
 
+    describe('removeAllEventListeners function', function () {
+      let secondsUpdatedListener1;
+      let secondsUpdatedListener2;
+      let secondTenthsUpdatedListener1;
+      let secondTenthsUpdatedListener2;
+      let secondTimer;
+      beforeEach(function () {
+        clock = sinon.useFakeTimers();
+        secondsUpdatedListener1 = sinon.spy();
+        secondsUpdatedListener2 = sinon.spy();
+        secondTenthsUpdatedListener1 = sinon.spy();
+        secondTenthsUpdatedListener2 = sinon.spy();
+        timer.start();
+        secondTimer = new Timer({ precision: 'secondTenths' });
+        secondTimer.start();
+      });
+
+      afterEach(function () {
+        clock.restore();
+        timer.stop();
+        secondTimer.stop();
+      });
+
+      it('should remove all the listeners from the event', function () {
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener1);
+        clock.tick(2000);
+        sinon.assert.callCount(secondsUpdatedListener1, 2);
+
+        timer.removeAllEventListeners();
+        clock.tick(2000);
+        sinon.assert.callCount(secondsUpdatedListener1, 2);
+
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener1);
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener2);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 3);
+        sinon.assert.callCount(secondsUpdatedListener2, 1);
+
+        timer.removeAllEventListeners();
+        clock.tick(2000);
+        sinon.assert.callCount(secondsUpdatedListener1, 3);
+        sinon.assert.callCount(secondsUpdatedListener2, 1);
+
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener1);
+        timer.addEventListener('secondsUpdated', secondsUpdatedListener2);
+        secondTimer.addEventListener('secondsUpdated', secondsUpdatedListener2);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 4);
+        sinon.assert.callCount(secondsUpdatedListener2, 3);
+
+        timer.removeAllEventListeners();
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 4);
+        sinon.assert.callCount(secondsUpdatedListener2, 4);
+      });
+
+      it('should remove all the listeners from the event by type and keep the rest', function () {
+        secondTimer.addEventListener('secondsUpdated', secondsUpdatedListener1);
+        secondTimer.addEventListener('secondTenthsUpdated', secondTenthsUpdatedListener1);
+        secondTimer.addEventListener('secondTenthsUpdated', secondTenthsUpdatedListener2);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 1);
+        sinon.assert.callCount(secondTenthsUpdatedListener1, 10);
+        sinon.assert.callCount(secondTenthsUpdatedListener2, 10);
+
+        secondTimer.removeAllEventListeners('secondTenthsUpdated');
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 2);
+        sinon.assert.callCount(secondTenthsUpdatedListener1, 10);
+        sinon.assert.callCount(secondTenthsUpdatedListener2, 10);
+
+        secondTimer.addEventListener('secondTenthsUpdated', secondTenthsUpdatedListener2);
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 3);
+        sinon.assert.callCount(secondTenthsUpdatedListener1, 10);
+        sinon.assert.callCount(secondTenthsUpdatedListener2, 20);
+
+        secondTimer.removeAllEventListeners('secondsUpdated');
+        clock.tick(1000);
+        sinon.assert.callCount(secondsUpdatedListener1, 3);
+        sinon.assert.callCount(secondTenthsUpdatedListener1, 10);
+        sinon.assert.callCount(secondTenthsUpdatedListener2, 30);
+      });
+    });
+
     describe('on function', () => {
       it('should be an alias of addEventListener', () => {
         assert.equal(timer.addEventListener, timer.on);

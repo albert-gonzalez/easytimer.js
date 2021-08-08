@@ -435,6 +435,14 @@ function Timer (defaultParams = {}) {
   }
 
   /**
+   * [removeAllEventListeners Removes all events listeners for the given type, no type to remove all types]
+   * @param  {string} [eventType]  [event to remove listener]
+   */
+  function removeAllEventListeners (eventType) {
+    eventEmitter.removeAllListeners(eventType);
+  }
+
+  /**
    * [dispatchEvent dispatches an event]
    * @param  {string} eventType [event to dispatch]
    * @param data
@@ -511,6 +519,8 @@ function Timer (defaultParams = {}) {
     this.on = addEventListener;
 
     this.removeEventListener = removeEventListener;
+
+    this.removeAllEventListeners = removeAllEventListeners;
 
     this.off = removeEventListener;
   }
