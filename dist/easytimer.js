@@ -1,7 +1,7 @@
 /**
  * easytimer.js
- * Generated: 2021-08-08
- * Version: 4.4.0
+ * Generated: 2021-08-12
+ * Version: 4.5.0
  */
 
 (function (global, factory) {
@@ -684,7 +684,7 @@
   }
 
   exports.Timer = Timer;
-  exports.default = Timer;
+  exports['default'] = Timer;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
