@@ -1,7 +1,7 @@
 import Timer from '../easytimer/easytimer';
 import $ from './jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
+import 'bootstrap/dist/js/bootstrap.bundle';
 import Prism from 'prismjs';
 
 window.jQuery = $;
