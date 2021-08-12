@@ -1,6 +1,6 @@
 /**
  * easytimer.js
- * Generated: 2021-06-24
+ * Generated: 2021-08-08
  * Version: 4.4.0
  */
 
@@ -166,6 +166,14 @@
       if (eventIndex > -1) {
         this.events[event].splice(eventIndex, 1);
       }
+    }
+  };
+
+  EventEmitter.prototype.removeAllListeners = function (event) {
+    if (!event) {
+      this.events = {};
+    } else if (Array.isArray(this.events[event])) {
+      this.events[event] = [];
     }
   };
 
@@ -588,6 +596,15 @@
       eventEmitter.removeListener(eventType, listener);
     }
     /**
+     * [removeAllEventListeners Removes all events listeners for the given type, no type to remove all types]
+     * @param  {string} [eventType]  [event to remove listener]
+     */
+
+
+    function removeAllEventListeners(eventType) {
+      eventEmitter.removeAllListeners(eventType);
+    }
+    /**
      * [dispatchEvent dispatches an event]
      * @param  {string} eventType [event to dispatch]
      * @param data
@@ -661,6 +678,7 @@
       this.addEventListener = addEventListener;
       this.on = addEventListener;
       this.removeEventListener = removeEventListener;
+      this.removeAllEventListeners = removeAllEventListeners;
       this.off = removeEventListener;
     }
   }

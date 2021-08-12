@@ -20,6 +20,14 @@ EventEmitter.prototype.removeListener = function (event, listener) {
   }
 };
 
+EventEmitter.prototype.removeAllListeners = function (event) {
+  if (!event) {
+    this.events = {};
+  } else if (Array.isArray(this.events[event])) {
+    this.events[event] = [];
+  }
+};
+
 EventEmitter.prototype.emit = function (event, ...args) {
   if (Array.isArray(this.events[event])) {
     this.events[event].forEach(listener => listener.apply(this, args));
