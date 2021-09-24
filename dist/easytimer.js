@@ -1,14 +1,14 @@
 /**
  * easytimer.js
- * Generated: 2021-08-12
- * Version: 4.5.0
+ * Generated: 2021-09-24
+ * Version: 4.5.1
  */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.easytimer = {}));
-}(this, (function (exports) { 'use strict';
+})(this, (function (exports) { 'use strict';
 
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
@@ -684,8 +684,8 @@
   }
 
   exports.Timer = Timer;
-  exports['default'] = Timer;
+  exports["default"] = Timer;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
