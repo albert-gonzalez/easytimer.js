@@ -42,6 +42,7 @@ export class Timer {
     addEventListener(eventType: TimerEventType, listener: (event: TimerEvent) => void): void;
     on(eventType: TimerEventType, listener: (event: TimerEvent) => void): void;
     removeEventListener(eventType: TimerEventType, listener: (event: TimerEvent) => void): void;
+    removeAllEventListeners(eventType?: TimerEventType): void;
     off(eventType: TimerEventType, listener: (event: TimerEvent) => void): void;
     isRunning(): boolean;
     isPaused(): boolean;
