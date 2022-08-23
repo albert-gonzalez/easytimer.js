@@ -1,7 +1,7 @@
 /**
  * easytimer.js
- * Generated: 2022-02-12
- * Version: 4.5.3
+ * Generated: 2022-08-23
+ * Version: 4.5.4
  */
 
 (function (global, factory) {

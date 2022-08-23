@@ -1,6 +1,6 @@
 {
   "name": "easytimer.js",
-  "version": "4.5.3",
+  "version": "4.5.4",
   "description": "Timer/Chronometer/Countdown compatible with AMD and NodeJS",
   "main": "dist/easytimer.js",
   "types": "index.d.ts",
@@ -17,7 +17,8 @@
     "start": "http-server -a 0.0.0.0 -p 8001",
     "test": "mocha --exit",
     "build": "rollup -c && rollup -c --environment optimize",
-    "build-examples": "rollup -c rollup.config.examples.js"
+    "build-examples": "rollup -c rollup.config.examples.js",
+    "build-all": "npm run build && npm run build-examples"
   },
   "keywords": [
     "javascript",
@@ -32,30 +33,30 @@
   "author": "Albert Gonzalez",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.17.2",
-    "@babel/preset-env": "^7.16.11",
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
     "babel-plugin-prismjs": "^2.1.0",
-    "bootstrap": "^5.1.3",
+    "bootstrap": "^5.2.0",
     "chai": "^4.3.6",
-    "eslint": "^8.9.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.4",
+    "eslint": "^8.22.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-standard": "^5.0.0",
-    "http-server": "~14.1.0",
+    "http-server": "~14.1.1",
     "jquery": "^3.6.0",
-    "mocha": "^9.2.0",
+    "mocha": "^10.0.0",
     "popper.js": "^1.16.1",
-    "prismjs": "^1.26.0",
-    "rollup": "^2.67.2",
+    "prismjs": "^1.29.0",
+    "rollup": "^2.78.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-css-only": "^3.1.0",
-    "rollup-plugin-license": "^2.6.1",
+    "rollup-plugin-license": "^2.8.1",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^7.0.2",
-    "sinon": "^13.0.1"
+    "sinon": "^14.0.0"
   },
   "babel": {
     "presets": [
