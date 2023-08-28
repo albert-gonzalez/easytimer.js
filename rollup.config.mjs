@@ -1,8 +1,8 @@
-import { terser } from 'rollup-plugin-terser';
-import babel from 'rollup-plugin-babel';
+import terser from '@rollup/plugin-terser';
+import babel from '@rollup/plugin-babel';
 import license from 'rollup-plugin-license';
 
-let optimize = process.env.optimize || false;
+const optimize = process.env.optimize || false;
 
 export default {
   input: 'src/easytimer/easytimer.js',
@@ -14,7 +14,8 @@ export default {
   },
   plugins: [
     babel({
-      exclude: 'node_modules/**'
+      exclude: 'node_modules/**',
+      babelHelpers: 'bundled'
     }),
     optimize ? terser() : {},
     license({
