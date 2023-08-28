@@ -1,8 +1,8 @@
-import { terser } from 'rollup-plugin-terser';
-import babel from 'rollup-plugin-babel';
+import terser from '@rollup/plugin-terser';
+import babel from '@rollup/plugin-babel';
 import css from 'rollup-plugin-css-only';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 export default {
   input: 'src/examples/examples.js',
@@ -15,7 +15,8 @@ export default {
     commonjs(),
     css({ output: 'examples.min.css' }),
     babel({
-      exclude: 'node_modules/**'
+      exclude: 'node_modules/**',
+      babelHelpers: 'bundled'
     }),
     terser()
   ]
